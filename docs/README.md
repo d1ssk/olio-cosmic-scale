@@ -1,5 +1,7 @@
 # Documentation
 
+Start with [Implementation status and continuation](implementation-status.md) for the implemented scenes, settled interaction decisions, and the next-scene checklist.
+
 The initial monolithic project specification has been refactored into focused documents:
 
 | Document                                              | Scope                                                                                  |

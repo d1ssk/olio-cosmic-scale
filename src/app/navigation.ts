@@ -1,6 +1,7 @@
 import type { Locale } from "../i18n";
 import type { SceneId } from "../scenes/types";
-import { isSceneId } from "./sceneRegistry";
+import { DEFAULT_BRIDGE_CONFIG } from "../bridges/bridgeTypes";
+import { isSceneId, sceneRegistry } from "./sceneRegistry";
 
 export type SceneMode = { kind: "scene"; sceneId: SceneId };
 export type BridgeMode = { kind: "bridge"; originSceneId: SceneId; targetSceneId: SceneId };
@@ -19,4 +20,18 @@ export function urlWithState(
   url.searchParams.set("scene", sceneId);
   url.searchParams.set("lang", locale);
   return `${url.pathname}${url.search}${url.hash}`;
+}
+
+/** Direct adjacent scene changes need no comparison when their ratio fits one step. */
+export function mainNavigationMode(sceneId: SceneId, direction: "previous" | "next"): AppMode {
+  const scene = sceneRegistry[sceneId];
+  const targetSceneId = scene[direction];
+  if (!targetSceneId) return { kind: "scene", sceneId };
+  const target = sceneRegistry[targetSceneId];
+  const ratio =
+    Math.max(scene.referenceLengthMeters, target.referenceLengthMeters) /
+    Math.min(scene.referenceLengthMeters, target.referenceLengthMeters);
+  return ratio <= DEFAULT_BRIDGE_CONFIG.maxStepRatio
+    ? { kind: "scene", sceneId: targetSceneId }
+    : { kind: "bridge", originSceneId: sceneId, targetSceneId };
 }

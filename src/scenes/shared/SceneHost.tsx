@@ -46,7 +46,10 @@ export function SceneHost({
             fov: camera.projection === "perspective" ? 45 : undefined,
           }}
         >
-          <color attach="background" args={["#e9e7df"]} />
+          <color
+            attach="background"
+            args={[getComputedStyle(document.documentElement).getPropertyValue("--canvas").trim()]}
+          />
           <ambientLight intensity={1.3} />
           <directionalLight position={[8, 10, 6]} intensity={1.8} />
           <Suspense fallback={null}>{children}</Suspense>
@@ -64,19 +67,40 @@ function CameraController({
   metadata: SceneMetadata;
   resetVersion: number;
 }): React.JSX.Element {
-  const { camera } = useThree();
+  const { camera, size } = useThree();
+  const originalDistance = Math.hypot(
+    ...metadata.camera.position.map((value, i) => value - metadata.camera.target[i]),
+  );
+  const fitFactor =
+    metadata.camera.fitToViewport && metadata.camera.projection === "perspective"
+      ? Math.max(
+          1,
+          metadata.defaultViewportExtentMeters /
+            metadata.metersPerSceneUnit /
+            (2 * Math.tan(Math.PI / 8) * (size.width / size.height)) /
+            originalDistance,
+        )
+      : 1;
   const controlsRef = useRef<OrbitControlsImpl>(null);
   const initialResetVersion = useRef(resetVersion);
   const storeKey = cameraStateKey(metadata.id);
 
   const applySnapshot = useCallback(
     (snapshot: CameraSnapshot) => {
+      const controls = controlsRef.current;
+      const damping = controls?.enableDamping;
+      if (controls) {
+        // Drain residual orbit/pan momentum before applying the exact stored view.
+        controls.enableDamping = false;
+        controls.update();
+      }
       camera.position.fromArray(snapshot.position);
       camera.zoom = snapshot.zoom;
       camera.updateProjectionMatrix();
-      if (controlsRef.current) {
-        controlsRef.current.target.fromArray(snapshot.target);
-        controlsRef.current.update();
+      if (controls) {
+        controls.target.fromArray(snapshot.target);
+        controls.update();
+        controls.enableDamping = damping ?? true;
       }
     },
     [camera],
@@ -84,11 +108,13 @@ function CameraController({
 
   const defaultSnapshot = useCallback(
     (): CameraSnapshot => ({
-      position: metadata.camera.position,
+      position: metadata.camera.position.map(
+        (value, i) => metadata.camera.target[i] + (value - metadata.camera.target[i]) * fitFactor,
+      ) as [number, number, number],
       target: metadata.camera.target,
       zoom: metadata.camera.projection === "orthographic" ? 60 : 1,
     }),
-    [metadata.camera],
+    [metadata.camera, fitFactor],
   );
 
   useEffect(() => {

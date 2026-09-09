@@ -14,8 +14,31 @@ describe("bridge planner", () => {
 
     expect(plan.steps.length).toBeGreaterThan(1);
     for (const step of plan.steps) {
-      expect(step.toMeters / step.fromMeters).toBeLessThanOrEqual(60);
+      expect(step.toMeters / step.fromMeters).toBeLessThanOrEqual(200);
     }
+  });
+
+  it.each([280, 600, 1200])("allows 1:200 in one frame at %s px", (width) => {
+    const plan = planBridge({
+      fromSceneId: "earth",
+      toSceneId: "sun",
+      fromMeters: 1,
+      toMeters: 200,
+      availableWidthPx: width,
+    });
+    expect(plan.steps).toEqual([{ fromMeters: 1, toMeters: 200 }]);
+  });
+  it("uses three balanced comparisons from human to Earth", () => {
+    const plan = planBridge({
+      fromSceneId: "human",
+      toSceneId: "earth",
+      fromMeters: 1.7,
+      toMeters: 12742000,
+      availableWidthPx: 320,
+    });
+    expect(plan.steps).toHaveLength(3);
+    const ratios = plan.steps.map((step) => step.toMeters / step.fromMeters);
+    for (const ratio of ratios) expect(ratio).toBeCloseTo(Math.cbrt(12742000 / 1.7), 10);
   });
 
   it("does not add an artificial step for a modest ratio", () => {
@@ -59,4 +82,18 @@ describe("bridge planner", () => {
     );
     expect(reverseBridgePlan(reversed)).toEqual(plan);
   });
+});
+
+it.each([240, 800, 1440])("keeps equal ratios across arbitrary large gaps at %s px", (width) => {
+  const plan = planBridge({
+    fromSceneId: "solar-system",
+    toSceneId: "solar-neighborhood",
+    fromMeters: 100 * AU_METERS,
+    toMeters: 10 * PARSEC_METERS,
+    availableWidthPx: width,
+  });
+  const ratios = plan.steps.map((step) => step.toMeters / step.fromMeters);
+  expect(Math.max(...ratios) / Math.min(...ratios)).toBeCloseTo(1, 12);
+  expect(Math.max(...ratios)).toBeLessThanOrEqual(200);
+  expect(plan.steps.at(-1)?.toMeters).toBe(10 * PARSEC_METERS);
 });

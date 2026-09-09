@@ -1,0 +1,11 @@
+Model Information:
+* title:	Hachikō
+* source:	https://sketchfab.com/3d-models/hachiko-fffee43c3cbc4b7ea20d6556a360b25f
+* author:	Maurice Svay (https://sketchfab.com/mauricesvay)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Hachikō" (https://sketchfab.com/3d-models/hachiko-fffee43c3cbc4b7ea20d6556a360b25f) by Maurice Svay (https://sketchfab.com/mauricesvay) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

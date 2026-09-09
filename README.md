@@ -2,7 +2,7 @@
 
 An interactive, bilingual visualization for learning physical and astronomical length scales as discrete scenes connected by explicit length-comparison bridges.
 
-The repository currently contains the common application infrastructure and development placeholders for all planned scenes. Scientific scenes will be implemented incrementally from Human to the Observable Universe.
+The common application framework and three scenes are implemented: Human (Hachikō), Earth, and Earth and Moon. The 12-level hierarchy continues from Sun through the Observable Universe with clearly labeled development placeholders. Continue with the Sun scene using the [implementation handoff](docs/implementation-status.md).
 
 ## Run locally
 

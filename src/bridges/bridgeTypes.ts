@@ -2,8 +2,8 @@ import type { SceneId } from "../scenes/types";
 
 export type BridgeConfig = {
   mainBarFraction: number;
+  maxStepRatio: number;
   minSmallBarPx: number;
-  preferredStepRatios: readonly number[];
 };
 
 export type BridgeStep = {
@@ -18,7 +18,7 @@ export type BridgePlan = {
 };
 
 export const DEFAULT_BRIDGE_CONFIG: BridgeConfig = {
-  mainBarFraction: 0.6,
-  minSmallBarPx: 10,
-  preferredStepRatios: [10, 20, 50, 100],
+  mainBarFraction: 0.94,
+  maxStepRatio: 200,
+  minSmallBarPx: 1,
 };

@@ -1,3 +1,6 @@
+import { EARTH_MOON_DISTANCE_METERS } from "../scenes/earth-moon/earthMoonData";
+import { EARTH_DIAMETER_METERS } from "../scenes/earth/earthData";
+import { HUMAN_REFERENCE_METERS } from "../scenes/human/humanData";
 import { lazy } from "react";
 import {
   AU_METERS,
@@ -7,6 +10,10 @@ import {
   PARSEC_METERS,
 } from "../physics/constants";
 import type { SceneDefinition, SceneId } from "../scenes/types";
+
+const EarthMoonScene = lazy(() => import("../scenes/earth-moon/EarthMoonScene"));
+const EarthScene = lazy(() => import("../scenes/earth/EarthScene"));
+const HumanScene = lazy(() => import("../scenes/human/HumanScene"));
 
 const PlaceholderScene = lazy(() => import("../scenes/shared/PlaceholderScene"));
 
@@ -33,6 +40,7 @@ const orthographic = {
 export const MAIN_SCENE_ORDER = [
   "human",
   "earth",
+  "earth-moon",
   "sun",
   "earth-sun",
   "solar-system",
@@ -50,13 +58,19 @@ export const sceneRegistry: Record<SceneId, SceneDefinition> = {
     kind: "scene",
     titleKey: "scene.human.title",
     originDescriptionKey: "origin.human",
-    referenceLengthMeters: 1.7,
+    referenceLengthMeters: HUMAN_REFERENCE_METERS,
     defaultViewportExtentMeters: 3,
     metersPerSceneUnit: 0.17,
     preferredPrimaryUnit: "m",
     secondaryUnits: ["cm"],
-    camera: perspective,
-    component: PlaceholderScene,
+    camera: {
+      ...perspective,
+      position: [-25, 10, 5],
+      target: [0, 5, 0],
+      minDistance: 12,
+      maxDistance: 45,
+    },
+    component: HumanScene,
     next: "earth",
   },
   earth: {
@@ -64,14 +78,35 @@ export const sceneRegistry: Record<SceneId, SceneDefinition> = {
     kind: "scene",
     titleKey: "scene.earth.title",
     originDescriptionKey: "origin.earth",
-    referenceLengthMeters: 12_742_000,
+    referenceLengthMeters: EARTH_DIAMETER_METERS,
     defaultViewportExtentMeters: 18_000_000,
-    metersPerSceneUnit: 1_274_200,
+    metersPerSceneUnit: EARTH_DIAMETER_METERS / 10,
     preferredPrimaryUnit: "km",
     secondaryUnits: ["Mm", "m"],
-    camera: perspective,
-    component: PlaceholderScene,
+    camera: { ...perspective, position: [-14, 7, -18], minDistance: 12, maxDistance: 50 },
+    component: EarthScene,
     previous: "human",
+    next: "earth-moon",
+  },
+  "earth-moon": {
+    id: "earth-moon",
+    kind: "scene",
+    titleKey: "scene.earthMoon.title",
+    originDescriptionKey: "origin.earthMoon",
+    referenceLengthMeters: EARTH_MOON_DISTANCE_METERS,
+    defaultViewportExtentMeters: EARTH_MOON_DISTANCE_METERS * 1.5,
+    metersPerSceneUnit: EARTH_MOON_DISTANCE_METERS / 10,
+    preferredPrimaryUnit: "km",
+    secondaryUnits: [],
+    camera: {
+      ...perspective,
+      position: [0, 0, 10],
+      fitToViewport: true,
+      minDistance: 0.5,
+      maxDistance: 50,
+    },
+    component: EarthMoonScene,
+    previous: "earth",
     next: "sun",
   },
   sun: {
@@ -86,7 +121,7 @@ export const sceneRegistry: Record<SceneId, SceneDefinition> = {
     secondaryUnits: ["km", "AU"],
     camera: perspective,
     component: PlaceholderScene,
-    previous: "earth",
+    previous: "earth-moon",
     next: "earth-sun",
   },
   "earth-sun": {
@@ -118,7 +153,6 @@ export const sceneRegistry: Record<SceneId, SceneDefinition> = {
     component: PlaceholderScene,
     previous: "earth-sun",
     next: "solar-neighborhood",
-    bridgeMilestonesToNext: [10_000 * AU_METERS, PARSEC_METERS],
   },
   "solar-neighborhood": {
     id: "solar-neighborhood",
@@ -135,7 +169,6 @@ export const sceneRegistry: Record<SceneId, SceneDefinition> = {
     previous: "solar-system",
     next: "milky-way",
     lateralSibling: "galactic-center-neighborhood",
-    bridgeMilestonesToNext: [KILOPARSEC_METERS],
   },
   "galactic-center-neighborhood": {
     id: "galactic-center-neighborhood",
@@ -212,7 +245,6 @@ export const sceneRegistry: Record<SceneId, SceneDefinition> = {
     component: PlaceholderScene,
     previous: "virgo",
     next: "observable-universe",
-    bridgeMilestonesToNext: [GIGAPARSEC_METERS],
   },
   "observable-universe": {
     id: "observable-universe",

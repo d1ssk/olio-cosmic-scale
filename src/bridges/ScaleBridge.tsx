@@ -1,34 +1,62 @@
-import { useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { BAR_TIMING, reducedMotion } from "./transitionTiming";
+import {
+  useImperativeHandle,
+  useEffect,
+  useLayoutEffect,
+  type Ref,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { canonicalBridgeEndpoints, sceneRegistry } from "../app/sceneRegistry";
 import { translate, type Locale } from "../i18n";
 import { chooseNaturalUnit, formatLength, length } from "../physics/length";
 import type { SceneId } from "../scenes/types";
-import { NavigationControls } from "../components/NavigationControls";
-import { planBridge, reverseBridgePlan } from "./bridgePlanner";
+import { DEFAULT_BRIDGE_CONFIG } from "./bridgeTypes";
+import type { BarSnapshot } from "./barTransition";
+import { HUMAN_EARTH_BRIDGE_VALUES } from "./humanEarthBridge";
+import { planBridge } from "./bridgePlanner";
 
-type ScaleBridgeProps = {
-  originSceneId: SceneId;
-  targetSceneId: SceneId;
-  locale: Locale;
-  onCancel: () => void;
-  onComplete: () => void;
-};
+export type BridgeControls = { navigate: (direction: "previous" | "next") => void };
 
 export function ScaleBridge({
   originSceneId,
   targetSceneId,
   locale,
-  onCancel,
   onComplete,
-}: ScaleBridgeProps): React.JSX.Element {
+  onCancel,
+  ref,
+  entryBar,
+  onBusyChange,
+}: {
+  originSceneId: SceneId;
+  targetSceneId: SceneId;
+  locale: Locale;
+  onComplete: () => void;
+  onCancel: () => void;
+  ref?: Ref<BridgeControls>;
+  entryBar?: BarSnapshot | null;
+  onBusyChange?: (busy: boolean) => void;
+}): React.JSX.Element {
+  const [entryPending, setEntryPending] = useState(Boolean(entryBar));
+  const [leavingMeters, setLeavingMeters] = useState<number | null>(null);
+  const locked = useRef(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  useEffect(() => () => clearTimeout(timer.current), []);
+  const entryRef = useRef<HTMLDivElement>(null);
+  const entryTargetRef = useRef<HTMLDivElement>(null);
+  const animated = useRef(false);
+  const entryAnimation = useRef<Animation | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const width = useElementWidth(containerRef);
-  const [index, setIndex] = useState(0);
   const [lower, upper] = canonicalBridgeEndpoints(originSceneId, targetSceneId);
-  const travelingUp = sceneReference(originSceneId) < sceneReference(targetSceneId);
-
-  const plan = useMemo(() => {
-    const canonical = planBridge({
+  const travelingUp =
+    sceneRegistry[originSceneId].referenceLengthMeters <
+    sceneRegistry[targetSceneId].referenceLengthMeters;
+  const values = useMemo(() => {
+    if (lower.id === "human" && upper.id === "earth") return HUMAN_EARTH_BRIDGE_VALUES;
+    const plan = planBridge({
       fromSceneId: lower.id,
       toSceneId: upper.id,
       fromMeters: lower.referenceLengthMeters,
@@ -36,93 +64,184 @@ export function ScaleBridge({
       availableWidthPx: width,
       milestones: lower.bridgeMilestonesToNext,
     });
-    return travelingUp ? canonical : reverseBridgePlan(canonical);
-  }, [lower, upper, travelingUp, width]);
-
-  const safeIndex = Math.min(index, plan.steps.length - 1);
-  const step = plan.steps[safeIndex];
-  const maxMeters = Math.max(step.fromMeters, step.toMeters);
-  const ratio = maxMeters / Math.min(step.fromMeters, step.toMeters);
-  const ratioText = new Intl.NumberFormat(locale === "ja" ? "ja-JP" : "en-US", {
-    maximumSignificantDigits: 3,
-  }).format(ratio);
-
-  const formatBridgeLength = (meters: number) => {
-    const value = length(meters);
-    return formatLength(value, { unit: chooseNaturalUnit(value), locale });
-  };
-
+    return [plan.steps[0].fromMeters, ...plan.steps.map((step) => step.toMeters)];
+  }, [lower, upper, width]);
+  const [frame, setFrame] = useState<number | null>(null);
+  const index = Math.max(
+    1,
+    Math.min(frame ?? (travelingUp ? 1 : values.length - 1), values.length - 1),
+  );
+  useImperativeHandle(
+    ref,
+    () => ({
+      navigate(direction) {
+        if (locked.current) return;
+        const exiting = direction === "next" ? index === values.length - 1 : index === 1;
+        if (exiting) {
+          const complete = direction === "next" ? travelingUp : !travelingUp;
+          const meters = direction === "next" ? values[index] : values[index - 1];
+          setLeavingMeters(meters);
+          locked.current = true;
+          onBusyChange?.(true);
+          const finish = () => {
+            locked.current = false;
+            (complete ? onComplete : onCancel)();
+          };
+          if (reducedMotion()) finish();
+          else timer.current = setTimeout(finish, BAR_TIMING.remove);
+          return;
+        }
+        if (!reducedMotion()) {
+          locked.current = true;
+          onBusyChange?.(true);
+          timer.current = setTimeout(
+            () => {
+              locked.current = false;
+              onBusyChange?.(false);
+            },
+            BAR_TIMING.remove + BAR_TIMING.resize + BAR_TIMING.reveal,
+          );
+        }
+        entryAnimation.current?.cancel();
+        if (entryRef.current) entryRef.current.style.display = "none";
+        if (entryTargetRef.current) entryTargetRef.current.style.visibility = "";
+        if (direction === "next") {
+          if (index === values.length - 1) (travelingUp ? onComplete : onCancel)();
+          else setFrame(index + 1);
+        } else {
+          if (index === 1) (travelingUp ? onCancel : onComplete)();
+          else setFrame(index - 1);
+        }
+      },
+    }),
+    [index, values, travelingUp, onComplete, onCancel, onBusyChange],
+  );
+  useLayoutEffect(() => {
+    if (animated.current || !entryBar || !entryRef.current || !entryTargetRef.current) return;
+    const overlay = entryRef.current;
+    const target = entryTargetRef.current;
+    if (!overlay.animate || reducedMotion()) {
+      setEntryPending(false);
+      return;
+    }
+    locked.current = true;
+    onBusyChange?.(true);
+    animated.current = true;
+    const rect = target.getBoundingClientRect();
+    overlay.style.display = "block";
+    target.style.visibility = "hidden";
+    const animation = overlay.animate(
+      [
+        {
+          transform: `translate(${entryBar.x}px, ${entryBar.y}px) rotate(${entryBar.angle}rad) scaleX(${entryBar.length})`,
+        },
+        {
+          transform: `translate(${rect.left}px, ${rect.top + rect.height / 2}px) rotate(0rad) scaleX(${rect.width})`,
+        },
+      ],
+      {
+        delay: 0,
+        duration: 1000,
+        easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+        fill: "both",
+      },
+    );
+    const finish = () => {
+      target.style.visibility = "";
+      setEntryPending(false);
+      timer.current = setTimeout(() => {
+        overlay.style.display = "none";
+        locked.current = false;
+        onBusyChange?.(false);
+      }, BAR_TIMING.reveal);
+    };
+    entryAnimation.current = animation;
+    animation.onfinish = finish;
+    return () => {
+      animation.cancel();
+      overlay.style.display = "none";
+      target.style.visibility = "";
+      locked.current = false;
+      animated.current = false;
+    };
+  }, [entryBar, width, onBusyChange]);
+  const ratio = index > 0 ? values[index] / values[index - 1] : null;
   return (
-    <section className="bridge" ref={containerRef}>
+    <section className="bridge">
+      <div ref={entryRef} className="bridge-entry-bar" aria-hidden="true" />
       <div className="bridge-heading">
         <span className="eyebrow">{translate(locale, "bridge.title")}</span>
         <h1>
-          {translate(locale, sceneTitle(originSceneId))} →{" "}
-          {translate(locale, sceneTitle(targetSceneId))}
+          {translate(locale, sceneRegistry[originSceneId].titleKey)} →{" "}
+          {translate(locale, sceneRegistry[targetSceneId].titleKey)}
         </h1>
         <p>{translate(locale, "bridge.caption")}</p>
       </div>
-
-      <div className="bridge-comparison" key={`${step.fromMeters}-${step.toMeters}`}>
-        <p className="bridge-progress">
-          {translate(locale, "bridge.step", { current: safeIndex + 1, total: plan.steps.length })}
+      <div className="bridge-comparison" ref={containerRef}>
+        <p className="bridge-progress" role="status">
+          {translate(locale, "bridge.step", {
+            current: index,
+            total: values.length - 1,
+          })}
         </p>
-        <LengthBar
-          label={translate(locale, "bridge.from")}
-          value={formatBridgeLength(step.fromMeters)}
-          fraction={step.fromMeters / maxMeters}
-        />
-        <LengthBar
-          label={translate(locale, "bridge.to")}
-          value={formatBridgeLength(step.toMeters)}
-          fraction={step.toMeters / maxMeters}
-        />
-        <strong className="bridge-ratio">
-          {translate(locale, "bridge.ratio", { ratio: ratioText })}
-        </strong>
+        <div className="bridge-bars">
+          {values.map((meters, i) => {
+            const visible = i === index || i === index - 1;
+            return (
+              <div
+                key={meters}
+                className="length-bar-row"
+                aria-hidden={!visible}
+                style={{
+                  opacity:
+                    !entryPending && (leavingMeters !== null ? meters === leavingMeters : visible)
+                      ? 1
+                      : 0,
+                  transform: `translateY(${(index - i) * 90}px)`,
+                  transitionDelay: `180ms, ${leavingMeters !== null || frame === null ? 0 : visible ? 900 : 0}ms`,
+                  transitionDuration: "720ms, 180ms",
+                }}
+              >
+                <div className="length-bar-label">
+                  <strong>
+                    {formatLength(length(meters), {
+                      unit: chooseNaturalUnit(length(meters)),
+                      locale,
+                    })}
+                  </strong>
+                </div>
+                <div
+                  className="length-bar-track"
+                  style={{ width: `${DEFAULT_BRIDGE_CONFIG.mainBarFraction * 100}%` }}
+                >
+                  <div
+                    data-bridge-main-bar={i === index ? "" : undefined}
+                    data-bridge-meters={meters}
+                    ref={
+                      meters ===
+                      (originSceneId === "earth" && lower.id === "human"
+                        ? values.at(-1)
+                        : sceneRegistry[originSceneId].referenceLengthMeters)
+                        ? entryTargetRef
+                        : undefined
+                    }
+                    className="length-bar-fill"
+                    style={{ transform: `scaleX(${Math.min(1, meters / values[index])})` }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <span className="bridge-ratio">
+          {ratio !== null &&
+            translate(locale, "bridge.ratio", {
+              ratio: new Intl.NumberFormat(locale, { maximumSignificantDigits: 3 }).format(ratio),
+            })}
+        </span>
       </div>
-
-      <NavigationControls
-        locale={locale}
-        canPrevious
-        canNext
-        onPrevious={() => (safeIndex === 0 ? onCancel() : setIndex(safeIndex - 1))}
-        onNext={() =>
-          safeIndex === plan.steps.length - 1 ? onComplete() : setIndex(safeIndex + 1)
-        }
-      />
     </section>
   );
-}
-
-function LengthBar({
-  label,
-  value,
-  fraction,
-}: {
-  label: string;
-  value: string;
-  fraction: number;
-}): React.JSX.Element {
-  return (
-    <div className="length-bar-row">
-      <div className="length-bar-label">
-        <span>{label}</span>
-        <strong>{value}</strong>
-      </div>
-      <div className="length-bar-track" aria-hidden="true">
-        <div className="length-bar-fill" style={{ width: `${fraction * 100}%` }} />
-      </div>
-    </div>
-  );
-}
-
-function sceneReference(sceneId: SceneId): number {
-  return sceneRegistry[sceneId].referenceLengthMeters;
-}
-
-function sceneTitle(sceneId: SceneId) {
-  return sceneRegistry[sceneId].titleKey;
 }
 
 function useElementWidth(ref: React.RefObject<HTMLElement | null>): number {

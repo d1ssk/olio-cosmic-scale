@@ -29,6 +29,8 @@ type ScaleSceneProps = {
   locale: Locale;
   metadata: SceneMetadata;
   onReady?: () => void;
+  referenceBarVisible?: boolean;
+  entryBarKind?: "reference" | "comparison";
 };
 
 type RepresentationMode =
@@ -44,7 +46,10 @@ Scene modules should separate metadata, scientific data, rendering, and bilingua
 
 A small React context/store is sufficient until shared state proves more complex. It owns:
 
-- current scene or bridge frame and navigation actions;
+- current scene or bridge origin/target and navigation actions (`appState`);
+- the current discrete comparison index and animation lock (`ScaleBridge`);
+- transient bar snapshots and the cross-scene transition lock (`App`);
+- local hidden/arrival/departure bar state (`SceneView`);
 - locale and URL/local preference synchronization;
 - per-scene camera snapshots for the current session;
 - shared camera key for the two neighborhood views;
@@ -58,7 +63,9 @@ All 3D scenes use one host responsible for full-size canvas layout, bounded DPR,
 
 Orthographic projection is preferred where equal lengths must project equally regardless of depth: Earth–Sun, Solar System, both neighborhood views, Milky Way maps, Local Group, and Virgo. Perspective is reasonable for Human, Earth, Sun, some BAO presentations, and the conceptual Observable Universe. A later toggle is allowed only when useful.
 
-In a perspective view, any dynamic screen-space scale bar must be labeled as applying at the camera target plane. Orthographic views may show an exact view-scale bar.
+The current bars are physical 3D segments, not target-plane screen rulers. `SceneReferenceBar` projects their endpoints for transfer snapshots, while its Three.js line and text sprite use depth testing. Only stroke thickness and label size are screen-space styling. If a separate dynamic screen-space ruler is added later, label its reference plane in perspective views.
+
+`CameraConfig.fitToViewport` optionally fits the default perspective camera to the horizontal `defaultViewportExtentMeters`; Earth and Moon uses it. The host retains per-scene orbit/pan/zoom snapshots, and drains residual OrbitControls damping before restoring an exact reset.
 
 ## Data flow
 
@@ -82,3 +89,11 @@ The architecture should admit later same-scale siblings, overlays, camera projec
 ## Repository shape
 
 Shared code belongs under `src/app`, `src/components`, `src/bridges`, `src/physics`, `src/data`, `src/i18n`, and `src/scenes/shared`. Create scene directories and other files only as implementation needs them; do not manufacture empty structure.
+
+## Physical-bar transition integration
+
+`SceneReferenceBar` accepts a physical base, optional direction (default +Y), metadata-derived length, and a `reference` or `comparison` identity. `BarVisibilityContext` gates all such bars and labels for scene-local hiding, departure filtering, and arrival sequencing. Hidden bars continue updating projected endpoints, allowing camera movement while hidden and a correct subsequent transfer.
+
+`ReferenceBarOverlay` owns invisible SVG endpoint carriers and a temporary fixed DOM bar. SVG is not the visible scene bar. `barTransition.ts` captures viewport endpoints before unmount and matches bridge bars by SI length. Wait for both the lazy scene's `onReady` and actual endpoint projection; keep the destination canvas and new bars hidden until resizing completes.
+
+The current direct transfer graph is intentionally explicit in `App`: Human ↔ bridge ↔ Earth uses the 1.7 m / ~65.1 km connecting lengths; Earth ↔ Earth and Moon uses the Earth diameter. Only these implemented scenes mount the projection overlay. Future scenes must extend this routing, the selected bar identities, and the scene-overlay inclusion rather than assuming that a registry entry automatically creates physical-bar transfers. Generic bridge planning and direct-edge bypass already cover the full hierarchy. See the [handoff](implementation-status.md) for the continuation checklist.

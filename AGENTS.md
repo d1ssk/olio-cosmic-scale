@@ -6,10 +6,12 @@
 - Store canonical lengths in SI meters, normalize render coordinates per scene, centralize scientific values, record provenance, and label every marker, exaggeration, density proxy, model, and adopted convention honestly.
 - Keep `referenceLength` distinct from `viewportExtent`. Hierarchy changes require explicit controls; in-scene zoom never navigates.
 - Japanese and English are supported from the start. Shared user-facing prose must use translation keys.
-- The main hierarchy has 11 levels. The Galactic-center neighborhood is a same-scale sibling of the Solar neighborhood, not a twelfth level.
+- The main hierarchy has 12 levels, including Earth and Moon between Earth and Sun. The Galactic-center neighborhood is a same-scale sibling of the Solar neighborhood, not a thirteenth level.
 - Keep the app static-first, responsive, accessible, reduced-motion aware, deterministic where sampled, and usable on modern desktop and mobile hardware.
 
 ## Documentation map
+
+- [Implementation status and continuation](docs/implementation-status.md)
 
 - [Product and interaction](docs/product-and-interaction.md)
 - [Architecture and state](docs/architecture.md)

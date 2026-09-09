@@ -223,3 +223,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Temporary source model downloads; served assets live under public/models.
+/tmp/

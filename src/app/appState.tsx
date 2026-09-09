@@ -9,7 +9,7 @@ import {
 } from "react";
 import { persistLocale, resolveInitialLocale, type Locale } from "../i18n";
 import type { SceneId } from "../scenes/types";
-import { sceneFromSearch, type AppMode, urlWithState } from "./navigation";
+import { mainNavigationMode, sceneFromSearch, type AppMode, urlWithState } from "./navigation";
 import { sceneRegistry } from "./sceneRegistry";
 
 type AppStateValue = {
@@ -19,6 +19,7 @@ type AppStateValue = {
   setLocale: (locale: Locale) => void;
   navigateMain: (direction: "previous" | "next") => void;
   navigateLateral: () => void;
+  navigateToScene: (sceneId: SceneId) => void;
   cancelBridge: () => void;
   completeBridge: () => void;
   resetCamera: () => void;
@@ -61,13 +62,7 @@ export function AppStateProvider({ children }: PropsWithChildren): React.JSX.Ele
   const navigateMain = useCallback((direction: "previous" | "next") => {
     setMode((current) => {
       if (current.kind !== "scene") return current;
-      const targetSceneId = sceneRegistry[current.sceneId][direction];
-      if (!targetSceneId) return current;
-      return {
-        kind: "bridge",
-        originSceneId: current.sceneId,
-        targetSceneId,
-      };
+      return mainNavigationMode(current.sceneId, direction);
     });
   }, []);
 
@@ -99,6 +94,7 @@ export function AppStateProvider({ children }: PropsWithChildren): React.JSX.Ele
       setLocale,
       navigateMain,
       navigateLateral,
+      navigateToScene: (sceneId) => setMode({ kind: "scene", sceneId }),
       cancelBridge,
       completeBridge,
       resetCamera: () => setResetVersion((version) => version + 1),

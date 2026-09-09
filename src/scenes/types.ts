@@ -5,6 +5,7 @@ import type { UnitId } from "../physics/length";
 
 export type SceneId =
   | "human"
+  | "earth-moon"
   | "earth"
   | "sun"
   | "earth-sun"
@@ -19,6 +20,7 @@ export type SceneId =
 
 export type CameraConfig = {
   projection: "perspective" | "orthographic";
+  fitToViewport?: boolean;
   position: readonly [number, number, number];
   target: readonly [number, number, number];
   near: number;
@@ -46,6 +48,8 @@ export type ScaleSceneProps = {
   locale: Locale;
   metadata: SceneMetadata;
   onReady?: () => void;
+  referenceBarVisible?: boolean;
+  entryBarKind?: "reference" | "comparison";
 };
 
 export type SceneDefinition = SceneMetadata & {

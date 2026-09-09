@@ -1,22 +1,34 @@
 import type { TranslationKey } from "./index";
 
 export const ja: Record<TranslationKey, string> = {
+  "scene.earthMoon.title": "地球と月",
+  "origin.earthMoon": "地球と月の中点を原点とする座標",
+  "earthMoon.moon": "月",
+  "earthMoon.convention":
+    "平均中心間距離384,400 km、地球直径12,742 km、月直径3,474.8 kmを同じ縮尺で表示。配置・向き・照明は模式的で、特定日時の状態ではありません。月は地形のない球体です。",
+  "earthMoon.sources": "距離・直径の出典：NASA / JPL",
   "app.name": "宇宙スケール・エクスプローラー",
   "app.subtitle": "独立した世界を、測られた長さでつなぐ",
-  "action.previous": "前へ",
-  "action.next": "次へ",
+  "action.previous": "前のスケールへ",
+  "action.next": "次のスケールへ",
   "action.reset": "視点をリセット",
   "action.compare": "同じスケールで比較",
   "action.return": "太陽近傍へ戻る",
   "language.label": "言語",
   "language.ja": "日本語",
   "language.en": "English",
+  "human.calibration":
+    "模型全体を高さ1.7 mに調整しています（台座を含む表示用の仮定で、実物の測定値ではありません）。",
+  "earth.convention":
+    "平均直径12,742 kmの球として表示。画像は2004年7月の合成画像です。直径と同じ長さの棒を太平洋側（西経150°）に南北軸と平行に配置しています。",
+  "action.hideScaleBars": "スケールバーを非表示",
   "hud.reference": "基準の長さ",
   "hud.level": "全{total}段階中 {current}",
   "hud.placeholder": "共通3Dホスト · 科学シーンは未実装です",
   "hud.controls": "ドラッグ：回転 · 補助ドラッグ：移動 · ホイール／ピンチ：拡大縮小",
+  "axis.label": "基準の長さ · 対数軸（m）",
   "bridge.title": "スケール・ブリッジ",
-  "bridge.caption": "次のスケールへ進む前に、2つの長さを直接比べます。",
+  "bridge.caption": "棒の長さを変えて、隣り合うスケールを比較します。",
   "bridge.from": "ひとつ前の長さ",
   "bridge.to": "現在の比較枠",
   "bridge.ratio": "長さの比 · {ratio}:1",

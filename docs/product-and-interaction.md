@@ -16,19 +16,20 @@ The main vertical sequence is:
 
 1. Human
 2. Earth
-3. Sun
-4. Earth–Sun system
-5. Solar System
-6. Solar neighborhood
-7. Milky Way
-8. Local Group
-9. Nearby galaxy cluster (Virgo)
-10. BAO scale
-11. Observable Universe
+3. Earth and Moon
+4. Sun
+5. Earth–Sun system
+6. Solar System
+7. Solar neighborhood
+8. Milky Way
+9. Local Group
+10. Nearby galaxy cluster (Virgo)
+11. BAO scale
+12. Observable Universe
 
-The Galactic-center neighborhood is a lateral, same-scale sibling of level 6. It is excluded from the main sequence and remains `6 / 11`. Switching between the two neighborhoods has no scale bridge and preserves physical viewport, camera projection/zoom/orientation, point-size and sampling rules, label style, and scale bar as far as possible.
+The Galactic-center neighborhood is a lateral, same-scale sibling of level 7. It is excluded from the main sequence and remains `7 / 12`. Switching between the two neighborhoods has no scale bridge and preserves physical viewport, camera projection/zoom/orientation, point-size and sampling rules, label style, and scale bar as far as possible.
 
-## Three modes
+## Scene, bridge, and shared interface
 
 ### Scene mode
 
@@ -38,7 +39,9 @@ A scene is an independent interactive 3D world. As scientifically appropriate it
 
 A bridge compares adjacent reference lengths using only exact screen-space bars, numerical labels, conversions, ratio text, concise translated copy, and previous/next controls. It contains no 3D canvas, astronomical/decorative objects, or familiar-object analogies. DOM/SVG/CSS is preferred. Animation may briefly fade, resize, or crossfade discrete frames; it must never resemble travel through a universal space.
 
-Intermediate frames are reversible comparison steps, not named scenes or progress levels. Define each forward transition once and reverse that same sequence for backward travel.
+Adjacent scenes with a reference-length ratio at or below 1:200 bypass standalone bridges in either direction. Earth ↔ Earth and Moon already connects the shared Earth-diameter bar with a direct animation. Other direct edges remain without bar transfers until their scenes are implemented. Larger ratios use bridges; the final Human–Earth comparison lives inside the Earth scene rather than a third bridge screen.
+
+Intermediate frames are user-controlled comparison steps, not named scenes or progress levels. Previous scale always moves one comparison step toward smaller lengths; Next scale always moves one toward larger lengths, regardless of the entry direction. At bridge endpoints these actions return to the corresponding scene. Keep these controls in a shared bottom dock. Animate only the step requested by the user; never auto-advance. Reduced motion removes animation without skipping steps. The compact top logarithmic reference-length axis has decade ticks and clickable scene dots, with scene names shown on hover or keyboard focus.
 
 ### Shared HUD
 
@@ -56,6 +59,8 @@ Language resolution order is URL → saved preference → browser language → J
 
 Each scene retains its camera state for the current browser session, and Reset restores the canonical view. The neighborhood sibling views synchronize camera state for a direct density comparison.
 
-Main transitions should feel like conceptual rooms: scene fades out → one or more discrete bridge frames → target fades in. Never shrink the old scene into the new one. Reduced-motion preferences remove or minimize animation.
+Every animated scale action proceeds sequentially: remove bars absent from the destination → resize/reposition the shared bar → reveal new bars and the destination. Never overlap resizing and the appearance of new bars. Standalone comparisons remain manual, one per action. Never shrink the old scene into the new one. Reduced-motion preferences remove or minimize animation.
 
-The hierarchy indicator ignores bridge frames and treats the Galactic-center comparison as level 6.
+The hierarchy indicator ignores bridge frames and treats the Galactic-center comparison as level 7 of 12.
+
+Each scene offers “スケールバーを非表示” / “Hide scale bars”, initially unchecked. It hides physical bars and their labels while retaining the reference readout and navigation axis. This setting is local to the mounted scene and is not inherited on navigation. If a hidden bar must be carried into the next scale, restore only that bar before resizing. Block repeated scale actions during the transition. See [Scales and bridges](scales-and-bridges.md) for timings.

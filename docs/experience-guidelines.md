@@ -26,9 +26,13 @@ Support keyboard navigation, semantic controls and labels, visible focus, readab
 
 ## Visual direction
 
-The interface is quiet, scientific, spacious, and responsive. Centralize CSS design tokens. Avoid game-like chrome, heavy cards, excessive gradients, sci-fi glow, arbitrary starfields, decorative motion, and any element competing with bars, objects, labels, and numbers. Dark/light theming is optional.
+The interface is quiet, scientific, spacious, and responsive. Centralize CSS design tokens. Avoid game-like chrome, heavy cards, excessive gradients, sci-fi glow, arbitrary starfields, decorative motion, and any element competing with bars, objects, labels, and numbers. The chosen theme is dark: canvas `#0a101a`, panels based on `#111b29`, burgundy accent `#b96878` (secondary `#743448`), and subtly rounded 6 px corners. Scenes and bridges share the canvas background to avoid a color jump. Keep these values in CSS tokens.
 
-On mobile, condense secondary conversions and labels before compromising the primary scale relationship. Keep the full-viewport shell usable with browser safe areas and modern desktop/mobile input.
+Keep the bottom previous/next scale dock in the same position across scenes and bridges. The top logarithmic axis uses decade ticks and scene dots; scene names appear only on hover or keyboard focus.
+
+Main and secondary reference values use the same serif font family. Render scientific notation with a multiplication sign and superscript exponent; do not display raw E notation visually. Always show m, pc, AU and ly conversions except duplication of the primary unit; do not add extra prefixed-meter conversions.
+
+On mobile, keep conversions readable and use flowing rows for heading, readout, canvas, explanatory credits, and controls. The three implemented scenes use this layout so panels do not cover the models. Keep the full-viewport shell usable with browser safe areas and modern desktop/mobile input.
 
 ## Runtime performance
 

@@ -1,0 +1,42 @@
+import {
+  EARTH_COMPARISON_METERS,
+  HUMAN_EARTH_BRIDGE_VALUES,
+} from "../src/bridges/humanEarthBridge";
+import { describe, expect, it } from "vitest";
+import { sceneRegistry } from "../src/app/sceneRegistry";
+import { earthSceneModel } from "../src/scenes/earth/earthModel";
+import { EARTH_DIAMETER_METERS, EARTH_BAR_CLEARANCE_METERS } from "../src/scenes/earth/earthData";
+
+describe("Earth sphere and diameter", () => {
+  it("finishes two bridge frames with the same centered physical comparison in Earth", () => {
+    expect(HUMAN_EARTH_BRIDGE_VALUES).toHaveLength(3);
+    expect(EARTH_COMPARISON_METERS / 1000).toBeCloseTo(65.1, 1);
+    const values = [...HUMAN_EARTH_BRIDGE_VALUES, EARTH_DIAMETER_METERS];
+    const ratios = values.slice(1).map((value, i) => value / values[i]);
+    ratios.forEach((ratio) => {
+      expect(ratio).toBeLessThanOrEqual(200);
+      expect(ratio).toBeCloseTo(ratios[0], 9);
+    });
+    const units = sceneRegistry.earth.metersPerSceneUnit;
+    const { barBase, comparisonBarBase } = earthSceneModel(units);
+    expect(comparisonBarBase[1] + EARTH_COMPARISON_METERS / units / 2).toBe(0);
+    expect(barBase[1] + EARTH_DIAMETER_METERS / units / 2).toBe(0);
+    expect(
+      Math.hypot(comparisonBarBase[0] - barBase[0], comparisonBarBase[2] - barBase[2]),
+    ).toBeCloseTo(0.4);
+  });
+  it("places an axis-parallel diameter bar outside the sphere over the Pacific", () => {
+    const scene = sceneRegistry.earth;
+    const { radius, barBase } = earthSceneModel(scene.metersPerSceneUnit);
+    expect(radius * 2 * scene.metersPerSceneUnit).toBe(EARTH_DIAMETER_METERS);
+    expect(scene.referenceLengthMeters).toBe(EARTH_DIAMETER_METERS);
+    expect(barBase[1]).toBe(-radius);
+    expect(Math.hypot(barBase[0], barBase[2]) * scene.metersPerSceneUnit).toBeCloseTo(
+      EARTH_DIAMETER_METERS / 2 + EARTH_BAR_CLEARANCE_METERS,
+      6,
+    );
+    expect((Math.atan2(-barBase[2], barBase[0]) * 180) / Math.PI).toBeCloseTo(-150, 10);
+    expect(barBase[1] + scene.referenceLengthMeters / scene.metersPerSceneUnit).toBe(radius);
+    expect(scene.defaultViewportExtentMeters).toBeGreaterThan(scene.referenceLengthMeters);
+  });
+});

@@ -33,13 +33,11 @@ export function planBridge({
 
   const maxVisualRatio = Math.max(
     2,
-    (Math.max(1, availableWidthPx) * config.mainBarFraction) / config.minSmallBarPx,
+    Math.min(
+      config.maxStepRatio,
+      (Math.max(1, availableWidthPx) * config.mainBarFraction) / config.minSmallBarPx,
+    ),
   );
-  const preferredMaxRatio =
-    [...config.preferredStepRatios]
-      .filter((ratio) => ratio > 1 && ratio <= maxVisualRatio)
-      .sort((a, b) => b - a)[0] ?? maxVisualRatio;
-
   const anchors = [...milestones]
     .filter((value) => value > fromMeters && value < toMeters)
     .sort((a, b) => a - b)
@@ -50,16 +48,13 @@ export function planBridge({
   let current = fromMeters;
 
   for (const anchor of anchors) {
-    while (anchor / current > maxVisualRatio) {
-      const limit = Math.min(anchor, current * preferredMaxRatio);
-      let next = largestNiceValueAtOrBelow(limit, current);
-      if (next <= current) next = Math.min(anchor, current * maxVisualRatio);
+    const start = current;
+    const logRatio = Math.log(anchor) - Math.log(start);
+    const count = Math.max(1, Math.ceil(logRatio / Math.log(maxVisualRatio) - 1e-12));
+    for (let step = 1; step <= count; step += 1) {
+      const next = step === count ? anchor : start * Math.exp((logRatio * step) / count);
       steps.push({ fromMeters: current, toMeters: next });
       current = next;
-    }
-    if (anchor > current) {
-      steps.push({ fromMeters: current, toMeters: anchor });
-      current = anchor;
     }
   }
 
@@ -74,20 +69,6 @@ export function reverseBridgePlan(plan: BridgePlan): BridgePlan {
       .reverse()
       .map(({ fromMeters, toMeters }) => ({ fromMeters: toMeters, toMeters: fromMeters })),
   };
-}
-
-function largestNiceValueAtOrBelow(limit: number, greaterThan: number): number {
-  const exponent = Math.floor(Math.log10(limit));
-  let best = greaterThan;
-
-  for (let power = exponent - 2; power <= exponent; power += 1) {
-    for (const coefficient of [1, 2, 5]) {
-      const candidate = coefficient * 10 ** power;
-      if (candidate > greaterThan && candidate <= limit) best = Math.max(best, candidate);
-    }
-  }
-
-  return best;
 }
 
 function assertPositive(value: number, name: string): void {

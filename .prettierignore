@@ -2,3 +2,6 @@ dist
 coverage
 node_modules
 docs/archive/initial-project-spec.md
+
+# User-supplied source models; preserve original files.
+tmp/

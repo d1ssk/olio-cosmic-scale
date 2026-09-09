@@ -4,9 +4,9 @@
 
 The default client stack is Vite, TypeScript, React, Three.js, React Three Fiber, and Drei. Tooling includes ESLint, Prettier, Vitest, and React Testing Library when component behavior benefits from it. Keep Playwright to a few valuable smoke tests if it remains lightweight. Avoid extra state libraries until complexity warrants one.
 
-The initial scaffold implements shared infrastructure only: full-viewport shell, complete registry and graph, deep links, bilingual state, camera-memory interface, SI length utilities/formatter, responsive bridge planner and renderer with overrides, normalized coordinates, common R3F host with both projections and reset, development placeholders, tests, and CI.
+The common framework is implemented, along with Human (Hachikō), Earth, and Earth and Moon. It includes the 12-level registry, fixed navigation, compact logarithmic axis, bilingual HUD, physical depth-tested bars, sequential/manual bridges, direct Earth–Earth and Moon bar transfers, scene-local bar visibility, camera memory, static licensed assets, and automated checks. The remaining scenes use `PlaceholderScene`; their geometry is not scientific content. See [implementation status and handoff](implementation-status.md) before continuing.
 
-It explicitly excludes full scientific scenes and catalogs, a polished human model, large datasets, decorative invented science, continuous zoom, universal astronomical coordinates, backend services, databases, authentication, analytics, and unnecessary external APIs.
+Live APIs, backend services, authentication, analytics, large catalogs, a universal 3D world, and automatic hierarchy playback remain out of scope. Implement further scientific scenes incrementally; the next is Sun.
 
 ## Commands
 
@@ -21,7 +21,7 @@ npm run build
 
 ## Incremental scene workflow
 
-Implement smaller to larger: Human, Earth, Sun, Earth–Sun, Solar System, Solar neighborhood, Galactic-center sibling, Milky Way, Local Group, Virgo, BAO, Observable Universe.
+Implement smaller to larger: Human, Earth, Earth and Moon, Sun, Earth–Sun, Solar System, Solar neighborhood, Galactic-center sibling, Milky Way, Local Group, Virgo, BAO, Observable Universe.
 
 For each focused change:
 
@@ -33,7 +33,7 @@ For each focused change:
 6. add parallel Japanese/English copy;
 7. add logic and interaction tests;
 8. verify desktop/mobile behavior and performance;
-9. commit as one reviewable hierarchy-level change.
+9. update the focused documentation and commit when requested.
 
 Do not batch major levels unless explicitly requested. Surface a genuinely unresolved scientific or UX choice in the handoff instead of silently selecting a convention.
 
@@ -59,3 +59,9 @@ Use visual snapshots sparingly. For important 3D scenes, a smoke test can check 
 - Run `npm run check` and `npm run build` before handoff.
 
 The guiding review question is: does this improve accurate intuition for the physical scale and its ratio to neighboring scales? If not, it is secondary.
+
+## Asset preparation and cleanup
+
+Runtime assets belong under `public/models/` with source/license documentation. The served Hachikō GLB is self-contained; normal development, tests and builds do not require its original downloads. Raw import files are temporary, excluded by `/tmp/`, and were removed after preparing the committed asset. To repeat preprocessing, obtain the documented lighter source GLB from its author and pass its local path to `scripts/prepare-hachiko.py`. Preserve the published GLB and attribution even when cleaning temporary inputs.
+
+Browser QA during foundation development used an external temporary Playwright harness, not a committed browser-test dependency. Recreate the focused smoke checks described in the handoff when modifying scene transitions. `npm run check` remains the reproducible automated suite; `npm run build` currently emits a non-fatal large-chunk warning for the shared Three.js bundle.
