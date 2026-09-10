@@ -1,3 +1,4 @@
+import { MILKY_WAY_COMPARISON_METERS } from "../scenes/milky-way/milkyWayData";
 import { STELLAR_COMPARISON_METERS } from "../scenes/stellar-neighborhood/stellarData";
 import { isSolarWorld, isContinuousSolarEdge } from "../scenes/solar-system/solarScale";
 import { cameraStateStore, cameraStateKey } from "./cameraState";
@@ -59,6 +60,7 @@ export function App(): React.JSX.Element {
   const finishBridge = (complete: boolean) => {
     if (state.mode.kind !== "bridge") return;
     const sceneId = complete ? state.mode.targetSceneId : state.mode.originSceneId;
+    const galacticArrival = sceneId === "milky-way";
     const stellarArrival =
       ["solar-neighborhood", "galactic-center-neighborhood"].includes(sceneId) &&
       [state.mode.originSceneId, state.mode.targetSceneId].includes("solar-system");
@@ -68,13 +70,16 @@ export function App(): React.JSX.Element {
       "solar-system",
       "solar-neighborhood",
       "galactic-center-neighborhood",
+      "milky-way",
     ].includes(sceneId)
       ? captureBridgeBar(
           sceneId === "earth"
             ? EARTH_COMPARISON_METERS
-            : stellarArrival
-              ? STELLAR_COMPARISON_METERS
-              : sceneRegistry[sceneId].referenceLengthMeters,
+            : galacticArrival
+              ? MILKY_WAY_COMPARISON_METERS
+              : stellarArrival
+                ? STELLAR_COMPARISON_METERS
+                : sceneRegistry[sceneId].referenceLengthMeters,
         )
       : null;
     setBusy(Boolean(bar));
@@ -83,7 +88,8 @@ export function App(): React.JSX.Element {
         ? {
             sceneId,
             bar,
-            kind: sceneId === "earth" || stellarArrival ? "comparison" : "reference",
+            kind:
+              sceneId === "earth" || stellarArrival || galacticArrival ? "comparison" : "reference",
           }
         : null,
     );
@@ -161,6 +167,7 @@ export function App(): React.JSX.Element {
               "earth-sun",
               "solar-neighborhood",
               "galactic-center-neighborhood",
+              "milky-way",
             ].includes(from) &&
               direction === "previous")
           ? "comparison"
@@ -184,7 +191,7 @@ export function App(): React.JSX.Element {
       );
       setEntryBar(
         captureReferenceBar(
-          ["earth", "solar-neighborhood", "galactic-center-neighborhood"].includes(
+          ["earth", "solar-neighborhood", "galactic-center-neighborhood", "milky-way"].includes(
             state.mode.sceneId,
           ) && direction === "previous"
             ? "comparison"
@@ -380,6 +387,7 @@ function SceneView({
         "solar-system",
         "solar-neighborhood",
         "galactic-center-neighborhood",
+        "milky-way",
       ].includes(scene.id) && (
         <ReferenceBarOverlay
           kind={entryKind ?? (scene.id === "human" ? "reference" : "comparison")}

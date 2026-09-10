@@ -1,22 +1,23 @@
 # Implementation status and continuation
 
-This is the handoff after completing the common framework and the first seven hierarchy levels and the Galactic bulge sibling (with a shared continuous Solar System world). The focused design documents describe the current decisions; `archive/initial-project-spec.md` is historical and must not override them.
+This is the handoff after completing the common framework and the first eight hierarchy levels and the Galactic bulge sibling (with a shared continuous Solar System world). The focused design documents describe the current decisions; `archive/initial-project-spec.md` is historical and must not override them.
 
 ## Implemented and next
 
-| Scene                                    | Status                                                                                                  | Connecting bars                                                                  |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `human` — 人間 / Human                   | Locally hosted, attributed Hachikō scan; adopted full height 1.7 m including base                       | 1.7 m physical bar beside the statue                                             |
-| `earth` — 地球 / Earth                   | Spherical Earth, mean diameter 12,742 km; local NASA monthly texture                                    | Diameter bar beside Earth over the Pacific; ~65.1 km comparison bar alongside it |
-| `earth-moon` — 地球と月 / Earth and Moon | Both diameters and adopted mean center distance to the same scale; Moon is a smooth gray sphere         | 384,400 km center-distance bar and the Earth-diameter bar beside Earth           |
-| `sun` — 太陽 / Sun                       | Nominal IAU photospheric sphere, local Solar System Scope texture, subtle unlit animated shader         | Solar diameter and mean Earth–Moon distance; direct transfers both directions    |
-| `earth-sun` — 地球–太陽系 / Earth–Sun    | Inner preset of the shared world; eight planets and Moon, dated positions and textured physical spheres | 1 AU persists; solar diameter fades; 100 AU appears on zoom-out                  |
-| `solar-system` — 太陽系 / Solar System   | Outer preset of the same mounted world; 105 AU view, 160 AU manual zoom limit                           | Adopted 100 AU comparison; continuous camera zoom to/from Earth–Sun              |
-| `solar-neighborhood`                     | HYG v4.1 subset: 62 entries within 5 pc, catalog color/absolute magnitude display, hover/all labels     | 8 pc and 20,000 AU world-fixed bars; one standalone bridge to Solar System       |
-| `galactic-center-neighborhood`           | Galactic bulge at model x=1 kpc; 6,476 deterministic modeled stars, same volume and camera              | Same bars and display rules; lateral comparison without bridge                   |
-| Larger scales                            | Registry, metadata, navigation and shared HUD exist; scientific rendering is still `PlaceholderScene`   | Direct physical transfers are not automatically implemented by the registry      |
+| Scene                                    | Status                                                                                                   | Connecting bars                                                                                               |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `human` — 人間 / Human                   | Locally hosted, attributed Hachikō scan; adopted full height 1.7 m including base                        | 1.7 m physical bar beside the statue                                                                          |
+| `earth` — 地球 / Earth                   | Spherical Earth, mean diameter 12,742 km; local NASA monthly texture                                     | Diameter bar beside Earth over the Pacific; ~65.1 km comparison bar alongside it                              |
+| `earth-moon` — 地球と月 / Earth and Moon | Both diameters and adopted mean center distance to the same scale; Moon is a smooth gray sphere          | 384,400 km center-distance bar and the Earth-diameter bar beside Earth                                        |
+| `sun` — 太陽 / Sun                       | Nominal IAU photospheric sphere, local Solar System Scope texture, subtle unlit animated shader          | Solar diameter and mean Earth–Moon distance; direct transfers both directions                                 |
+| `earth-sun` — 地球–太陽系 / Earth–Sun    | Inner preset of the shared world; eight planets and Moon, dated positions and textured physical spheres  | 1 AU persists; solar diameter fades; 100 AU appears on zoom-out                                               |
+| `solar-system` — 太陽系 / Solar System   | Outer preset of the same mounted world; 105 AU view, 160 AU manual zoom limit                            | Adopted 100 AU comparison; continuous camera zoom to/from Earth–Sun                                           |
+| `solar-neighborhood`                     | HYG v4.1 subset: 62 entries within 5 pc, catalog color/absolute magnitude display, hover/all labels      | 8 pc and 20,000 AU world-fixed bars; one standalone bridge to Solar System                                    |
+| `galactic-center-neighborhood`           | Galactic bulge at model x=1 kpc; 6,476 deterministic modeled stars, same volume and camera               | Same bars and display rules; lateral comparison without bridge                                                |
+| `milky-way`                              | Sourced representative disk and Sun distance; deterministic schematic arms and bulge/bar; oblique camera | 30 kpc and ~490 pc horizontal bars in the foreground disk plane; one standalone bridge from the neighborhoods |
+| Larger scales                            | Registry, metadata, navigation and shared HUD exist; scientific rendering is still `PlaceholderScene`    | Direct physical transfers are not automatically implemented by the registry                                   |
 
-The next scene to implement is **Milky Way**. Its predecessor is `solar-neighborhood`. The main hierarchy contains **12** levels; the Galactic-center neighborhood remains the same-scale sibling of level **7 / 12**. Keep the stable ID `earth-moon` despite the display-name change.
+The next scene to implement is **Local Group**. Its predecessor is `milky-way`. The main hierarchy contains **12** levels; the Galactic-center neighborhood remains the same-scale sibling of level **7 / 12**. Keep the stable ID `earth-moon` despite the display-name change.
 
 ## Decisions to preserve
 
@@ -44,7 +45,7 @@ The next scene to implement is **Milky Way**. Its predecessor is `solar-neighbor
 
 The committed `public/models/hachiko/hachiko.glb` embeds its geometry and texture; its source/license are alongside it. The Earth JPEG is also committed with NASA attribution. Builds have no dependency on source downloads in `tmp/`; the redundant originals were removed. `scripts/prepare-hachiko.py` remains available if the documented input is obtained again.
 
-At this handoff, the automated suite has 87 passing tests, including stellar coordinate integrity, density sampling, photometry ordering and single-frame bridge reversal. Solar additions cover nominal radius, common normalization, independent JPL J2000 approximate-position fixtures, lunar composition and curve anchors, seasonal distance changes and date limits. Browser smoke checks covered scene and bridge sequencing, non-inherited bar visibility, mobile/portrait layout, reduced motion, physical occlusion, and camera reset. The temporary browser harness is not part of the repository. The production build succeeds with the existing shared Three.js chunk-size warning. No deployment or remote push is part of this handoff.
+At this handoff, the automated suite has 91 passing tests, including stellar coordinate integrity, density sampling, photometry ordering and single-frame bridge reversal. Solar additions cover nominal radius, common normalization, independent JPL J2000 approximate-position fixtures, lunar composition and curve anchors, seasonal distance changes and date limits. Browser smoke checks covered scene and bridge sequencing, non-inherited bar visibility, mobile/portrait layout, reduced motion, physical occlusion, and camera reset. The temporary browser harness is not part of the repository. The production build succeeds with the existing shared Three.js chunk-size warning. No deployment or remote push is part of this handoff.
 
 ## Solar-world continuation notes
 

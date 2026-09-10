@@ -10,6 +10,24 @@ export type SourceInfo = {
 
 export const SOURCES: readonly SourceInfo[] = [
   {
+    id: "esa-galaxy-guide",
+    title: "Guide to our galaxy",
+    organization: "ESA",
+    url: "https://www.esa.int/content/view/full/423444",
+    accessed: "2026-09-10",
+    notes:
+      "Rounded adopted stellar disk diameter 30 kpc, thin-disc full thickness 0.3 kpc, bar half-length 3 kpc, based on approximate 100,000 / 1,000 / 10,000 ly descriptions. No unique Galactic edge. Procedural arm count, pitch, bar orientation, bulge minor axes, colors and sample counts are illustrative; no stellar-count or luminosity calibration. Halo, gas, dust and warp omitted.",
+  },
+  {
+    id: "gravity-2019-distance",
+    title: "GRAVITY (2019) — Galactic center distance",
+    organization: "GRAVITY Collaboration",
+    url: "https://arxiv.org/abs/1904.05721",
+    accessed: "2026-09-10",
+    notes:
+      "Adopt R0 = 8178 pc from S2 orbit: ±13 pc statistical, ±22 pc systematic. Fixed reference measurement, not a claim to the latest estimate. Sun placed in the model midplane; its height is omitted.",
+  },
+  {
     id: "esa-iso-psf",
     title: "ISO Handbook — Point Spread Function",
     organization: "ESA",

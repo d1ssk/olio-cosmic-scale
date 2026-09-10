@@ -690,7 +690,8 @@ a {
     .earth-sun-view,
     .solar-system-view,
     .solar-neighborhood-view,
-    .galactic-center-neighborhood-view
+    .galactic-center-neighborhood-view,
+    .milky-way-view
   ):has(.scene-entry-bar):not(.is-arriving)
   .scene-canvas {
   opacity: 0;
@@ -715,7 +716,8 @@ a {
     .earth-sun-view,
     .solar-system-view,
     .solar-neighborhood-view,
-    .galactic-center-neighborhood-view
+    .galactic-center-neighborhood-view,
+    .milky-way-view
   ) {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -732,7 +734,8 @@ a {
       .earth-sun-view,
       .solar-system-view,
       .solar-neighborhood-view,
-      .galactic-center-neighborhood-view
+      .galactic-center-neighborhood-view,
+      .milky-way-view
     )
     .scene-hud {
     display: contents;
@@ -745,7 +748,8 @@ a {
       .earth-sun-view,
       .solar-system-view,
       .solar-neighborhood-view,
-      .galactic-center-neighborhood-view
+      .galactic-center-neighborhood-view,
+      .milky-way-view
     )
     .scene-heading {
     grid-row: 1;
@@ -760,7 +764,8 @@ a {
       .earth-sun-view,
       .solar-system-view,
       .solar-neighborhood-view,
-      .galactic-center-neighborhood-view
+      .galactic-center-neighborhood-view,
+      .milky-way-view
     )
     .scale-readout {
     grid-row: 2;
@@ -775,7 +780,8 @@ a {
       .earth-sun-view,
       .solar-system-view,
       .solar-neighborhood-view,
-      .galactic-center-neighborhood-view
+      .galactic-center-neighborhood-view,
+      .milky-way-view
     )
     .scene-canvas {
     grid-row: 3;
@@ -792,7 +798,8 @@ a {
       .earth-sun-view,
       .solar-system-view,
       .solar-neighborhood-view,
-      .galactic-center-neighborhood-view
+      .galactic-center-neighborhood-view,
+      .milky-way-view
     )
     .scene-status {
     grid-row: 4;
@@ -807,7 +814,8 @@ a {
       .earth-sun-view,
       .solar-system-view,
       .solar-neighborhood-view,
-      .galactic-center-neighborhood-view
+      .galactic-center-neighborhood-view,
+      .milky-way-view
     )
     .scene-actions {
     grid-row: 5;
@@ -821,7 +829,8 @@ a {
       .earth-sun-view,
       .solar-system-view,
       .solar-neighborhood-view,
-      .galactic-center-neighborhood-view
+      .galactic-center-neighborhood-view,
+      .milky-way-view
     )
     #scene-reference-overlay {
     top: 0;
@@ -907,7 +916,8 @@ a {
     .earth-sun-view,
     .solar-system-view,
     .solar-neighborhood-view,
-    .galactic-center-neighborhood-view
+    .galactic-center-neighborhood-view,
+    .milky-way-view
   ) {
     grid-template-rows: auto auto minmax(300px, 1fr) auto auto;
   }
@@ -916,7 +926,8 @@ a {
       .earth-sun-view,
       .solar-system-view,
       .solar-neighborhood-view,
-      .galactic-center-neighborhood-view
+      .galactic-center-neighborhood-view,
+      .milky-way-view
     )
     .scene-canvas {
     min-height: 300px;

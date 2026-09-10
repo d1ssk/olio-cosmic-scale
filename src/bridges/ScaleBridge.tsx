@@ -1,3 +1,4 @@
+import { MILKY_WAY_BRIDGE_VALUES } from "../scenes/milky-way/milkyWayData";
 import {
   STELLAR_BRIDGE_VALUES,
   STELLAR_COMPARISON_METERS,
@@ -62,6 +63,8 @@ export function ScaleBridge({
     if (lower.id === "human" && upper.id === "earth") return HUMAN_EARTH_BRIDGE_VALUES;
     if (lower.id === "solar-system" && upper.id === "solar-neighborhood")
       return STELLAR_BRIDGE_VALUES;
+    if (lower.id === "solar-neighborhood" && upper.id === "milky-way")
+      return MILKY_WAY_BRIDGE_VALUES;
     const plan = planBridge({
       fromSceneId: lower.id,
       toSceneId: upper.id,

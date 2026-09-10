@@ -70,7 +70,13 @@ This location is distinct from the nuclear star cluster at Sagittarius A*. A thi
 
 ## 8. Milky Way
 
-Show the Sun in relation to disk diameter/thickness, bulge/bar, and Galactic center. Make direct constraints versus modeled spiral structure clear, using styling and explanatory labels rather than presenting illustrative arms as exact.
+Implemented as an independent orthographic Galactic model: origin at Galactic center, X toward the Sun, Y toward Galactic north, disk in XZ; 1 kpc per render unit. Adopt a 30 kpc stellar disk diameter, 0.3 kpc full thin-disk thickness and 3 kpc central bar half-length, rounded from ESA’s Guide to our galaxy. These are representative extents, not unique boundaries or scale heights. The Sun uses GRAVITY (2019) R0 = 8,178 pc (±13 statistical, ±22 systematic pc), with solar height approximated as zero.
+
+The default camera is (0,32,40) looking at the origin, about 39° above the plane, with a 40 kpc short-side viewport extent. X-parallel rulers sit in the Galactic plane: 30 kpc at Z=17 kpc and the ~490 pc comparison at Z=19 kpc, both centered on X=0. Thus both are horizontal and below the disk at reset, fixed in world space through orbiting. Physical ruler lengths and disk thickness are not exaggerated. The prior 8 pc → 30 kpc interval has one standalone bridge, 8 pc → sqrt(8 pc × 30 kpc); the second comparison happens within the galaxy. Both directions use the existing sequential transfer, hidden-bar restoration and reduced-motion behavior, including entry from the bulge sibling. Local Group remains a placeholder.
+
+A deterministic 18,000 disk samples and 6,000 bulge samples paint a schematic morphology, not a star census or calibrated density proxy. Four logarithmic arms (14° pitch), their phase/spread, central bar orientation (25°), bulge minor/vertical semiaxes (1.2/0.9 kpc), radial profiles, colors and brightness are illustrative display conventions. The source-backed center/Sun annotations anchor to their positions; bilingual summary and details distinguish these from the modeled arms. The full disk thickness is 0.3 kpc, with no vertical exaggeration; screen-sized light footprints can broaden its apparent edge. No halo, gas, dust, warp or named arm catalog is claimed. Point footprints adapt to viewport width to reduce mobile saturation, without thinning the samples. Labels fit within the viewport and use short translations on mobile. Source metadata is centralized in `sources.ts`; data, SI normalization/model and rendering are separate modules.
+
+QA covers deterministic samples, disk dimensions, adopted Sun distance, ruler length/plane/default projection and the single bridge. Browser checks cover desktop, 390/320 px, exact camera reset, both transition directions, hidden departure, reduced motion and runtime errors.
 
 ## 9. Local Group
 

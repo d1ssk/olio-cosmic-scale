@@ -75,6 +75,13 @@ export const en = {
   "scene.solarSystem.title": "Solar System",
   "scene.solarNeighborhood.title": "Solar neighborhood",
   "scene.galacticCenterNeighborhood.title": "Inside the Galactic bulge",
+  "milkyWay.sunShort": "Sun position",
+  "milkyWay.centerShort": "Galactic center",
+  "milkyWay.summary": "Schematic Galactic structure · light samples are not individual stars",
+  "milkyWay.sun": "Sun position (about 8.18 kpc)",
+  "milkyWay.center": "Galactic center · bulge / bar",
+  "milkyWay.convention":
+    "Adopted stellar disk diameter 30 kpc, thin-disk thickness 0.3 kpc and central bar half-length 3 kpc; the Galaxy has no unique edge. Sun–center distance uses GRAVITY (2019), 8,178 pc, with solar height approximated as zero. Origin: Galactic center; X toward the Sun, Y toward Galactic north, XZ the disk plane. Four spiral arms, pitch, bar orientation, bulge cross-section, colors, brightness and sample density are illustrative, not observed stellar positions or counts. Thickness uses the same physical scale; light footprints and labels are screen-sized. Halo, gas, dust and disk warp are omitted.",
   "scene.milkyWay.title": "Milky Way",
   "scene.localGroup.title": "Local Group",
   "scene.virgo.title": "Virgo environment",

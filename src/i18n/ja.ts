@@ -75,6 +75,13 @@ export const ja: Record<TranslationKey, string> = {
   "scene.solarSystem.title": "太陽系",
   "scene.solarNeighborhood.title": "太陽系近傍",
   "scene.galacticCenterNeighborhood.title": "銀河系バルジ内",
+  "milkyWay.sunShort": "太陽の位置",
+  "milkyWay.centerShort": "銀河中心",
+  "milkyWay.summary": "銀河構造の模式モデル · 光の点は個々の恒星ではありません",
+  "milkyWay.sun": "太陽の位置（距離 約8.18 kpc）",
+  "milkyWay.center": "銀河中心 · バルジ／棒状構造",
+  "milkyWay.convention":
+    "恒星円盤の代表直径30 kpc、薄い円盤の厚さ0.3 kpc、中央の棒の半長3 kpcを採用。銀河に一意な境界はありません。太陽–銀河中心距離はGRAVITY（2019）の8,178 pcを使用し、太陽の高さは0と近似しています。銀河中心が原点、X軸は太陽方向、Y軸は銀河北方向、XZ面が銀河面です。4本の渦状腕、巻き方、棒の向き、バルジの断面、色・明るさ・点の密度は表示用の模式モデルで、観測された恒星分布や星数を表しません。厚さは同じ物理縮尺で、光点の幅とラベルは画面上の表示です。ハロー・ガス・塵・円盤の反りは省略しています。",
   "scene.milkyWay.title": "天の川銀河",
   "scene.localGroup.title": "局所銀河群",
   "scene.virgo.title": "おとめ座銀河団周辺",

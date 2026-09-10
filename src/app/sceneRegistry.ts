@@ -1,3 +1,8 @@
+import {
+  MILKY_WAY_DIAMETER_METERS,
+  MILKY_WAY_METERS_PER_UNIT,
+  MILKY_WAY_VIEW_METERS,
+} from "../scenes/milky-way/milkyWayData";
 import { STELLAR_REFERENCE_METERS } from "../scenes/stellar-neighborhood/stellarData";
 import {
   SOLAR_METERS_PER_UNIT,
@@ -14,11 +19,12 @@ import { lazy } from "react";
 import {
   AU_METERS,
   GIGAPARSEC_METERS,
-  KILOPARSEC_METERS,
   MEGAPARSEC_METERS,
   PARSEC_METERS,
 } from "../physics/constants";
 import type { SceneDefinition, SceneId } from "../scenes/types";
+
+const MilkyWayScene = lazy(() => import("../scenes/milky-way/MilkyWayScene"));
 
 const StellarScene = lazy(() => import("../scenes/stellar-neighborhood/StellarScene"));
 
@@ -236,13 +242,19 @@ export const sceneRegistry: Record<SceneId, SceneDefinition> = {
     kind: "scene",
     titleKey: "scene.milkyWay.title",
     originDescriptionKey: "origin.milkyWay",
-    referenceLengthMeters: 30 * KILOPARSEC_METERS,
-    defaultViewportExtentMeters: 38 * KILOPARSEC_METERS,
-    metersPerSceneUnit: 3 * KILOPARSEC_METERS,
+    referenceLengthMeters: MILKY_WAY_DIAMETER_METERS,
+    defaultViewportExtentMeters: MILKY_WAY_VIEW_METERS,
+    metersPerSceneUnit: MILKY_WAY_METERS_PER_UNIT,
     preferredPrimaryUnit: "kpc",
     secondaryUnits: ["kly", "pc"],
-    camera: orthographic,
-    component: PlaceholderScene,
+    camera: {
+      ...orthographic,
+      position: [0, 32, 40],
+      fitToViewport: true,
+      minZoom: 1,
+      maxZoom: 800,
+    },
+    component: MilkyWayScene,
     previous: "solar-neighborhood",
     next: "local-group",
   },

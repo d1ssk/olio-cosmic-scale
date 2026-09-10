@@ -1,3 +1,4 @@
+import { MILKY_WAY_SOURCES } from "../scenes/milky-way/milkyWayData";
 import {
   BULGE_DENSITY_PER_PC3,
   BULGE_STAR_COUNT,
@@ -68,7 +69,7 @@ export function SceneHUD({
       />
 
       <div
-        className={`scene-status ${["human", "earth", "earth-moon", "sun", "earth-sun", "solar-system", "solar-neighborhood", "galactic-center-neighborhood"].includes(scene.id) ? "human-status" : ""}`}
+        className={`scene-status ${["human", "earth", "earth-moon", "sun", "earth-sun", "solar-system", "solar-neighborhood", "galactic-center-neighborhood", "milky-way"].includes(scene.id) ? "human-status" : ""}`}
       >
         {(scene.id === "earth-sun" || scene.id === "solar-system") && (
           <Suspense fallback={null}>
@@ -79,6 +80,9 @@ export function SceneHUD({
               disabled={transitioning}
             />
           </Suspense>
+        )}
+        {scene.id === "milky-way" && (
+          <p className="stellar-summary">{translate(locale, "milkyWay.summary")}</p>
         )}
         {stellar && (
           <p className="stellar-summary">
@@ -189,6 +193,15 @@ export function SceneHUD({
                     </a>
                   </span>
                 )}
+              </>
+            ) : scene.id === "milky-way" ? (
+              <>
+                <span>{translate(locale, "milkyWay.convention")}</span>
+                {MILKY_WAY_SOURCES.map((source) => (
+                  <a key={source.id} href={source.url} target="_blank" rel="noreferrer">
+                    {source.title}
+                  </a>
+                ))}
               </>
             ) : stellar ? (
               <>
