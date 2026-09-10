@@ -5,7 +5,7 @@ import { MOON_DIAMETER_METERS } from "../earth-moon/earthMoonData";
 export const SYSTEM_BODIES = [
   {
     body: Body.Mercury,
-    texture: "/models/planets/mercury.jpg",
+    texture: `${import.meta.env.BASE_URL}models/planets/mercury.jpg`,
     radiusMeters: 2_439_400,
     color: "#bcb3a7",
     labelKey: "earthSun.mercury",
@@ -14,7 +14,7 @@ export const SYSTEM_BODIES = [
   },
   {
     body: Body.Venus,
-    texture: "/models/planets/venus_atmosphere.jpg",
+    texture: `${import.meta.env.BASE_URL}models/planets/venus_atmosphere.jpg`,
     radiusMeters: 6_051_800,
     color: "#e9cd94",
     labelKey: "earthSun.venus",
@@ -32,7 +32,7 @@ export const SYSTEM_BODIES = [
   },
   {
     body: Body.Moon,
-    texture: "/models/planets/moon.jpg",
+    texture: `${import.meta.env.BASE_URL}models/planets/moon.jpg`,
     radiusMeters: MOON_DIAMETER_METERS / 2,
     color: "#c4c3bf",
     labelKey: "earthMoon.moon",
@@ -42,7 +42,7 @@ export const SYSTEM_BODIES = [
   },
   {
     body: Body.Mars,
-    texture: "/models/planets/mars.jpg",
+    texture: `${import.meta.env.BASE_URL}models/planets/mars.jpg`,
     radiusMeters: 3389500,
     color: "#c58c70",
     labelKey: "solar.mars",
@@ -51,7 +51,7 @@ export const SYSTEM_BODIES = [
   },
   {
     body: Body.Jupiter,
-    texture: "/models/planets/jupiter.jpg",
+    texture: `${import.meta.env.BASE_URL}models/planets/jupiter.jpg`,
     radiusMeters: 69911000,
     color: "#cbb99f",
     labelKey: "solar.jupiter",
@@ -60,7 +60,7 @@ export const SYSTEM_BODIES = [
   },
   {
     body: Body.Saturn,
-    texture: "/models/planets/saturn.jpg",
+    texture: `${import.meta.env.BASE_URL}models/planets/saturn.jpg`,
     radiusMeters: 58232000,
     color: "#d6c498",
     labelKey: "solar.saturn",
@@ -69,7 +69,7 @@ export const SYSTEM_BODIES = [
   },
   {
     body: Body.Uranus,
-    texture: "/models/planets/uranus.jpg",
+    texture: `${import.meta.env.BASE_URL}models/planets/uranus.jpg`,
     radiusMeters: 25362000,
     color: "#a4d3d7",
     labelKey: "solar.uranus",
@@ -78,7 +78,7 @@ export const SYSTEM_BODIES = [
   },
   {
     body: Body.Neptune,
-    texture: "/models/planets/neptune.jpg",
+    texture: `${import.meta.env.BASE_URL}models/planets/neptune.jpg`,
     radiusMeters: 24622000,
     color: "#779ed5",
     labelKey: "solar.neptune",
