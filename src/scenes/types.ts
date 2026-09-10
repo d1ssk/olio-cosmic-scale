@@ -46,6 +46,8 @@ export type SceneMetadata = {
 };
 
 export type ScaleSceneProps = {
+  colorByCatalog?: boolean;
+  representativeDepths?: boolean;
   previewStarId?: number | null;
   selectedGalaxyId?: number | null;
   showAllGalaxyLabels?: boolean;

@@ -1,6 +1,41 @@
 import type { TranslationKey } from "./index";
 
 export const ja: Record<TranslationKey, string> = {
+  "virgo.depthCollapsed":
+    "代表距離：未測定のVirgo所属銀河は16.5 Mpc、それ以外は採用した銀河群距離（EVCCのみの所属候補は16.5 Mpc）に揃えます。実測距離は変えません。",
+  "virgo.depthStatistical":
+    "統計的な奥行き：未測定のVirgo所属銀河は近くのSBF銀河が示す距離構造に沿って配置し、それ以外の距離不明銀河は近傍の独立距離分布から割り当てます。個々の位置は実測ではありません。",
+  "virgo.representativeDepths": "不明な奥行きを代表距離に揃える",
+  "virgo.modeled": "統計的に割り当てた奥行き",
+  "virgo.catalogEvcc": "EVCC（2014）",
+  "virgo.colorByCatalog": "出典カタログで色分けする",
+  "virgo.catalogSbf": "NGVS SBF（2024）",
+  "virgo.catalogLocal": "局所銀河群（2012）",
+  "virgo.catalogNearby": "50MGC（2024）",
+  "virgo.catalogOrigin": "天の川銀河の原点",
+  "virgo.catalogPriority":
+    "複数カタログに載る銀河は、上から順に最初に該当する色を使用します。点の形は引き続き距離の根拠を示します。",
+
+  "origin.virgo": "観測者とVirgoの中点 · J2000の天球方向と異なる手法による距離",
+  "virgo.summary":
+    "{count}銀河 · 1点＝1銀河。点径は絶対等級を圧縮して反映（EVCCはg帯、ほかはB帯）し、実サイズではありません。光度未収録は1.5 px（原点を除く）。",
+  "virgo.coverage":
+    "50MGC＋局所銀河群＋NGVS SBF全278銀河＋指定EVCC全1,589件。EVCCは所属M：1,028件、所属候補P：561件。NGVS IIの抜粋は削除済み。完全・均一な銀河分布ではありません。",
+  "virgo.independent": "独立測定の距離",
+  "virgo.estimated": "カタログの推定距離",
+  "virgo.adopted": "採用した代表距離・原点",
+  "virgo.select": "銀河のデータを確認",
+  "virgo.none": "銀河を選択",
+  "virgo.sources": "出典",
+  "virgo.groupError": "これは所属銀河群の距離の不確かさで、銀河の個別測定誤差ではありません。",
+  "virgo.noError": "個別の距離誤差は未収録です。",
+  "virgo.localGroup": "天の川銀河・局所銀河群",
+  "virgo.m87": "M87・おとめ座銀河団",
+  "virgo.details":
+    "16.5 Mpcは観測者–Virgo間の比較用基準長で、銀河団の直径や収録距離の上限ではありません。初期視野は44 Mpc。J2000座標を剛体回転し、+XをM87方向、+Yを投影した天の北極方向に取ります。このスケールでは太陽を天の川銀河の観測原点とし、約8 kpcの中心からのずれを省略します。50MGCは8.25 Mpcの中点から半径20 Mpc以内、SBFは全対象を収録。調査範囲と検出限界が異なるため、点密度を公平な空間密度として比較できません。",
+  "virgo.uncertainty":
+    "独立距離は両表示で固定し、SBFの背景銀河と低品質q3測定も保持します。未測定のVirgo銀河は12〜23 MpcのSBF q1/q2距離を天球方向で重み付けして抽出し、0.25 Mpcで平滑化。測定誤差の散らばりも含む可視化モデルで、真の銀河団形状の復元ではありません。他の距離不明銀河は天球方向と採用した銀河群距離で重み付けした独立距離から抽出します。EVCCのPは所属候補であり、非所属と確定した銀河ではありません。乱数は銀河ごとに固定。Virgo以外の既存フロー距離はカタログ推定を保持します。チェック時はモデル対象だけを代表距離に戻します。指定EVCCのM_gはSBFとの重複天体も含めてg帯絶対等級としてそのまま使用。他はB帯で、帯域間変換は行いません。欠損光度を暗いと推定せず、cz/H₀の直接変換や実測3D宇宙の主張もしません。",
+
   "stellar.distances.highlight": "3Dモデルの天体名を表示",
   "origin.localGroup": "天の川–M31の中点・銀河座標軸・比較長3 Mpc",
   "localGroup.mw": "天の川銀河",
@@ -167,7 +202,6 @@ export const ja: Record<TranslationKey, string> = {
   "origin.solarNeighborhood": "太陽中心の恒星座標系",
   "origin.galacticCenterNeighborhood": "銀河中心から1 kpc離れた場所の恒星密度モデル",
   "origin.milkyWay": "銀河中心基準系",
-  "origin.virgo": "局所大規模構造の基準系（暫定）",
   "origin.bao": "共動座標（規約は要確定）",
   "origin.observableUniverse": "観測者中心の共動座標（規約は要確定）",
 };

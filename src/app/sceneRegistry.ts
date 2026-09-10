@@ -1,4 +1,9 @@
 import {
+  VIRGO_REFERENCE_METERS,
+  VIRGO_VIEW_METERS,
+  VIRGO_UNIT_METERS,
+} from "../scenes/virgo/virgoData";
+import {
   LOCAL_GROUP_REFERENCE_METERS,
   LOCAL_GROUP_VIEW_METERS,
   LOCAL_GROUP_UNIT_METERS,
@@ -28,6 +33,8 @@ import {
   PARSEC_METERS,
 } from "../physics/constants";
 import type { SceneDefinition, SceneId } from "../scenes/types";
+
+const VirgoScene = lazy(() => import("../scenes/virgo/VirgoScene"));
 
 const LocalGroupScene = lazy(() => import("../scenes/local-group/LocalGroupScene"));
 
@@ -291,13 +298,19 @@ export const sceneRegistry: Record<SceneId, SceneDefinition> = {
     kind: "scene",
     titleKey: "scene.virgo.title",
     originDescriptionKey: "origin.virgo",
-    referenceLengthMeters: 16.5 * MEGAPARSEC_METERS,
-    defaultViewportExtentMeters: 22 * MEGAPARSEC_METERS,
-    metersPerSceneUnit: 1.65 * MEGAPARSEC_METERS,
+    referenceLengthMeters: VIRGO_REFERENCE_METERS,
+    defaultViewportExtentMeters: VIRGO_VIEW_METERS,
+    metersPerSceneUnit: VIRGO_UNIT_METERS,
     preferredPrimaryUnit: "Mpc",
     secondaryUnits: ["Mly", "kpc"],
-    camera: orthographic,
-    component: PlaceholderScene,
+    camera: {
+      ...orthographic,
+      position: [0, 0, 60],
+      fitToViewport: true,
+      minZoom: 2,
+      maxZoom: 5000,
+    },
+    component: VirgoScene,
     previous: "local-group",
     next: "bao",
   },

@@ -9,22 +9,28 @@ export function placeGalaxyLabel(
   screenHeight: number,
   occupied: LabelBox[],
   prominent: boolean,
+  preferredVertical: -1 | 1 = -1,
+  leaderLayout: {
+    mobileLeaderPixels: number;
+    desktopLeaderPixels: number;
+    verticalOffsetPixels: number;
+  } = layout,
 ) {
   const distance = prominent
     ? screenWidth < 600
-      ? layout.mobileLeaderPixels
-      : layout.desktopLeaderPixels
+      ? leaderLayout.mobileLeaderPixels
+      : leaderLayout.desktopLeaderPixels
     : 30;
   const preferredSide = x < screenWidth / 2 ? -1 : 1;
-  const vertical = prominent ? layout.verticalOffsetPixels : 20;
+  const vertical = prominent ? leaderLayout.verticalOffsetPixels : 20;
   for (const side of [preferredSide, -preferredSide]) {
     const labelX = side < 0 ? x - distance - width : x + distance;
     const tx = Math.max(8, Math.min(screenWidth - width - 8, labelX));
     // Don't put a clamped label on top of its own object.
     if (side < 0 ? tx + width > x - 14 : tx < x + 14) continue;
     for (const shift of [
-      -vertical,
-      vertical,
+      preferredVertical * vertical,
+      -preferredVertical * vertical,
       -vertical - 24,
       vertical + 24,
       -vertical - 48,

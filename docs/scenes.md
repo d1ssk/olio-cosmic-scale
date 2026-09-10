@@ -146,7 +146,25 @@ deterministic bounded clouds and scale hierarchy.
 
 ## 10. Virgo environment
 
-Extend from the Local Group to the nearby large-scale environment and Virgo Cluster, optionally including selected groups/galaxies only when they improve spatial understanding. The provisional reference is the 16.5 Mpc Local Group–Virgo distance. Avoid decorative unsourced points; show cluster extent at the same scale where useful.
+Implemented as 5,647 one-point-per-galaxy catalog entries: the 50MGC nearby subset,
+Local Group, all 278 NGVS SBF targets and all 1,589 supplied EVCC entries. The
+NGVS II 60-row excerpt is removed. Use the supplied EVCC M_g as absolute g
+magnitude, overriding earlier B photometry for matches; other entries retain B.
+See [Virgo conventions and reproduction](../src/scenes/virgo/README.md).
+
+Default unknown depths are deterministic statistical assignments: 759 unmeasured
+Virgo members use an angularly weighted SBF main-cluster distribution; 735 other
+missing distances use independent neighboring distance samples with a group
+prior. A checkbox collapses these to adopted representative distances (16.5 Mpc
+for Virgo). Independent distances and existing non-Virgo flow estimates are fixed.
+Synthetic depths are explicitly modeled, including SBF measurement scatter and
+survey selection; they are not measured positions or a recovered intrinsic shape.
+
+The reference remains 16.5 Mpc with a separate 44 Mpc initial view. J2000 directions
+stay fixed through both depth modes. Point shape distinguishes distance basis;
+source coloring is a separate checkbox. M31, Milky Way, M87 and M49 are annotated.
+Local Group ↔ Virgo transfers the exact 3 Mpc bar in both directions. BAO remains
+unimplemented.
 
 ## 11. BAO scale
 

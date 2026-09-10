@@ -1,3 +1,4 @@
+import { VIRGO_SOURCES } from "../scenes/virgo/virgoData";
 import { LOCAL_GROUP_GALAXIES, LOCAL_GROUP_SOURCES } from "../scenes/local-group/localGroupData";
 import { LocalGroupControls } from "../scenes/local-group/LocalGroupControls";
 import { StarDistanceTable } from "./StarDistanceTable";
@@ -11,6 +12,7 @@ import {
 } from "../scenes/stellar-neighborhood/stellarData";
 import { lazy, Suspense } from "react";
 import { SUN_TEXTURE } from "../scenes/sun/sunData";
+const VirgoControls = lazy(() => import("../scenes/virgo/VirgoControls"));
 const EphemerisControls = lazy(() => import("../scenes/earth-sun/EphemerisControls"));
 import { EARTH_MOON_SOURCES } from "../scenes/earth-moon/earthMoonData";
 import { hierarchyPosition, MAIN_SCENE_ORDER } from "../app/sceneRegistry";
@@ -21,6 +23,10 @@ import { HACHIKO_MODEL } from "../scenes/human/humanData";
 import { ScaleReadout } from "./ScaleReadout";
 
 type SceneHUDProps = {
+  representativeDepths?: boolean;
+  onRepresentativeDepthsChange?: (value: boolean) => void;
+  colorByCatalog?: boolean;
+  onColorByCatalogChange?: (value: boolean) => void;
   onPreviewStarChange?: (id: number | null) => void;
   selectedGalaxyId?: number | null;
   onSelectedGalaxyIdChange?: (id: number | null) => void;
@@ -47,6 +53,10 @@ type SceneHUDProps = {
 };
 
 export function SceneHUD({
+  representativeDepths,
+  onRepresentativeDepthsChange,
+  colorByCatalog,
+  onColorByCatalogChange,
   onPreviewStarChange,
   selectedGalaxyId,
   onSelectedGalaxyIdChange,
@@ -104,7 +114,7 @@ export function SceneHUD({
       />
 
       <div
-        className={`scene-status ${["human", "earth", "earth-moon", "sun", "earth-sun", "solar-system", "solar-neighborhood", "galactic-center-neighborhood", "milky-way", "local-group"].includes(scene.id) ? "human-status" : ""}`}
+        className={`scene-status ${["human", "earth", "earth-moon", "sun", "earth-sun", "solar-system", "solar-neighborhood", "galactic-center-neighborhood", "milky-way", "local-group", "virgo"].includes(scene.id) ? "human-status" : ""}`}
       >
         {(scene.id === "earth-sun" || scene.id === "solar-system") && (
           <Suspense fallback={null}>
@@ -112,6 +122,18 @@ export function SceneHUD({
               locale={locale}
               value={observationDate}
               onChange={onObservationDateChange}
+              disabled={transitioning}
+            />
+          </Suspense>
+        )}
+        {scene.id === "virgo" && (
+          <Suspense fallback={null}>
+            <VirgoControls
+              locale={locale}
+              representativeDepths={representativeDepths}
+              onRepresentativeDepthsChange={onRepresentativeDepthsChange}
+              colorByCatalog={colorByCatalog}
+              onColorByCatalogChange={onColorByCatalogChange}
               disabled={transitioning}
             />
           </Suspense>
@@ -310,6 +332,18 @@ export function SceneHUD({
                     </a>
                   </span>
                 )}
+              </>
+            ) : scene.id === "virgo" ? (
+              <>
+                <span>{translate(locale, "virgo.details")}</span>
+                <span>{translate(locale, "virgo.uncertainty")}</span>
+                {VIRGO_SOURCES.map((source) => (
+                  <span key={source.id}>
+                    <a href={source.url} target="_blank" rel="noreferrer">
+                      {source.title}
+                    </a>
+                  </span>
+                ))}
               </>
             ) : scene.id === "local-group" ? (
               <>

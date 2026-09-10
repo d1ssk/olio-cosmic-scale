@@ -1,6 +1,6 @@
 # Implementation status and continuation
 
-This is the handoff after completing the common framework and the first nine hierarchy levels and the Galactic bulge sibling (with a shared continuous Solar System world). The focused design documents describe the current decisions; `archive/initial-project-spec.md` is historical and must not override them.
+This is the handoff after completing the common framework and the first ten hierarchy levels (Virgo uses a partial catalog) and the Galactic bulge sibling (with a shared continuous Solar System world). The focused design documents describe the current decisions; `archive/initial-project-spec.md` is historical and must not override them.
 
 ## Implemented and next
 
@@ -16,9 +16,10 @@ This is the handoff after completing the common framework and the first nine hie
 | `galactic-center-neighborhood`           | Galactic bulge at model x=1 kpc; 6,476 deterministic modeled stars, same volume and camera                                      | Same bars and display rules; lateral comparison without bridge                                                |
 | `milky-way`                              | Sourced representative disk and Sun distance; deterministic schematic arms and bulge/bar; oblique camera                        | 30 kpc and ~490 pc horizontal bars in the foreground disk plane; one standalone bridge from the neighborhoods |
 | `local-group`                            | 75 catalog entries/candidates (McConnachie 2012), 72 sourced-size model envelopes; selection, close view and per-object caveats | 3 Mpc comparison and 30 kpc direct transfer to/from Milky Way                                                 |
+| `virgo`                                  | 5,647 catalog galaxies; all 278 SBF targets and 1,589 EVCC rows; measured and optional statistical depths                       | 16.5 Mpc reference and exact 3 Mpc direct transfer to/from Local Group                                        |
 | Larger scales                            | Registry, metadata, navigation and shared HUD exist; scientific rendering is still `PlaceholderScene`                           | Direct physical transfers are not automatically implemented by the registry                                   |
 
-The next scene to implement is **Virgo environment**. Its predecessor is `local-group`. The main hierarchy contains **12** levels; the Galactic-center neighborhood remains the same-scale sibling of level **7 / 12**. Keep the stable ID `earth-moon` despite the display-name change.
+The next scene to implement is **BAO**. Its predecessor is `virgo`. Virgo now uses the user-supplied EVCC catalog instead of the NGVS II excerpt. The main hierarchy contains **12** levels; the Galactic-center neighborhood remains the same-scale sibling of level **7 / 12**. Keep the stable ID `earth-moon` despite the display-name change.
 
 ## Decisions to preserve
 
@@ -168,3 +169,40 @@ soft glow and a brighter/thicker leader. This also works with all names enabled;
 leaving the name clears the emphasis while keeping the existing names/selection.
 Keyboard focus uses the same treatment. The effect is static, including under
 reduced motion, and leaves physical anchors and label layout unchanged.
+
+## Virgo environment
+
+Current union: 5,647 galaxies, with all 278 SBF measurements and all 1,589 supplied
+EVCC entries. NGVS II's 60-row excerpt is removed. Supplied M_g is interpreted
+literally as absolute g magnitude and overrides B photometry on matches.
+
+Default statistical display assigns only unknown depths: 759 Virgo members use
+angularly weighted SBF q1/q2 main-cluster depths (12–23 Mpc, 0.25 Mpc smoothing);
+735 other missing-distance objects use independent neighbors and adopted group
+priors. A checkbox collapses these 1,494 galaxies to their representatives.
+Independent distances, remaining flow estimates, sky directions, photometry and
+camera are preserved. Draws use fixed galaxy seeds and sorted donors. The UI
+explicitly distinguishes synthetic assignments from measurements.
+
+See the [Virgo README](../src/scenes/virgo/README.md) for complete source hashes,
+CSV reproduction, membership handling, matching and statistical conventions.
+EVCC M and P remain distinct (1,028 members / 561 possible); P is not a confirmed
+non-member class. Two CSV entries share NGC4257 but have different VCC IDs and
+coordinates; both are retained. Empty aliases never match; all 74 external Local
+Group entries survive independently.
+
+The source-color checkbox and M31 annotation remain. Missing photometry uses
+1.5 px, the observer origin 7 px. The exact 3 Mpc Local Group bridge is unchanged,
+as are the 16.5 Mpc reference and 44 Mpc initial viewport. BAO is unimplemented.
+Data loads lazily; no runtime API or new application dependency.
+
+Validation: 121 unit tests, formatting/lint/typecheck and production build pass.
+Browser QA verifies 5,647 GPU points, exactly 1,494 radial changes, fixed positions
+for every other galaxy, unchanged sizes/camera, exact statistical restoration,
+source-color independence, M31 annotation, hidden-bar Local Group return, and
+320/390 px Japanese reduced-motion layouts. Desktop legends scroll inside the
+available HUD row so actions cannot move under the navigation dock. Projected
+labels avoid overlay panels. No scene/shader errors (existing favicon 404 excluded).
+The lazy catalog chunk is approximately 287 kB gzip / 2.60 MB minified and retains
+the expected large-chunk build warning. The supplied CSV matches its bundled copy
+byte-for-byte and its recorded hash.

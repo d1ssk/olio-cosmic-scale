@@ -16,7 +16,7 @@ These centralized defaults scaffold the ladder; several are adopted conventions 
 | `galactic-center-neighborhood` |                     8 pc | pc        | same scale as sibling                        |
 | `milky-way`                    |                   30 kpc | kpc       | representative stellar disk diameter         |
 | `local-group`                  |                    3 Mpc | Mpc       | adopted comparison span (not group boundary) |
-| `virgo`                        |                 16.5 Mpc | Mpc       | provisional Local Group–Virgo distance       |
+| `virgo`                        |                 16.5 Mpc | Mpc       | adopted observer–Virgo distance              |
 | `bao`                          |            147 Mpc class | Mpc       | convention to document                       |
 | `observable-universe`          |  28.5 Gpc class diameter | Gpc       | distance convention to document              |
 
@@ -95,3 +95,5 @@ Both directions preserve the explored frame when the connecting bar is wholly
 inside the view volume and at least 0.5 px long. Only clipped/edge-on bars recover
 default framing before capture; hidden-bar departures restore only the connecting
 physical bar. A transition without a connecting bar needs no recovery. The world remains independent.
+
+Virgo uses a 16.5 Mpc reference and a separate 44 Mpc initial viewport. Local Group ↔ Virgo transfers the exact 3 Mpc bar directly (ratio 5.5). The worlds remain independent. The 50MGC spatial selection and SBF background retention are documented in `src/scenes/virgo/README.md`; 16.5 Mpc is not a cluster diameter or selection cutoff.

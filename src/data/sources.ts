@@ -10,6 +10,36 @@ export type SourceInfo = {
 
 export const SOURCES: readonly SourceInfo[] = [
   {
+    id: "50mgc-2024",
+    title: "Ohlson et al. (2024) — 50 Mpc Galaxy Catalog",
+    url: "https://github.com/davidohlson/50MGC",
+    accessed: "2026-09-11",
+    notes:
+      "Static bestdist subset within 20 Mpc of adopted observer–Virgo midpoint. Prefer recognized independent zind_dist indicators over flow/group estimates; retain earlier SBF bestdist. Method retained; mem and EVCC adopted. Unknown techniques remain estimated. Not volume complete.",
+  },
+  {
+    id: "evcc-2014",
+    title: "Kim et al. (2014) — Extended Virgo Cluster Catalog (EVCC)",
+    url: "https://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJS/215/22/table2",
+    accessed: "2026-09-11",
+    notes:
+      "User-supplied evcc_table2_with_Mg.csv, all 1589 rows; M=1028 members, P=561 possible. RAdeg/DEdeg retained for new entries; existing independently sourced coordinates preferred for matches. M_g used literally as absolute g magnitude with priority over B-band photometry, never recomputed from synthetic depths. Raw CSV and SHA-256 retained. Duplicate NGC4257 aliases are excluded from identity matching; distinct EVCC324/VCC323 and EVCC2057/VCC321 retained. NGVS II excerpt removed.",
+  },
+  {
+    id: "ngvs-sbf-2024",
+    title: "Cantiello et al. (2024) — NGVS III, 278 SBF distances",
+    url: "https://arxiv.org/abs/2403.16235",
+    accessed: "2026-09-11",
+    notes:
+      "All 278 targets from arXiv full tables, including three non-VCC targets. d_ref, individual uncertainty, J2000 coordinates, B_T, quality flags. Includes q3 and background structures. Derived factual subset; article CC BY 4.0.",
+  },
+  {
+    id: "virgo-convention",
+    title: "Virgo scene adopted conventions",
+    notes:
+      "16.5 Mpc reference, 44 Mpc view. Milky Way approximated by observer origin; J2000 rotation toward M87. Default synthetic depths: angularly weighted SBF resampling for unmeasured Virgo members; independent-neighbor resampling for other missing distances. Toggle collapses only modeled objects to representative distances. EVCC g and other B absolute-magnitude markers. Model assumptions are not observed galaxy positions. See src/scenes/virgo/README.md.",
+  },
+  {
     id: "mcconnachie-2012",
     title: "McConnachie (2012), AJ 144, 4 — Local Group catalog",
     organization: "CDS / Alan W. McConnachie",

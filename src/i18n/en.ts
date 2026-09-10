@@ -1,4 +1,39 @@
 export const en = {
+  "virgo.depthCollapsed":
+    "Representative depths: unmeasured Virgo members sit at 16.5 Mpc; others use their adopted group distance (16.5 Mpc for EVCC-only candidates). Measured distances stay fixed.",
+  "virgo.depthStatistical":
+    "Statistical depths: unmeasured Virgo members follow nearby SBF distance structure; other missing distances use nearby independent-distance samples. These assignments are illustrative, not measured.",
+  "virgo.representativeDepths": "Use representative distances for unknown depths",
+  "virgo.modeled": "Statistically assigned depth",
+  "virgo.catalogEvcc": "EVCC (2014)",
+  "virgo.colorByCatalog": "Color by source catalog",
+  "virgo.catalogSbf": "NGVS SBF (2024)",
+  "virgo.catalogLocal": "Local Group (2012)",
+  "virgo.catalogNearby": "50MGC (2024)",
+  "virgo.catalogOrigin": "Milky Way origin",
+  "virgo.catalogPriority":
+    "Overlapping catalogs use the first matching color in the order above. Shapes still indicate the distance basis.",
+
+  "origin.virgo": "Observer–Virgo midpoint · J2000 directions with mixed distance estimates",
+  "virgo.summary":
+    "{count} galaxies · one point per galaxy. Size encodes compressed absolute magnitude (EVCC g, otherwise B), not physical size. Missing photometry: 1.5 px, except the origin.",
+  "virgo.coverage":
+    "50MGC + Local Group + 278 NGVS SBF targets + all 1,589 supplied EVCC entries. EVCC: 1,028 members (M), 561 possible members (P). The NGVS II excerpt has been removed. Not a complete or uniform galaxy census.",
+  "virgo.independent": "Independent distance",
+  "virgo.estimated": "Catalog estimate",
+  "virgo.adopted": "Adopted distance / origin",
+  "virgo.select": "Inspect a galaxy",
+  "virgo.none": "Choose a galaxy",
+  "virgo.sources": "Sources",
+  "virgo.groupError": "This is a group-distance uncertainty, not an individual measurement error.",
+  "virgo.noError": "No individual distance uncertainty supplied.",
+  "virgo.localGroup": "Milky Way · Local Group",
+  "virgo.m87": "M87 · Virgo",
+  "virgo.details":
+    "16.5 Mpc is an adopted observer–Virgo comparison length, not a cluster diameter or distance cut. Initial view: 44 Mpc. J2000 coordinates are rigidly rotated: +X toward M87, +Y projected celestial north. The Sun approximates the Milky Way origin (8 kpc offset neglected). 50MGC selection: within 20 Mpc of the 8.25 Mpc midpoint; all SBF targets retained. Surveys have different coverage and depth; point density is not an unbiased density map.",
+  "virgo.uncertainty":
+    "Independent distances stay fixed in both modes, including all SBF background targets and q3 measurements. Unknown Virgo depths sample the angularly weighted SBF q1/q2 distribution from 12–23 Mpc with 0.25 Mpc smoothing. This includes measurement scatter, not a recovered intrinsic cluster shape. Other missing depths sample independent distances weighted by sky direction and adopted group distance; EVCC P means possible membership, not confirmed non-membership. Seeds are fixed per galaxy. Existing non-Virgo flow estimates remain catalog estimates. Checkbox: collapse only modeled depths to their representatives. Supplied EVCC M_g is used literally as an absolute g magnitude, including for SBF matches; other photometry is B, without a B-to-g conversion. Missing magnitudes are not inferred faint. No raw cz/H₀ conversion or measured-3D-universe claim.",
+
   "stellar.distances.highlight": "Show the star name in the 3D model",
   "origin.localGroup": "Milky Way–M31 midpoint · Galactic axes · 3 Mpc comparison span",
   "localGroup.mw": "Milky Way",
@@ -168,7 +203,6 @@ export const en = {
   "origin.solarNeighborhood": "Heliocentric stellar frame",
   "origin.galacticCenterNeighborhood": "Stellar density model, 1 kpc from the Galactic center",
   "origin.milkyWay": "Galactocentric reference frame",
-  "origin.virgo": "Local large-scale reference frame (provisional)",
   "origin.bao": "Comoving coordinates (convention pending)",
   "origin.observableUniverse": "Observer-centered comoving coordinates (convention pending)",
 } as const;

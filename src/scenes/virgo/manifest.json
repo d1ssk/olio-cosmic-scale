@@ -1,0 +1,24 @@
+{
+  "count": 5647,
+  "distanceCounts": {
+    "adopted": 1481,
+    "independent": 1223,
+    "estimated": 2943
+  },
+  "evccRows": 1589,
+  "evccMembershipCounts": {
+    "P": 561,
+    "M": 1028
+  },
+  "sbfRows": 278,
+  "depthModelCounts": {
+    "fixed": 4153,
+    "virgo-sbf": 759,
+    "nearby": 735
+  },
+  "inputs": {
+    "50mgc.fits": "3e90a1a326ba95bd785280b7a4064d821bc8d7556e621cff8945255fde05bc53",
+    "evcc_table2_with_Mg.csv": "faac1e73373da234f1792cafb68eebf3227ba6f420fca41d1be0ea2977db0192",
+    "sbf-source.tar": "c975b4a00deb21769d9ece4dc51d575585cc9855024406c193b88a6e48c6b4e2"
+  }
+}

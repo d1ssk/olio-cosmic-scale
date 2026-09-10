@@ -93,7 +93,7 @@ button:disabled {
 
 .brand {
   display: grid;
-  gap: 0.1rem;
+  gap: 0.4rem;
 }
 
 .brand strong,
@@ -694,7 +694,8 @@ a {
     .solar-neighborhood-view,
     .galactic-center-neighborhood-view,
     .milky-way-view,
-    .local-group-view
+    .local-group-view,
+    .virgo-view
   ):has(.scene-entry-bar):not(.is-arriving)
   .scene-canvas {
   opacity: 0;
@@ -721,7 +722,8 @@ a {
     .solar-neighborhood-view,
     .galactic-center-neighborhood-view,
     .milky-way-view,
-    .local-group-view
+    .local-group-view,
+    .virgo-view
   ) {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -740,7 +742,8 @@ a {
       .solar-neighborhood-view,
       .galactic-center-neighborhood-view,
       .milky-way-view,
-      .local-group-view
+      .local-group-view,
+      .virgo-view
     )
     .scene-hud {
     display: contents;
@@ -755,7 +758,8 @@ a {
       .solar-neighborhood-view,
       .galactic-center-neighborhood-view,
       .milky-way-view,
-      .local-group-view
+      .local-group-view,
+      .virgo-view
     )
     .scene-heading {
     grid-row: 1;
@@ -772,7 +776,8 @@ a {
       .solar-neighborhood-view,
       .galactic-center-neighborhood-view,
       .milky-way-view,
-      .local-group-view
+      .local-group-view,
+      .virgo-view
     )
     .scale-readout {
     grid-row: 2;
@@ -789,7 +794,8 @@ a {
       .solar-neighborhood-view,
       .galactic-center-neighborhood-view,
       .milky-way-view,
-      .local-group-view
+      .local-group-view,
+      .virgo-view
     )
     .scene-canvas {
     grid-row: 3;
@@ -808,7 +814,8 @@ a {
       .solar-neighborhood-view,
       .galactic-center-neighborhood-view,
       .milky-way-view,
-      .local-group-view
+      .local-group-view,
+      .virgo-view
     )
     .scene-status {
     grid-row: 4;
@@ -825,7 +832,8 @@ a {
       .solar-neighborhood-view,
       .galactic-center-neighborhood-view,
       .milky-way-view,
-      .local-group-view
+      .local-group-view,
+      .virgo-view
     )
     .scene-actions {
     grid-row: 5;
@@ -841,7 +849,8 @@ a {
       .solar-neighborhood-view,
       .galactic-center-neighborhood-view,
       .milky-way-view,
-      .local-group-view
+      .local-group-view,
+      .virgo-view
     )
     #scene-reference-overlay {
     top: 0;
@@ -929,7 +938,8 @@ a {
     .solar-neighborhood-view,
     .galactic-center-neighborhood-view,
     .milky-way-view,
-    .local-group-view
+    .local-group-view,
+    .virgo-view
   ) {
     grid-template-rows: auto auto minmax(300px, 1fr) auto auto;
   }
@@ -940,7 +950,8 @@ a {
       .solar-neighborhood-view,
       .galactic-center-neighborhood-view,
       .milky-way-view,
-      .local-group-view
+      .local-group-view,
+      .virgo-view
     )
     .scene-canvas {
     min-height: 300px;
@@ -1202,4 +1213,66 @@ a {
   stroke-width: 1.8;
   opacity: 1;
   filter: drop-shadow(0 0 2px rgb(255 215 128 / 45%));
+}
+
+.virgo-legend {
+  display: grid;
+  gap: 0.25rem;
+}
+.virgo-controls p {
+  margin: 0.3rem 0;
+}
+.virgo-controls label {
+  display: grid;
+  gap: 0.35rem;
+}
+.virgo-controls select {
+  width: 100%;
+}
+.virgo-view.is-departing .scene-canvas {
+  pointer-events: none;
+}
+
+.virgo-controls .virgo-catalog-toggle {
+  display: flex;
+  align-items: center;
+}
+
+@media (min-width: 721px) {
+  .virgo-view .scene-hud {
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+  .virgo-view .scene-status {
+    min-height: 0;
+    max-height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+}
+
+/* Use the shared title typography; let the card accommodate the full name. */
+.virgo-view .scene-heading,
+.bao-view .scene-heading {
+  grid-column: 1 / 3;
+  justify-self: start;
+  width: max-content;
+  max-width: 100%;
+}
+.virgo-view .scene-heading h1,
+.bao-view .scene-heading h1 {
+  white-space: nowrap;
+}
+.virgo-view .scene-heading p,
+.bao-view .scene-heading p {
+  max-width: 30rem;
+}
+@media (max-width: 720px) {
+  .virgo-view .scene-heading,
+  .bao-view .scene-heading {
+    grid-column: 1;
+    justify-self: stretch;
+    width: auto;
+    max-width: none;
+  }
 }

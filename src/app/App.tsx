@@ -111,6 +111,8 @@ export function App(): React.JSX.Element {
       if (outerDeparture) from = "solar-system";
       const target = sceneRegistry[from][direction];
       const connected =
+        (from === "local-group" && target === "virgo") ||
+        (from === "virgo" && target === "local-group") ||
         (from === "milky-way" && target === "local-group") ||
         (from === "local-group" && target === "milky-way") ||
         (from === "earth" && target === "earth-moon") ||
@@ -175,6 +177,7 @@ export function App(): React.JSX.Element {
               "galactic-center-neighborhood",
               "milky-way",
               "local-group",
+              "virgo",
             ].includes(from) &&
               direction === "previous")
           ? "comparison"
@@ -220,7 +223,9 @@ export function App(): React.JSX.Element {
     <div className="app-shell">
       <header className="app-header">
         <div className="brand">
-          <a href="https://d1ssk.github.io/interactive-physics-olio">
+          <a
+            href={`https://d1ssk.github.io/interactive-physics-olio${state.locale === "ja" ? "/ja" : ""}`}
+          >
             {translate(state.locale, "app.parentName")}
           </a>
           <strong>{translate(state.locale, "app.name")}</strong>
@@ -320,6 +325,8 @@ function SceneView({
   const [galaxyVariant, setGalaxyVariant] = useState<GalaxyVariant>("volume");
   const [volumeStatus, setVolumeStatus] = useState<VolumeStatus>("idle");
   const [showAllStarLabels, setShowAllStarLabels] = useState(false);
+  const [representativeDepths, setRepresentativeDepths] = useState(false);
+  const [colorByCatalog, setColorByCatalog] = useState(false);
   const [selectedGalaxyId, setSelectedGalaxyId] = useState<number | null>(null);
   const [showAllGalaxyLabels, setShowAllGalaxyLabels] = useState(false);
   const [previewStarId, setPreviewStarId] = useState<number | null>(null);
@@ -356,7 +363,7 @@ function SceneView({
         // Preserve the explored view when the connecting segment is wholly in frame.
         // Hidden bars still have physical endpoints and are restored below.
         if (
-          (sceneId === "milky-way" || sceneId === "local-group") &&
+          (sceneId === "milky-way" || sceneId === "local-group" || sceneId === "virgo") &&
           kind !== "none" &&
           !hostRef.current?.isBarFullyInView(kind)
         ) {
@@ -403,6 +410,8 @@ function SceneView({
             value={{ hidden: barsHidden || Boolean(entryBar && !arrived), only: onlyBar }}
           >
             <Scene
+              representativeDepths={representativeDepths}
+              colorByCatalog={colorByCatalog}
               selectedGalaxyId={selectedGalaxyId}
               showAllGalaxyLabels={showAllGalaxyLabels}
               galaxyVariant={galaxyVariant}
@@ -433,6 +442,7 @@ function SceneView({
         "galactic-center-neighborhood",
         "milky-way",
         "local-group",
+        "virgo",
       ].includes(scene.id) && (
         <ReferenceBarOverlay
           kind={entryKind ?? (scene.id === "human" ? "reference" : "comparison")}
@@ -445,6 +455,10 @@ function SceneView({
       )}
       {!ready && <div className="loading-state">{translate(state.locale, "loading.scene")}</div>}
       <SceneHUD
+        representativeDepths={representativeDepths}
+        onRepresentativeDepthsChange={setRepresentativeDepths}
+        colorByCatalog={colorByCatalog}
+        onColorByCatalogChange={setColorByCatalog}
         onPreviewStarChange={setPreviewStarId}
         selectedGalaxyId={selectedGalaxyId}
         onSelectedGalaxyIdChange={setSelectedGalaxyId}
