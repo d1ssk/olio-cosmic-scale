@@ -22,7 +22,9 @@ describe("Milky Way physical and display contracts", () => {
     expect(model.sun).toEqual([(8178 * PARSEC_METERS) / KILOPARSEC_METERS, 0, 0]);
     expect(galacticPosition([2, 4, -6], 2)).toEqual([2 / 2, 2, -3]);
     expect(model.center).toEqual([0, 0, 0]);
-    expect(MILKY_WAY_SOURCES).toHaveLength(2);
+    expect(MILKY_WAY_SOURCES.map((source) => source.id)).toEqual(
+      expect.arrayContaining(["esa-galaxy-guide", "gravity-2019-distance"]),
+    );
   });
   it("samples deterministically without exaggerating physical disk thickness or diameter", () => {
     const a = milkyWayModel();

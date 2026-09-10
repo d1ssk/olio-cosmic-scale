@@ -10,6 +10,24 @@ export type SourceInfo = {
 
 export const SOURCES: readonly SourceInfo[] = [
   {
+    id: "bipm-light-second",
+    title: "SI defining constants — speed of light in vacuum",
+    organization: "BIPM",
+    url: "https://www.bipm.org/en/measurement-units/si-defining-constants",
+    accessed: "2026-09-10",
+    notes:
+      "Exact c = 299,792,458 m/s; one SI second gives a 299,792,458 m auxiliary ruler in Earth and Moon. Centered parallel placement and yellow color are display conventions.",
+  },
+  {
+    id: "openspace-milky-way-volume",
+    title: "OpenSpace — Milky Way Volume (NAOJ simulation)",
+    organization: "OpenSpace Team / NAOJ",
+    url: "https://docs.openspaceproject.com/latest/content/milky-way/galaxy/milky-way-volume/index.html",
+    accessed: "2026-09-10",
+    notes:
+      "User-provided version-1 raw asset, downsampled from 1024×1024×128 to 256×256×32 in squared (decoded) space then sqrt-encoded RGBA8. Asset documentation lists MIT and credits Jon Parker, Emil Axelsson, Carter Emmart and OpenSpace Team; see local README/license/manifest. Simulation-based visual model, not a measured Galactic map. Size 1.2e21×1.2e21×0.15e21 m is the volume support, not the 30 kpc scene reference. Rx(pi) Ry(3.1248) Rz(4.45741), then Galactic→scene (-x,z,y). Shader inspected at OpenSpace cfa5b4d12f6fe52c7f3754ed5f590b587494e0e4; simplified physical-length step and tone mapping, no point/halo layers.",
+  },
+  {
     id: "esa-galaxy-guide",
     title: "Guide to our galaxy",
     organization: "ESA",

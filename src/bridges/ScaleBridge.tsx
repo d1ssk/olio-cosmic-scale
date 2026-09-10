@@ -230,11 +230,7 @@ export function ScaleBridge({
                     data-bridge-main-bar={i === index ? "" : undefined}
                     data-bridge-meters={meters}
                     ref={
-                      meters ===
-                      ((originSceneId === "earth" && lower.id === "human") ||
-                      (upper.id === "solar-neighborhood" && !travelingUp)
-                        ? values.at(-1)
-                        : sceneRegistry[originSceneId].referenceLengthMeters)
+                      meters === (travelingUp ? values[0] : values.at(-1))
                         ? entryTargetRef
                         : undefined
                     }

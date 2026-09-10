@@ -10,7 +10,7 @@ This is the handoff after completing the common framework and the first eight hi
 | `earth` — 地球 / Earth                   | Spherical Earth, mean diameter 12,742 km; local NASA monthly texture                                     | Diameter bar beside Earth over the Pacific; ~65.1 km comparison bar alongside it                              |
 | `earth-moon` — 地球と月 / Earth and Moon | Both diameters and adopted mean center distance to the same scale; Moon is a smooth gray sphere          | 384,400 km center-distance bar and the Earth-diameter bar beside Earth                                        |
 | `sun` — 太陽 / Sun                       | Nominal IAU photospheric sphere, local Solar System Scope texture, subtle unlit animated shader          | Solar diameter and mean Earth–Moon distance; direct transfers both directions                                 |
-| `earth-sun` — 地球–太陽系 / Earth–Sun    | Inner preset of the shared world; eight planets and Moon, dated positions and textured physical spheres  | 1 AU persists; solar diameter fades; 100 AU appears on zoom-out                                               |
+| `earth-sun` — 地球と太陽 / Earth and Sun | Inner preset of the shared world; eight planets and Moon, dated positions and textured physical spheres  | 1 AU persists; solar diameter fades; 100 AU appears on zoom-out                                               |
 | `solar-system` — 太陽系 / Solar System   | Outer preset of the same mounted world; 105 AU view, 160 AU manual zoom limit                            | Adopted 100 AU comparison; continuous camera zoom to/from Earth–Sun                                           |
 | `solar-neighborhood`                     | HYG v4.1 subset: 62 entries within 5 pc, catalog color/absolute magnitude display, hover/all labels      | 8 pc and 20,000 AU world-fixed bars; one standalone bridge to Solar System                                    |
 | `galactic-center-neighborhood`           | Galactic bulge at model x=1 kpc; 6,476 deterministic modeled stars, same volume and camera               | Same bars and display rules; lateral comparison without bridge                                                |
@@ -45,7 +45,7 @@ The next scene to implement is **Local Group**. Its predecessor is `milky-way`. 
 
 The committed `public/models/hachiko/hachiko.glb` embeds its geometry and texture; its source/license are alongside it. The Earth JPEG is also committed with NASA attribution. Builds have no dependency on source downloads in `tmp/`; the redundant originals were removed. `scripts/prepare-hachiko.py` remains available if the documented input is obtained again.
 
-At this handoff, the automated suite has 91 passing tests, including stellar coordinate integrity, density sampling, photometry ordering and single-frame bridge reversal. Solar additions cover nominal radius, common normalization, independent JPL J2000 approximate-position fixtures, lunar composition and curve anchors, seasonal distance changes and date limits. Browser smoke checks covered scene and bridge sequencing, non-inherited bar visibility, mobile/portrait layout, reduced motion, physical occlusion, and camera reset. The temporary browser harness is not part of the repository. The production build succeeds with the existing shared Three.js chunk-size warning. No deployment or remote push is part of this handoff.
+At this handoff, the automated suite has 99 passing tests, including stellar coordinate integrity, density sampling, photometry ordering and single-frame bridge reversal. Solar additions cover nominal radius, common normalization, independent JPL J2000 approximate-position fixtures, lunar composition and curve anchors, seasonal distance changes and date limits. Browser smoke checks covered scene and bridge sequencing, non-inherited bar visibility, mobile/portrait layout, reduced motion, physical occlusion, and camera reset. The temporary browser harness is not part of the repository. The production build succeeds with the existing shared Three.js chunk-size warning. No deployment or remote push is part of this handoff.
 
 ## Solar-world continuation notes
 
@@ -60,3 +60,41 @@ Automated checks cover common units, eight planets plus Moon, physical ring inte
 ## Stellar-neighborhood verification
 
 Implemented the two requested stellar scenes; display naming is Galactic bulge / 銀河系バルジ内 to distinguish the chosen x=1 kpc location from Sagittarius A*. See `scenes.md` §7 for all source, sampling, incomplete-catalog, photometry and bar conventions. Browser checks cover default and all labels, hover, sibling camera preservation, forward/reverse bridges, mobile, and reduced motion. Catalog binaries can overlap physically; labels separate without changing their positions. There are no new dependencies, large catalogs or live data calls.
+
+## OpenSpace volume prototype
+
+Milky Way now has a HUD selector for the original simple model and an OpenSpace/NAOJ volume alternative. The volume is now the default, and switching retains the Canvas, camera, 30 kpc rulers and bridge. The served volume is 256×256×32 RGBA8 (8 MiB); the user-supplied 512 MiB original stays under ignored `tmp/`. Preprocessing decodes square-root encoding before averaging. Runtime squares RGBA samples, applies simplified emission/absorption ray marching, and releases the texture on switch/unmount. Points/halo are unused. Data hash, sources, MIT notice and reproduction instructions live in `public/models/milky-way/`.
+
+Validation adds two volume metadata/physical-transform tests (93 app tests total) and four standalone Python/NumPy preprocessing/integrity tests. Browser QA confirms same-camera switching, three dispose/reload cycles (GPU texture count 2→3→2), mobile widths 320/390 px, hidden-bar bridge return, load failure fallback, reduced motion and outgoing navigation. The production build succeeds with the unchanged shared Three.js chunk warning. Apple M2 / Chrome (ANGLE Metal) measured median ~16.7 ms frames for both variants at the default view and for volume edge-on/close views; desktop-emulated 320/390 px viewports also remained ~16.7 ms. These are VSync-limited frame timings, not GPU timings or real-mobile measurements. See `scenes.md` §8 for remaining prototype limitations.
+
+### Volume default and return/stability revision
+
+OpenSpace is now the default on direct entry and bridge return; simple remains selectable. Previous first recovers the default camera framing when needed, then restores/removes bars and transfers the ~490 pc comparison into the single bridge. Bridge Previous continues via 8 pc to the Solar neighborhood. Arrival waits for volume load/error before scene reveal. Camera gestures are disabled throughout departure.
+
+The ray shader uses current render-time matrices, half-voxel samples on a fixed galaxy-centered lattice, and analytic within-cell emission/absorption. This removes full-ray sample redistribution as counts change. Tests: 95 application tests plus the existing four preprocessing tests. Browser checks include current-frame matrix agreement (zero difference), extreme view/hidden-bar returns, both bridge directions, simple selection and reduced-motion mobile. Revised M2/Chrome timings: ~60 fps default, ~30 fps zoomed edge-on; the earlier 60 fps close-view result applied to coarse sampling.
+
+### Physical bridge entry and annotation follow-up
+
+Fixed the missing bridge animation target on Milky Way Previous: the bridge contains ~490 pc, not the scene's 30 kpc reference. Entry now selects the first/last planned physical length by direction. New component tests verify actual Web Animation keyframes, hidden target, post-expansion comparison reveal and lock release across three reverse edges. Total: 98 app tests. Browser measurements confirm ~9.5 px → ~1,233 px continuous expansion at 1440×1000 and onward navigation to the Solar neighborhood.
+
+Sun and center annotations use stable SVG nodes with per-render-frame projection after current camera matrix updates, replacing 20 Hz React-state updates. During a 66-frame orbit check, the Sun leader's anchor matched its current projection with zero pixel error and retained node identity.
+
+### Distribution metadata and display names
+
+The selector now reads “OpenSpace volume” / “Simple model” (Japanese: “OpenSpace volume” / “簡易モデル”), without prototype/original suffixes. The lightweight volume manifest embeds the exact upstream Name, Author, Description, License and URL. `ATTRIBUTION.json` and the full MIT notice accompany the binary; preprocessing also copies both to alternative output directories. The volume details expose OpenSpace Team and MIT License links. Tests verify embedded provenance and copied notices: 99 app tests, five preprocessing tests.
+
+## Camera controls and display name
+
+All SceneHost scenes use the original fixed world-up OrbitControls rotation and damping. There is no custom drag-start or pointer-move rotation handler. Camera memory, reset, pan, cursor zoom, pinch and scene-specific distance/zoom limits remain in place. The Earth–Sun display title is “地球と太陽” / “Earth and Sun”; its stable ID remains `earth-sun`.
+
+## Light-second ruler and stellar annotations
+
+Earth and Moon includes a yellow, parallel 299,792,458 m vacuum light-second auxiliary ruler at the same world-space height as the main red ruler and slightly behind it in the initial view, with bilingual meaning and a BIPM source link. Its physical length uses the shared SI light-speed constant; hidden-bar and bridge-only states suppress it. Solar-neighborhood annotation anchors now update stable SVG nodes on every rendered frame after camera matrix refresh, replacing 20 Hz React state updates; native camera controls are unchanged.
+
+## Direct solar departure
+
+Next skips outer-preset framing and its pause when the entire 100 AU ruler is visible (including depth clipping, at least 2 px). The current projected ruler transfers directly into the bridge. A partially visible ruler retains the existing framing step.
+
+## Famous-star distance table
+
+Solar neighborhood has a right-side triangle toggle opening a scrollable table upward. Seventeen selected stars (HYG v4.1 plus documented Betelgeuse/Deneb estimates) show Earth-distance approximations in ly and pc, sorted nearest first. Only Proxima Centauri, Sirius and Procyon overlap the 3D sample. The six added bright stars have approximate distance labels. Bilingual names, catalog/CC BY-SA attribution and the beyond-5-pc distinction are included. It supports keyboard activation and Escape; mobile places the toggle at the lower right of the canvas.

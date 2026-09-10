@@ -41,7 +41,7 @@ export type SceneHostControls = {
   animateTo: (metadata: SceneMetadata, duration?: number) => Promise<boolean>;
   exitIntent: (
     direction: "previous" | "next",
-  ) => "sun" | "outer-exit" | "outer-preset" | "inner-preset" | null;
+  ) => "sun" | "outer-direct" | "outer-exit" | "outer-preset" | "inner-preset" | null;
   recoveryPreset: () => "earth-sun" | "solar-system" | null;
 };
 
@@ -189,6 +189,7 @@ function CameraController({
     ref,
     () => ({
       exitIntent(direction) {
+        camera.updateMatrixWorld();
         const projectBar = (name: string) => {
           const line = scene.getObjectByName(name)?.children[0] as Line2 | undefined;
           if (!line) return { fraction: 0, pixels: 0 };
@@ -221,6 +222,7 @@ function CameraController({
           outer.fraction * outer.pixels,
           au.fraction,
           au.pixels,
+          outer.fraction,
         );
       },
       recoveryPreset() {
@@ -241,8 +243,10 @@ function CameraController({
         const controls = controlsRef.current;
         if (
           !controls ||
-          !isSolarWorld(metadata.id) ||
-          !isSolarWorld(destination.id) ||
+          !(
+            (isSolarWorld(metadata.id) && isSolarWorld(destination.id)) ||
+            (metadata.id === "milky-way" && destination.id === metadata.id)
+          ) ||
           animation.current
         )
           return Promise.resolve(false);
@@ -261,9 +265,19 @@ function CameraController({
           new Matrix4().lookAt(
             new Vector3(...destination.camera.position),
             new Vector3(...destination.camera.target),
-            camera.up,
+            new Vector3(0, 1, 0),
           ),
         );
+        if (
+          metadata.id === destination.id &&
+          Math.abs(Math.log(fromZoom / toZoom)) < 1e-7 &&
+          fromTarget.distanceTo(new Vector3(...destination.camera.target)) < 1e-7 &&
+          fromRotation.angleTo(toRotation) < 1e-7
+        ) {
+          controls.enabled = true;
+          controls.enableDamping = damping;
+          return Promise.resolve(true);
+        }
         const rotation = new Quaternion();
         const offset = new Vector3();
         const destinationTarget = new Vector3(...destination.camera.target);
@@ -276,6 +290,7 @@ function CameraController({
             rotation.slerpQuaternions(fromRotation, toRotation, eased);
             offset.set(0, 0, distance).applyQuaternion(rotation);
             camera.position.copy(controls.target).add(offset);
+            camera.up.set(0, 1, 0);
             camera.zoom = interpolateSolarZoom(fromZoom, toZoom, progress);
             camera.updateProjectionMatrix();
             controls.update();
@@ -309,6 +324,7 @@ function CameraController({
         controls.update();
       }
       camera.position.fromArray(snapshot.position);
+      camera.up.set(0, 1, 0);
       camera.zoom = snapshot.zoom;
       camera.updateProjectionMatrix();
       if (controls) {

@@ -20,7 +20,7 @@ Avoid categorical wording that hides adopted conventions or representation limit
 
 ## Input and accessibility
 
-Default scene controls are left/one-finger drag to orbit, secondary/modified drag to pan, wheel/pinch to zoom, click/tap to select/focus where supported, Reset for the canonical camera, and Escape to clear selection where applicable. Define camera limits per scene. Avoid blocking page touch scrolling more than needed.
+Default scene controls are left/one-finger drag to orbit, secondary/modified drag to pan, wheel/pinch to zoom, click/tap to select/focus where supported, Reset for the canonical camera, and Escape to clear selection where applicable. All scenes use the original fixed world-up OrbitControls rotation, damping, pan and zoom. Reset restores the canonical camera. Define camera limits per scene. Avoid blocking page touch scrolling more than needed.
 
 Support keyboard navigation, semantic controls and labels, visible focus, readable contrast, touch targets, and `prefers-reduced-motion`. Do not encode scientific categories only by color. Bridge animation reduces or disappears with reduced motion.
 

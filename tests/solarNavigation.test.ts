@@ -34,6 +34,12 @@ describe("solar ruler-driven exits", () => {
     expect(solarExitIntent("next", 0, 0, 0, 10, 1, 60)).toBe("outer-exit");
     expect(solarExitIntent("next", 0, 0, 0, 0, 0.5, 60)).toBe(null);
   });
+  it("skips outer framing only for a wholly visible, resolved 100 AU ruler", () => {
+    expect(solarExitIntent("next", 0, 0, 0, 80, 1, 30, 1)).toBe("outer-direct");
+    expect(solarExitIntent("next", 0, 0, 0, 80, 1, 30, 0.99)).toBe("outer-exit");
+    expect(solarExitIntent("next", 0, 0, 0, 1, 0, 0, 1)).toBe(null);
+    expect(solarExitIntent("previous", 0, 0, 0, 80, 0, 0, 1)).toBe(null);
+  });
   it("fades in a fixed display PSF only when the physical Sun becomes unresolved", () => {
     expect(SOLAR_PSF_DIAMETER_PIXELS).toBe(24);
     expect(solarPointOpacity(100)).toBe(0);

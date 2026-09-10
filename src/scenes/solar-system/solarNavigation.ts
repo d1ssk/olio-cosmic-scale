@@ -23,11 +23,13 @@ export function solarExitIntent(
   outerVisiblePixels: number,
   auFraction = 0,
   auPixels = 0,
+  outerFraction = 0,
 ) {
   if (direction === "previous" && solarFraction > 0.999 && solarOpacity > 0.2 && solarPixels >= 0.5)
     return "sun";
   if (direction === "previous" && auFraction * auPixels >= 2) return "inner-preset";
-  if (direction === "next" && outerVisiblePixels >= 2) return "outer-exit";
+  if (direction === "next" && outerVisiblePixels >= 2)
+    return outerFraction >= 1 - 1e-9 ? "outer-direct" : "outer-exit";
   if (direction === "next" && auFraction > 0.999 && auPixels >= 2) return "outer-preset";
   return null;
 }

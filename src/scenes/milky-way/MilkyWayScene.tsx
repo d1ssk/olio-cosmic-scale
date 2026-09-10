@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useRef } from "react";
+import { lazy, Suspense, useContext, useEffect, useMemo, useRef } from "react";
 import { AdditiveBlending, type ShaderMaterial } from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import type { ScaleSceneProps } from "../types";
@@ -8,7 +8,16 @@ import { GalaxyAnnotations } from "./GalaxyAnnotations";
 import { MILKY_WAY_COMPARISON_METERS } from "./milkyWayData";
 import { milkyWayModel, milkyWayRulers } from "./milkyWayModel";
 
-export default function MilkyWayScene({ metadata, locale, onReady }: ScaleSceneProps) {
+const MilkyWayVolume = lazy(() => import("./MilkyWayVolume"));
+
+export default function MilkyWayScene({
+  metadata,
+  locale,
+  onReady,
+  galaxyVariant = "volume",
+  volumeStatus = "idle",
+  onVolumeStatusChange,
+}: ScaleSceneProps) {
   const visibility = useContext(BarVisibilityContext);
   const model = useMemo(
     () => milkyWayModel(metadata.metersPerSceneUnit),
@@ -23,11 +32,22 @@ export default function MilkyWayScene({ metadata, locale, onReady }: ScaleSceneP
       material.current.uniforms.pointSize.value =
         Math.min(3.5, Math.max(1.2, size.width / 300)) * gl.getPixelRatio();
   });
-  useEffect(() => onReady?.(), [onReady]);
+  useEffect(() => {
+    if (galaxyVariant === "simple" || volumeStatus === "ready" || volumeStatus === "error")
+      onReady?.();
+  }, [onReady, galaxyVariant, volumeStatus]);
   return (
     <group>
       <group visible={visibility.only === null}>
-        <points>
+        {galaxyVariant === "volume" && onVolumeStatusChange && (
+          <Suspense fallback={null}>
+            <MilkyWayVolume
+              metersPerUnit={metadata.metersPerSceneUnit}
+              onStatus={onVolumeStatusChange}
+            />
+          </Suspense>
+        )}
+        <points visible={galaxyVariant === "simple" || volumeStatus !== "ready"}>
           <bufferGeometry>
             <bufferAttribute attach="attributes-position" args={[model.positions, 3]} />
             <bufferAttribute attach="attributes-color" args={[model.colors, 3]} />

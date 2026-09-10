@@ -1,3 +1,4 @@
+import type { GalaxyVariant, VolumeStatus } from "../scenes/milky-way/volumeData";
 import { MILKY_WAY_COMPARISON_METERS } from "../scenes/milky-way/milkyWayData";
 import { STELLAR_COMPARISON_METERS } from "../scenes/stellar-neighborhood/stellarData";
 import { isSolarWorld, isContinuousSolarEdge } from "../scenes/solar-system/solarScale";
@@ -104,7 +105,8 @@ export function App(): React.JSX.Element {
       let from = state.mode.sceneId;
       const exit = isSolarWorld(from) ? sceneRef.current?.exitIntent(direction) : null;
       if (exit === "sun") from = "earth-sun";
-      if (exit === "outer-exit") from = "solar-system";
+      const outerDeparture = exit === "outer-exit" || exit === "outer-direct";
+      if (outerDeparture) from = "solar-system";
       const target = sceneRegistry[from][direction];
       const connected =
         (from === "earth" && target === "earth-moon") ||
@@ -129,9 +131,9 @@ export function App(): React.JSX.Element {
         release();
         return;
       }
-      if (exit === "outer-exit") {
+      if (outerDeparture) {
         setSceneEntry(null);
-        if (!(await sceneRef.current?.zoomToScene("solar-system", 650))) {
+        if (exit === "outer-exit" && !(await sceneRef.current?.zoomToScene("solar-system", 650))) {
           release();
           return;
         }
@@ -140,7 +142,7 @@ export function App(): React.JSX.Element {
         await new Promise<void>((resolve) =>
           requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
         );
-        await transitionDelay(220);
+        if (exit === "outer-exit") await transitionDelay(220);
       }
       const recovery = !exit && isSolarWorld(from) ? sceneRef.current?.recoveryPreset() : null;
       if (recovery) {
@@ -200,7 +202,7 @@ export function App(): React.JSX.Element {
       );
       state.navigateMain(
         direction,
-        exit === "sun" ? "earth-sun" : exit === "outer-exit" ? "solar-system" : undefined,
+        exit === "sun" ? "earth-sun" : outerDeparture ? "solar-system" : undefined,
       );
       if (!bar) release();
     }
@@ -213,8 +215,10 @@ export function App(): React.JSX.Element {
     <div className="app-shell">
       <header className="app-header">
         <div className="brand">
+          <a href="https://d1ssk.github.io/interactive-physics-olio">
+            {translate(state.locale, "app.parentName")}
+          </a>
           <strong>{translate(state.locale, "app.name")}</strong>
-          <span>{translate(state.locale, "app.subtitle")}</span>
         </div>
         <LanguageSwitch locale={state.locale} onChange={state.setLocale} />
       </header>
@@ -302,6 +306,8 @@ function SceneView({
   const [zooming, setZooming] = useState(false);
   const [ready, setReady] = useState(false);
   const [arrived, setArrived] = useState(false);
+  const [galaxyVariant, setGalaxyVariant] = useState<GalaxyVariant>("volume");
+  const [volumeStatus, setVolumeStatus] = useState<VolumeStatus>("idle");
   const [showAllStarLabels, setShowAllStarLabels] = useState(false);
   const [selectedStarId, setSelectedStarId] = useState<number | null>(null);
   const [barsHidden, setBarsHidden] = useState(false);
@@ -333,6 +339,18 @@ function SceneView({
       },
       async prepareDeparture(kind) {
         setDeparting(true);
+        // The physical comparison can be offscreen or edge-on after exploration.
+        // Recover its known frame while the galaxy is still visible, then transfer.
+        if (sceneId === "milky-way" && kind === "comparison") {
+          if (!(await hostRef.current?.animateTo(sceneRegistry[sceneId], 650))) {
+            if (mounted.current) setDeparting(false);
+            return false;
+          }
+          await new Promise<void>((resolve) =>
+            requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+          );
+          if (!mounted.current) return false;
+        }
         setOnlyBar(kind);
         if (barsHidden && kind !== "none") {
           setBarsHidden(false);
@@ -342,14 +360,16 @@ function SceneView({
         return mounted.current;
       },
     }),
-    [barsHidden],
+    [barsHidden, sceneId],
   );
 
   const scene = sceneRegistry[sceneId];
   const Scene = scene.component;
 
   return (
-    <section className={`scene-view ${sceneId}-view ${entryBar && arrived ? "is-arriving" : ""}`}>
+    <section
+      className={`scene-view ${sceneId}-view ${departing ? "is-departing" : ""} ${entryBar && arrived ? "is-arriving" : ""}`}
+    >
       <Suspense
         fallback={<div className="loading-state">{translate(state.locale, "loading.scene")}</div>}
       >
@@ -365,6 +385,9 @@ function SceneView({
             value={{ hidden: barsHidden || Boolean(entryBar && !arrived), only: onlyBar }}
           >
             <Scene
+              galaxyVariant={galaxyVariant}
+              volumeStatus={volumeStatus}
+              onVolumeStatusChange={setVolumeStatus}
               active
               showAllStarLabels={showAllStarLabels}
               selectedStarId={selectedStarId}
@@ -400,6 +423,12 @@ function SceneView({
       )}
       {!ready && <div className="loading-state">{translate(state.locale, "loading.scene")}</div>}
       <SceneHUD
+        galaxyVariant={galaxyVariant}
+        volumeStatus={volumeStatus}
+        onGalaxyVariantChange={(variant) => {
+          setVolumeStatus("idle");
+          setGalaxyVariant(variant);
+        }}
         showAllStarLabels={showAllStarLabels}
         onShowAllStarLabelsChange={setShowAllStarLabels}
         selectedStarId={selectedStarId}

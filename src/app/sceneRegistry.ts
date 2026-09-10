@@ -102,7 +102,7 @@ export const sceneRegistry: Record<SceneId, SceneDefinition> = {
     metersPerSceneUnit: EARTH_DIAMETER_METERS / 10,
     preferredPrimaryUnit: "km",
     secondaryUnits: ["Mm", "m"],
-    camera: { ...perspective, position: [-14, 7, -18], minDistance: 12, maxDistance: 50 },
+    camera: { ...perspective, position: [-14, 0, -18], minDistance: 12, maxDistance: 50 },
     component: EarthScene,
     previous: "human",
     next: "earth-moon",

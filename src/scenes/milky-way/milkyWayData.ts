@@ -14,7 +14,7 @@ export const MILKY_WAY_COMPARISON_METERS = Math.sqrt(
 );
 export const MILKY_WAY_BRIDGE_VALUES = [STELLAR_REFERENCE_METERS, MILKY_WAY_COMPARISON_METERS];
 export const MILKY_WAY_SOURCES = SOURCES.filter((s) =>
-  ["esa-galaxy-guide", "gravity-2019-distance"].includes(s.id),
+  ["esa-galaxy-guide", "gravity-2019-distance", "openspace-milky-way-volume"].includes(s.id),
 );
 // Display conventions: these samples paint a morphology, never count physical stars.
 export const GALAXY_DISPLAY = {

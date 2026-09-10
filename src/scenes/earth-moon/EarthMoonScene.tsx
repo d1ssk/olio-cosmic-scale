@@ -5,6 +5,7 @@ import { translate } from "../../i18n";
 import type { ScaleSceneProps } from "../types";
 import { EARTH_DIAMETER_METERS, EARTH_TEXTURE } from "../earth/earthData";
 import { SceneReferenceBar } from "../shared/SceneReferenceBar";
+import { LIGHT_SECOND_METERS } from "./earthMoonData";
 import { earthMoonModel } from "./earthMoonModel";
 
 export default function EarthMoonScene({
@@ -45,6 +46,21 @@ export default function EarthMoonScene({
         base={model.distanceBarBase}
         direction={[1, 0, 0]}
         labelOffsetY={24}
+      />
+      <SceneReferenceBar
+        metadata={{ ...metadata, referenceLengthMeters: LIGHT_SECOND_METERS }}
+        locale={locale}
+        barName="earth-moon-light-second-bar"
+        barColor="#f2cf66"
+        significantDigits={9}
+        base={model.lightSecondBarBase}
+        direction={[1, 0, 0]}
+        kind="auxiliary"
+        labelAlign="center"
+        labelOffsetY={56}
+        labelOffsetX={(projectedLength) => -Math.min(100, projectedLength / 3)}
+        labelSuffix={translate(locale, "earthMoon.lightSecond")}
+        labelSuffixNewLine
       />
       <SceneReferenceBar
         metadata={{ ...metadata, referenceLengthMeters: EARTH_DIAMETER_METERS }}

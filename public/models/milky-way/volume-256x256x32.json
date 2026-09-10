@@ -1,0 +1,24 @@
+{
+  "upstreamAsset": {
+    "Name": "Milky Way Volume",
+    "Author": "OpenSpace Team",
+    "Description": "Volumetric rendering of Milky Way galaxy based on simulations from NAOJ",
+    "License": "MIT License",
+    "URL": "https://openspaceproject.com"
+  },
+  "attributionFile": "ATTRIBUTION.json",
+  "licenseFile": "LICENSE-OpenSpace.md",
+  "source": "MilkyWayRGBAVolume1024x1024x128.raw",
+  "sourceSha256": "16cf24ed3bf1e3f85d4c64be603b47fa68a3dd8fad7839ae7b7ff17c4bd12d01",
+  "sourceDimensionsXYZ": [1024, 1024, 128],
+  "output": "volume-256x256x32.rgba",
+  "outputSha256": "2aaa285aad0e37f5ce3cf6be6b2e56bddcd22149ef4718212ade7122ffffb713",
+  "dimensionsXYZ": [256, 256, 32],
+  "channels": "RGBA",
+  "type": "uint8",
+  "layout": "Z,Y,X,RGBA (X fastest voxel axis)",
+  "encoding": "sqrt; square all four channels in shader",
+  "reduction": "4x4x4 box mean in decoded linear space, sqrt and round to uint8",
+  "bytes": 8388608,
+  "physicalSizeMetersXYZ": [1.2e21, 1.2e21, 1.5e20]
+}

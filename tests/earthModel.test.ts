@@ -1,3 +1,4 @@
+import { PerspectiveCamera, Vector3 } from "three";
 import {
   EARTH_COMPARISON_METERS,
   HUMAN_EARTH_BRIDGE_VALUES,
@@ -8,6 +9,25 @@ import { earthSceneModel } from "../src/scenes/earth/earthModel";
 import { EARTH_DIAMETER_METERS, EARTH_BAR_CLEARANCE_METERS } from "../src/scenes/earth/earthData";
 
 describe("Earth sphere and diameter", () => {
+  it("projects both polar-axis bars vertically in the default view", () => {
+    const scene = sceneRegistry.earth;
+    const camera = new PerspectiveCamera(45, 16 / 9, scene.camera.near, scene.camera.far);
+    camera.position.fromArray(scene.camera.position);
+    camera.lookAt(new Vector3(...scene.camera.target));
+    camera.updateMatrixWorld();
+    const model = earthSceneModel(scene.metersPerSceneUnit);
+    for (const [base, length] of [
+      [model.barBase, scene.referenceLengthMeters],
+      [model.comparisonBarBase, EARTH_COMPARISON_METERS],
+    ] as const) {
+      const south = new Vector3(...base).project(camera);
+      const north = new Vector3(...base)
+        .add(new Vector3(0, length / scene.metersPerSceneUnit, 0))
+        .project(camera);
+      expect(north.x).toBeCloseTo(south.x, 12);
+      expect(north.y).toBeGreaterThan(south.y);
+    }
+  });
   it("finishes two bridge frames with the same centered physical comparison in Earth", () => {
     expect(HUMAN_EARTH_BRIDGE_VALUES).toHaveLength(3);
     expect(EARTH_COMPARISON_METERS / 1000).toBeCloseTo(65.1, 1);

@@ -1,3 +1,5 @@
+import { StarDistanceTable } from "./StarDistanceTable";
+import type { GalaxyVariant, VolumeStatus } from "../scenes/milky-way/volumeData";
 import { MILKY_WAY_SOURCES } from "../scenes/milky-way/milkyWayData";
 import {
   BULGE_DENSITY_PER_PC3,
@@ -17,6 +19,9 @@ import { HACHIKO_MODEL } from "../scenes/human/humanData";
 import { ScaleReadout } from "./ScaleReadout";
 
 type SceneHUDProps = {
+  galaxyVariant?: GalaxyVariant;
+  volumeStatus?: VolumeStatus;
+  onGalaxyVariantChange?: (variant: GalaxyVariant) => void;
   showAllStarLabels?: boolean;
   onShowAllStarLabelsChange?: (value: boolean) => void;
   selectedStarId?: number | null;
@@ -34,6 +39,9 @@ type SceneHUDProps = {
 };
 
 export function SceneHUD({
+  galaxyVariant = "volume",
+  volumeStatus = "idle",
+  onGalaxyVariantChange,
   showAllStarLabels,
   onShowAllStarLabelsChange,
   selectedStarId,
@@ -82,7 +90,37 @@ export function SceneHUD({
           </Suspense>
         )}
         {scene.id === "milky-way" && (
-          <p className="stellar-summary">{translate(locale, "milkyWay.summary")}</p>
+          <>
+            <label className="galaxy-version-control">
+              {translate(locale, "milkyWay.version")}
+              <select
+                value={galaxyVariant}
+                disabled={transitioning}
+                onChange={(event) => onGalaxyVariantChange?.(event.target.value as GalaxyVariant)}
+              >
+                <option value="simple">{translate(locale, "milkyWay.simple")}</option>
+                <option value="volume">{translate(locale, "milkyWay.volume")}</option>
+              </select>
+            </label>
+            <p className="stellar-summary">
+              {translate(
+                locale,
+                galaxyVariant === "volume" ? "milkyWay.volumeSummary" : "milkyWay.summary",
+              )}
+            </p>
+            {galaxyVariant === "volume" && (
+              <p className="volume-load-status" role="status">
+                {translate(
+                  locale,
+                  volumeStatus === "ready"
+                    ? "milkyWay.volumeReady"
+                    : volumeStatus === "error"
+                      ? "milkyWay.volumeError"
+                      : "milkyWay.volumeLoading",
+                )}
+              </p>
+            )}
+          </>
         )}
         {stellar && (
           <p className="stellar-summary">
@@ -135,6 +173,10 @@ export function SceneHUD({
                     {" · "}
                     <a href={EARTH_MOON_SOURCES.radius} target="_blank" rel="noreferrer">
                       LADEE
+                    </a>
+                    {" · "}
+                    <a href={EARTH_MOON_SOURCES.lightSecond} target="_blank" rel="noreferrer">
+                      BIPM (SI)
                     </a>
                   </span>
                 )}
@@ -196,8 +238,33 @@ export function SceneHUD({
               </>
             ) : scene.id === "milky-way" ? (
               <>
-                <span>{translate(locale, "milkyWay.convention")}</span>
-                {MILKY_WAY_SOURCES.map((source) => (
+                <span>
+                  {translate(
+                    locale,
+                    galaxyVariant === "volume"
+                      ? "milkyWay.volumeConvention"
+                      : "milkyWay.convention",
+                  )}
+                </span>
+                {galaxyVariant === "volume" && (
+                  <span>
+                    <a href="https://openspaceproject.com" target="_blank" rel="noreferrer">
+                      OpenSpace Team
+                    </a>
+                    {" · "}
+                    <a
+                      href={`${import.meta.env.BASE_URL}models/milky-way/LICENSE-OpenSpace.md`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      MIT License
+                    </a>
+                  </span>
+                )}
+                {MILKY_WAY_SOURCES.filter(
+                  (source) =>
+                    galaxyVariant === "volume" || source.id !== "openspace-milky-way-volume",
+                ).map((source) => (
                   <a key={source.id} href={source.url} target="_blank" rel="noreferrer">
                     {source.title}
                   </a>
@@ -232,6 +299,10 @@ export function SceneHUD({
           </div>
         </details>
       </div>
+
+      {scene.id === "solar-neighborhood" && (
+        <StarDistanceTable locale={locale} disabled={transitioning} />
+      )}
 
       <div className="scene-actions">
         {!barsHidden && !transitioning && barPair && (

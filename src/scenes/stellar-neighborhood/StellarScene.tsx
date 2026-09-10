@@ -125,12 +125,12 @@ function StarLabels({
 }) {
   const { camera, size, gl } = useThree();
   const [hovered, setHovered] = useState<number[]>([]);
-  const [labels, setLabels] = useState<Label[]>([]);
-  const elapsed = useRef(0);
+  const groups = useRef(new Map<number, SVGGElement>());
   const point = useMemo(() => new Vector3(), []);
   useEffect(() => {
     const canvas = gl.domElement;
     const move = (event: PointerEvent) => {
+      camera.updateMatrixWorld();
       const rect = canvas.getBoundingClientRect();
       const hits = stars
         .filter((star) => {
@@ -156,10 +156,23 @@ function StarLabels({
       canvas.removeEventListener("pointerleave", leave);
     };
   }, [camera, gl, point, size, stars]);
-  useFrame((_, delta) => {
-    elapsed.current += delta;
-    if (elapsed.current < 1 / 20) return;
-    elapsed.current = 0;
+  const updateLabels = (labels: Label[]) => {
+    for (const group of groups.current.values()) group.style.visibility = "hidden";
+    for (const label of labels) {
+      const group = groups.current.get(label.id);
+      if (!group) continue;
+      group.style.visibility = "visible";
+      group.children[0].setAttribute(
+        "d",
+        `M${label.x},${label.y} L${label.tx - 5},${label.ty - 4} L${label.tx},${label.ty - 4}`,
+      );
+      group.children[1].setAttribute("x", String(label.tx));
+      group.children[1].setAttribute("y", String(label.ty));
+    }
+  };
+  useFrame(() => {
+    // Controls run at priority -1. Project using this frame's camera matrices.
+    camera.updateMatrixWorld();
     const projected = stars
       .filter((star) => all || star.id === 0 || star.id === selected || hovered.includes(star.id))
       .flatMap((star) => {
@@ -195,14 +208,14 @@ function StarLabels({
         }
         return { ...label, ...slots.splice(nearest, 1)[0] };
       });
-      setLabels((previous) =>
-        JSON.stringify(previous) === JSON.stringify(placed) ? previous : placed,
-      );
+      updateLabels(placed);
       return;
     }
     // Keep nearby binary labels separate without moving either physical source.
     const placed: Label[] = [];
-    for (const label of projected.sort((a, b) => a.y - b.y)) {
+    for (const label of projected.sort((a, b) =>
+      a.id === 0 ? -1 : b.id === 0 ? 1 : a.id - b.id,
+    )) {
       const width = Math.min(size.width - 16, label.name.length * 7 + 10);
       label.tx = Math.max(8, Math.min(size.width - width - 8, label.x + 18));
       label.ty = Math.max(16, label.y - 18);
@@ -224,9 +237,7 @@ function StarLabels({
       }
       placed.push(label);
     }
-    setLabels((previous) =>
-      JSON.stringify(previous) === JSON.stringify(placed) ? previous : placed,
-    );
+    updateLabels(placed);
   });
   return (
     <Html
@@ -241,14 +252,18 @@ function StarLabels({
         height={size.height}
         aria-hidden="true"
       >
-        {labels.map((label) => (
-          <g key={label.id} data-star-annotation={label.id}>
-            <path
-              d={`M${label.x},${label.y} L${label.tx - 5},${label.ty - 4} L${label.tx},${label.ty - 4}`}
-            />
-            <text x={label.tx} y={label.ty}>
-              {label.name}
-            </text>
+        {stars.map((star) => (
+          <g
+            key={star.id}
+            data-star-annotation={star.id}
+            ref={(element) => {
+              if (element) groups.current.set(star.id, element);
+              else groups.current.delete(star.id);
+            }}
+            style={{ visibility: "hidden" }}
+          >
+            <path />
+            <text>{star.id === 0 ? translate(locale, "scene.sun.title") : star.name}</text>
           </g>
         ))}
       </svg>

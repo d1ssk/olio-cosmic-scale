@@ -14,6 +14,7 @@ import { referenceLabel } from "./referenceLabel";
 export function SceneReferenceBar({
   metadata,
   barName,
+  barColor,
   base,
   locale,
   visible = true,
@@ -24,13 +25,18 @@ export function SceneReferenceBar({
   screenBottom,
   opacityForExtent,
   labelSuffix,
+  labelSuffixNewLine = false,
+  significantDigits,
   labelOffsetX = 0,
 }: {
   metadata: SceneMetadata;
   barName?: string;
+  barColor?: string;
   base: readonly [number, number, number];
   locale: Locale;
   labelSuffix?: string;
+  labelSuffixNewLine?: boolean;
+  significantDigits?: number;
   labelOffsetX?: number | ((projectedLengthPixels: number) => number);
   visible?: boolean;
   kind?: "reference" | "comparison" | "auxiliary";
@@ -75,9 +81,17 @@ export function SceneReferenceBar({
         formatLength(length(metadata.referenceLengthMeters), {
           unit: metadata.preferredPrimaryUnit,
           locale,
-        }) + (labelSuffix ? ` (${labelSuffix})` : ""),
+          significantDigits,
+        }) + (labelSuffix ? `${labelSuffixNewLine ? "\n" : " "}(${labelSuffix})` : ""),
       ),
-    [metadata.referenceLengthMeters, metadata.preferredPrimaryUnit, locale, labelSuffix],
+    [
+      metadata.referenceLengthMeters,
+      metadata.preferredPrimaryUnit,
+      locale,
+      labelSuffix,
+      labelSuffixNewLine,
+      significantDigits,
+    ],
   );
   const color = useMemo(
     () => getComputedStyle(document.documentElement).getPropertyValue("--accent").trim(),
@@ -177,7 +191,7 @@ export function SceneReferenceBar({
         ref={line}
         transparent
         points={endpoints}
-        color={color}
+        color={barColor ?? color}
         lineWidth={4}
         depthTest
         depthWrite

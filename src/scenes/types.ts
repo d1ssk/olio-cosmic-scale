@@ -1,3 +1,4 @@
+import type { GalaxyVariant, VolumeStatus } from "./milky-way/volumeData";
 import type { ComponentType, LazyExoticComponent } from "react";
 import type { TranslationKey } from "../i18n";
 import type { Locale } from "../i18n";
@@ -45,6 +46,9 @@ export type SceneMetadata = {
 };
 
 export type ScaleSceneProps = {
+  galaxyVariant?: GalaxyVariant;
+  volumeStatus?: VolumeStatus;
+  onVolumeStatusChange?: (status: VolumeStatus) => void;
   observationDate?: string;
   showAllStarLabels?: boolean;
   selectedStarId?: number | null;

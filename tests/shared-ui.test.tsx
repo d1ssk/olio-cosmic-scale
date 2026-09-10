@@ -13,6 +13,32 @@ afterEach(() => {
 });
 
 describe("shared scale UI", () => {
+  it("returns from Milky Way through one manual bridge and retains the 8 pc connecting bar", () => {
+    vi.useFakeTimers();
+    const ref = createRef<BridgeControls>();
+    const complete = vi.fn();
+    const cancel = vi.fn();
+    const view = render(
+      <ScaleBridge
+        ref={ref}
+        originSceneId="milky-way"
+        targetSceneId="solar-neighborhood"
+        locale="en"
+        onComplete={complete}
+        onCancel={cancel}
+      />,
+    );
+    expect(screen.getByRole("status")).toHaveTextContent("1 of 1");
+    act(() => ref.current?.navigate("previous"));
+    const rows = [...view.container.querySelectorAll<HTMLElement>(".length-bar-row")];
+    const retained = rows.find((row) => row.style.opacity === "1");
+    expect(
+      Number(retained?.querySelector<HTMLElement>("[data-bridge-meters]")?.dataset.bridgeMeters),
+    ).toBe(sceneRegistry["solar-neighborhood"].referenceLengthMeters);
+    act(() => vi.advanceTimersByTime(180));
+    expect(complete).toHaveBeenCalledTimes(1);
+    expect(cancel).not.toHaveBeenCalled();
+  });
   it("shows all four base units for every scene", () => {
     for (const scene of Object.values(sceneRegistry)) {
       const view = render(
