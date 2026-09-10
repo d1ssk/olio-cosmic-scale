@@ -1,3 +1,7 @@
+import {
+  STELLAR_BRIDGE_VALUES,
+  STELLAR_COMPARISON_METERS,
+} from "../scenes/stellar-neighborhood/stellarData";
 import { BAR_TIMING, reducedMotion } from "./transitionTiming";
 import {
   useImperativeHandle,
@@ -56,6 +60,8 @@ export function ScaleBridge({
     sceneRegistry[targetSceneId].referenceLengthMeters;
   const values = useMemo(() => {
     if (lower.id === "human" && upper.id === "earth") return HUMAN_EARTH_BRIDGE_VALUES;
+    if (lower.id === "solar-system" && upper.id === "solar-neighborhood")
+      return STELLAR_BRIDGE_VALUES;
     const plan = planBridge({
       fromSceneId: lower.id,
       toSceneId: upper.id,
@@ -205,7 +211,10 @@ export function ScaleBridge({
                 <div className="length-bar-label">
                   <strong>
                     {formatLength(length(meters), {
-                      unit: chooseNaturalUnit(length(meters)),
+                      unit:
+                        meters === STELLAR_COMPARISON_METERS
+                          ? "AU"
+                          : chooseNaturalUnit(length(meters)),
                       locale,
                     })}
                   </strong>
@@ -219,7 +228,8 @@ export function ScaleBridge({
                     data-bridge-meters={meters}
                     ref={
                       meters ===
-                      (originSceneId === "earth" && lower.id === "human"
+                      ((originSceneId === "earth" && lower.id === "human") ||
+                      (upper.id === "solar-neighborhood" && !travelingUp)
                         ? values.at(-1)
                         : sceneRegistry[originSceneId].referenceLengthMeters)
                         ? entryTargetRef

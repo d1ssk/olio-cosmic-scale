@@ -127,9 +127,11 @@ function CameraController({
             originalDistance,
         )
       : 1;
+  const rightGutter =
+    metadata.camera.projection === "orthographic" ? (metadata.camera.rightGutterPixels ?? 0) : 0;
   const fittedZoom =
     metadata.camera.fitToViewport && metadata.camera.projection === "orthographic"
-      ? Math.min(size.width, size.height) /
+      ? Math.min(Math.max(1, size.width - rightGutter), size.height) /
         (metadata.defaultViewportExtentMeters / metadata.metersPerSceneUnit)
       : 60;
   const zoomLimits = solarZoomLimits(size.width, size.height, metadata.metersPerSceneUnit);
@@ -318,16 +320,20 @@ function CameraController({
     [camera],
   );
 
-  const defaultSnapshot = useCallback(
-    (): CameraSnapshot => ({
-      position: metadata.camera.position.map(
-        (value, i) => metadata.camera.target[i] + (value - metadata.camera.target[i]) * fitFactor,
-      ) as [number, number, number],
-      target: metadata.camera.target,
+  const defaultSnapshot = useCallback((): CameraSnapshot => {
+    const position = new Vector3(...metadata.camera.position);
+    const target = new Vector3(...metadata.camera.target);
+    const right = new Vector3()
+      .setFromMatrixColumn(new Matrix4().lookAt(position, target, new Vector3(0, 1, 0)), 0)
+      .multiplyScalar(rightGutter / (2 * fittedZoom));
+    position.sub(target).multiplyScalar(fitFactor).add(target).add(right);
+    target.add(right);
+    return {
+      position: position.toArray() as [number, number, number],
+      target: target.toArray() as [number, number, number],
       zoom: metadata.camera.projection === "orthographic" ? fittedZoom : 1,
-    }),
-    [metadata.camera, fitFactor, fittedZoom],
-  );
+    };
+  }, [metadata.camera, fitFactor, fittedZoom, rightGutter]);
 
   useEffect(() => {
     applySnapshot(cameraStateStore.get(storeKey) ?? defaultSnapshot());
@@ -362,6 +368,8 @@ function CameraController({
       minZoom={isSolarWorld(metadata.id) ? zoomLimits.min : metadata.camera.minZoom}
       maxZoom={isSolarWorld(metadata.id) ? zoomLimits.max : metadata.camera.maxZoom}
       onEnd={saveCamera}
+      // Damping continues after pointer-up; lateral comparisons need the last rendered view.
+      onChange={storeKey === "stellar-neighborhood-comparison" ? saveCamera : undefined}
     />
   );
 }

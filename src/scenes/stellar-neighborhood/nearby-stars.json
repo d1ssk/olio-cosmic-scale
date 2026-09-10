@@ -1,0 +1,498 @@
+[
+  {
+    "id": 0,
+    "name": "Sol",
+    "xyzPc": [5e-6, 0.0, 0.0],
+    "absoluteMagnitude": 4.85,
+    "spectralType": "G2V",
+    "bv": 0.656
+  },
+  {
+    "id": 442,
+    "name": "Gl 1",
+    "xyzPc": [3.448844, 0.081384, -2.633508],
+    "absoluteMagnitude": 10.373,
+    "spectralType": "M2V",
+    "bv": 1.462
+  },
+  {
+    "id": 1240,
+    "name": "GJ 1005A",
+    "xyzPc": [4.779241, 0.32306, -1.385667],
+    "absoluteMagnitude": 13.001,
+    "spectralType": "M:",
+    "bv": 1.75
+  },
+  {
+    "id": 1472,
+    "name": "Groombridge 34",
+    "xyzPc": [2.571275, 0.20667, 2.493057],
+    "absoluteMagnitude": 10.316,
+    "spectralType": "M1V",
+    "bv": 1.56
+  },
+  {
+    "id": 3820,
+    "name": "Van Maanen's Star",
+    "xyzPc": [4.146957, 0.903519, 0.400348],
+    "absoluteMagnitude": 14.222,
+    "spectralType": "DG",
+    "bv": 0.554
+  },
+  {
+    "id": 5632,
+    "name": "Gl 54.1",
+    "xyzPc": [3.353772, 1.097975, -1.078832],
+    "absoluteMagnitude": 14.265,
+    "spectralType": "M5.5Ve",
+    "bv": 1.85
+  },
+  {
+    "id": 8087,
+    "name": "Gl 71",
+    "xyzPc": [3.154083, 1.539508, -1.00226],
+    "absoluteMagnitude": 5.678,
+    "spectralType": "G8V",
+    "bv": 0.727
+  },
+  {
+    "id": 16496,
+    "name": "Ran",
+    "xyzPc": [1.89897, 2.541426, -0.528523],
+    "absoluteMagnitude": 6.183,
+    "spectralType": "K2V",
+    "bv": 0.881
+  },
+  {
+    "id": 19799,
+    "name": "Keid",
+    "xyzPc": [2.179524, 4.432894, -0.66374],
+    "absoluteMagnitude": 5.942,
+    "spectralType": "K1V",
+    "bv": 0.82
+  },
+  {
+    "id": 24129,
+    "name": "Kapteyn's Star",
+    "xyzPc": [0.578997, 2.705174, -2.76822],
+    "absoluteMagnitude": 10.898,
+    "spectralType": "M0V",
+    "bv": 1.543
+  },
+  {
+    "id": 30847,
+    "name": "Ross 614",
+    "xyzPc": [-0.527146, 4.088126, -0.202607],
+    "absoluteMagnitude": 13.042,
+    "spectralType": "M4.5Ve",
+    "bv": 1.69
+  },
+  {
+    "id": 32263,
+    "name": "Sirius",
+    "xyzPc": [-0.494323, 2.476731, -0.758485],
+    "absoluteMagnitude": 1.454,
+    "spectralType": "A0m...",
+    "bv": 0.009
+  },
+  {
+    "id": 36107,
+    "name": "Luyten's Star",
+    "xyzPc": [-1.409549, 3.514856, 0.346358],
+    "absoluteMagnitude": 11.94,
+    "spectralType": "M5",
+    "bv": 1.573
+  },
+  {
+    "id": 37173,
+    "name": "Procyon",
+    "xyzPc": [-1.469312, 3.17617, 0.320024],
+    "absoluteMagnitude": 2.671,
+    "spectralType": "F5IV-V",
+    "bv": 0.432
+  },
+  {
+    "id": 49767,
+    "name": "Gl 380",
+    "xyzPc": [-2.818415, 1.445842, 3.702832],
+    "absoluteMagnitude": 8.161,
+    "spectralType": "K8V",
+    "bv": 1.326
+  },
+  {
+    "id": 53879,
+    "name": "Lalande 21185",
+    "xyzPc": [-1.998, 0.504305, 1.495504],
+    "absoluteMagnitude": 10.46,
+    "spectralType": "M2V",
+    "bv": 1.502
+  },
+  {
+    "id": 54052,
+    "name": "Gl 412A",
+    "xyzPc": [-3.416483, 0.828486, 3.33921],
+    "absoluteMagnitude": 10.392,
+    "spectralType": "M2Vvar",
+    "bv": 1.491
+  },
+  {
+    "id": 57194,
+    "name": "Gl 440",
+    "xyzPc": [-1.955207, 0.122023, -4.170954],
+    "absoluteMagnitude": 13.182,
+    "spectralType": "DC:",
+    "bv": 0.196
+  },
+  {
+    "id": 57375,
+    "name": "Ross 128",
+    "xyzPc": [-3.349892, 0.179372, 0.047111],
+    "absoluteMagnitude": 13.491,
+    "spectralType": "M4.5V",
+    "bv": 1.746
+  },
+  {
+    "id": 70666,
+    "name": "Proxima Centauri",
+    "xyzPc": [-0.472264, -0.361451, -1.151219],
+    "absoluteMagnitude": 15.447,
+    "spectralType": "M5Ve",
+    "bv": 1.807
+  },
+  {
+    "id": 71453,
+    "name": "Toliman",
+    "xyzPc": [-0.495181, -0.413973, -1.156674],
+    "absoluteMagnitude": 5.739,
+    "spectralType": "K1V",
+    "bv": 0.9
+  },
+  {
+    "id": 71456,
+    "name": "Rigil Kentaurus",
+    "xyzPc": [-0.495203, -0.414084, -1.156625],
+    "absoluteMagnitude": 4.379,
+    "spectralType": "G2V",
+    "bv": 0.71
+  },
+  {
+    "id": 80579,
+    "name": "Wolf 1061",
+    "xyzPc": [-1.597477, -3.871023, -0.940865],
+    "absoluteMagnitude": 11.937,
+    "spectralType": "M4",
+    "bv": 1.604
+  },
+  {
+    "id": 82472,
+    "name": "HIP 82724",
+    "xyzPc": [-0.482554, -1.64315, -3.275755],
+    "absoluteMagnitude": 14.011,
+    "spectralType": "Mp",
+    "bv": 1.729
+  },
+  {
+    "id": 82473,
+    "name": "HIP 82725",
+    "xyzPc": [-0.541199, -1.843027, -3.674755],
+    "absoluteMagnitude": 13.632,
+    "spectralType": "",
+    "bv": null
+  },
+  {
+    "id": 85264,
+    "name": "Gl 674",
+    "xyzPc": [-0.422874, -3.073668, -3.314975],
+    "absoluteMagnitude": 11.094,
+    "spectralType": "K5",
+    "bv": 1.553
+  },
+  {
+    "id": 85899,
+    "name": "Gl 687",
+    "xyzPc": [-0.171572, -1.662506, 4.208248],
+    "absoluteMagnitude": 10.87,
+    "spectralType": "M3.5Vvar",
+    "bv": 1.505
+  },
+  {
+    "id": 87665,
+    "name": "Barnard's Star",
+    "xyzPc": [-0.017373, -1.816613, 0.149123],
+    "absoluteMagnitude": 13.235,
+    "spectralType": "sdM4",
+    "bv": 1.57
+  },
+  {
+    "id": 91484,
+    "name": "Struve 2398 A",
+    "xyzPc": [0.334856, -1.773105, 3.079349],
+    "absoluteMagnitude": 11.177,
+    "spectralType": "K5",
+    "bv": 1.504
+  },
+  {
+    "id": 91487,
+    "name": "Struve 2398 B",
+    "xyzPc": [0.324167, -1.716358, 2.980381],
+    "absoluteMagnitude": 12.008,
+    "spectralType": "K5",
+    "bv": 1.561
+  },
+  {
+    "id": 92115,
+    "name": "Ross 154",
+    "xyzPc": [0.585883, -2.652454, -1.200123],
+    "absoluteMagnitude": 13.006,
+    "spectralType": "M3.5Ve",
+    "bv": 1.51
+  },
+  {
+    "id": 103879,
+    "name": "Gl 820A",
+    "xyzPc": [1.979356, -1.863636, 2.181892],
+    "absoluteMagnitude": 7.488,
+    "spectralType": "K5V",
+    "bv": 1.069
+  },
+  {
+    "id": 103883,
+    "name": "Gl 820B",
+    "xyzPc": [1.986273, -1.869789, 2.188742],
+    "absoluteMagnitude": 8.331,
+    "spectralType": "K7V",
+    "bv": 1.309
+  },
+  {
+    "id": 104751,
+    "name": "Lacaille 8760",
+    "xyzPc": [2.330004, -2.003156, -2.476477],
+    "absoluteMagnitude": 8.709,
+    "spectralType": "M1/M2V",
+    "bv": 1.397
+  },
+  {
+    "id": 106098,
+    "name": "Gl 832",
+    "xyzPc": [2.608354, -1.937731, -3.739143],
+    "absoluteMagnitude": 10.185,
+    "spectralType": "M1V",
+    "bv": 1.521
+  },
+  {
+    "id": 108526,
+    "name": "Gl 845",
+    "xyzPc": [1.732589, -0.966715, -3.030307],
+    "absoluteMagnitude": 6.895,
+    "spectralType": "K5V",
+    "bv": 1.056
+  },
+  {
+    "id": 110547,
+    "name": "Kruger 60",
+    "xyzPc": [1.968033, -0.83547, 3.381486],
+    "absoluteMagnitude": 11.579,
+    "spectralType": "M2V",
+    "bv": 1.613
+  },
+  {
+    "id": 112660,
+    "name": "Gl 876",
+    "xyzPc": [4.352933, -1.304309, -1.155222],
+    "absoluteMagnitude": 11.805,
+    "spectralType": "M5",
+    "bv": 1.597
+  },
+  {
+    "id": 113687,
+    "name": "Lacaille 9352",
+    "xyzPc": [2.581532, -0.621353, -1.918773],
+    "absoluteMagnitude": 9.773,
+    "spectralType": "M2/M3V",
+    "bv": 1.483
+  },
+  {
+    "id": 117960,
+    "name": "GJ 1002",
+    "xyzPc": [4.65444, 0.136696, -0.616283],
+    "absoluteMagnitude": 15.39,
+    "spectralType": "M5-5.5",
+    "bv": 1.98
+  },
+  {
+    "id": 117979,
+    "name": "Gl 15B",
+    "xyzPc": [2.557764, 0.20548, 2.479994],
+    "absoluteMagnitude": 13.298,
+    "spectralType": "M6 Ve",
+    "bv": 1.79
+  },
+  {
+    "id": 118079,
+    "name": "Gl 65A",
+    "xyzPc": [2.270499, 1.04697, -0.809963],
+    "absoluteMagnitude": 15.473,
+    "spectralType": "dM5.5e",
+    "bv": 1.85
+  },
+  {
+    "id": 118080,
+    "name": "Gl 65B",
+    "xyzPc": [2.270631, 1.047031, -0.81001],
+    "absoluteMagnitude": 15.603,
+    "spectralType": "dM5.5e",
+    "bv": null
+  },
+  {
+    "id": 118100,
+    "name": "Gl 83.1",
+    "xyzPc": [3.76629, 2.179192, 1.008821],
+    "absoluteMagnitude": 14.029,
+    "spectralType": "dM8  e",
+    "bv": 1.8
+  },
+  {
+    "id": 118236,
+    "name": "GJ 1061",
+    "xyzPc": [1.798507, 2.475398, -3.00808],
+    "absoluteMagnitude": 14.867,
+    "spectralType": "M4.5",
+    "bv": 1.9
+  },
+  {
+    "id": 118428,
+    "name": "Gl 234B",
+    "xyzPc": [-0.526003, 4.078362, -0.201997],
+    "absoluteMagnitude": 16.527,
+    "spectralType": "",
+    "bv": null
+  },
+  {
+    "id": 118441,
+    "name": "Gl 244B",
+    "xyzPc": [-0.494379, 2.476814, -0.75847],
+    "absoluteMagnitude": 11.334,
+    "spectralType": "DA2",
+    "bv": -0.03
+  },
+  {
+    "id": 118493,
+    "name": "Gl 280B",
+    "xyzPc": [-1.462274, 3.161021, 0.31861],
+    "absoluteMagnitude": 12.981,
+    "spectralType": "DA",
+    "bv": null
+  },
+  {
+    "id": 118541,
+    "name": "GJ 1111",
+    "xyzPc": [-1.968452, 2.569351, 1.633464],
+    "absoluteMagnitude": 17.013,
+    "spectralType": "M6.5",
+    "bv": 2.06
+  },
+  {
+    "id": 118583,
+    "name": "GJ 3522",
+    "xyzPc": [-3.107711, 3.136747, 0.657969],
+    "absoluteMagnitude": 12.641,
+    "spectralType": "k",
+    "bv": 1.67
+  },
+  {
+    "id": 118676,
+    "name": "Gl 388",
+    "xyzPc": [-4.17747, 1.956673, 1.667178],
+    "absoluteMagnitude": 10.947,
+    "spectralType": "M4.5Ve",
+    "bv": 1.54
+  },
+  {
+    "id": 118704,
+    "name": "GJ 3618",
+    "xyzPc": [-2.046475, 0.699423, -3.932885],
+    "absoluteMagnitude": 15.66,
+    "spectralType": "m",
+    "bv": 1.82
+  },
+  {
+    "id": 118707,
+    "name": "GJ 3622",
+    "xyzPc": [-4.220385, 1.367034, -0.889411],
+    "absoluteMagnitude": 17.322,
+    "spectralType": "M6.5",
+    "bv": 2.1
+  },
+  {
+    "id": 118720,
+    "name": "Wolf 359",
+    "xyzPc": [-2.282811, 0.649334, 0.292057],
+    "absoluteMagnitude": 16.557,
+    "spectralType": "M6",
+    "bv": 2.0
+  },
+  {
+    "id": 118727,
+    "name": "Gl 412B",
+    "xyzPc": [-3.405436, 0.825166, 3.32765],
+    "absoluteMagnitude": 15.979,
+    "spectralType": "M6  e",
+    "bv": 2.09
+  },
+  {
+    "id": 118830,
+    "name": "Gl 473A",
+    "xyzPc": [-4.208555, -0.615564, 0.675238],
+    "absoluteMagnitude": 14.869,
+    "spectralType": "dM5.5eJ",
+    "bv": 1.83
+  },
+  {
+    "id": 118831,
+    "name": "Gl 473B",
+    "xyzPc": [-4.208555, -0.615564, 0.675238],
+    "absoluteMagnitude": 15.129,
+    "spectralType": "M7",
+    "bv": null
+  },
+  {
+    "id": 119312,
+    "name": "GJ 1245A",
+    "xyzPc": [1.606452, -2.961705, 3.301167],
+    "absoluteMagnitude": 15.042,
+    "spectralType": "M5.5 V e",
+    "bv": 1.9
+  },
+  {
+    "id": 119313,
+    "name": "GJ 1245B",
+    "xyzPc": [1.606668, -2.961587, 3.301168],
+    "absoluteMagnitude": 15.642,
+    "spectralType": "m",
+    "bv": 1.98
+  },
+  {
+    "id": 119505,
+    "name": "Gl 860B",
+    "xyzPc": [1.97065, -0.836546, 3.386059],
+    "absoluteMagnitude": 13.286,
+    "spectralType": "M6 V",
+    "bv": 1.8
+  },
+  {
+    "id": 119518,
+    "name": "EZ Aqr",
+    "xyzPc": [3.069893, -1.139264, -0.895949],
+    "absoluteMagnitude": 15.004,
+    "spectralType": "M5  e",
+    "bv": 1.98
+  },
+  {
+    "id": 119585,
+    "name": "Ross 248",
+    "xyzPc": [2.262649, -0.179022, 2.205274],
+    "absoluteMagnitude": 14.786,
+    "spectralType": "dM6  e",
+    "bv": 1.9
+  }
+]

@@ -1,6 +1,6 @@
 # Scene specifications
 
-Sections 1–6 below describe implemented behavior; sections 7–12 and the Galactic-center sibling describe future scientific scenes currently represented by development placeholders. Establish the exact reference length, viewport, authoritative sources, coordinate frame, and representation mode before implementing each remaining scene.
+Sections 1–7 and the Galactic bulge sibling describe implemented behavior; sections 8–12 describe future scientific scenes currently represented by development placeholders. Establish the exact reference length, viewport, authoritative sources, coordinate frame, and representation mode before implementing each remaining scene.
 
 ## 1. Human
 
@@ -52,11 +52,21 @@ Validation covers nominal dimensions, common normalization, all nine nonsolar bo
 
 ## 7. Solar neighborhood
 
-Use documented catalog-derived 3D positions around the Sun where practical, making parsec-scale separations tangible. Named systems (for example Alpha Centauri, Barnard's Star, or Sirius) are selected from a source, not a handwritten decorative list. This scene owns the lateral comparison described below.
+Reference 8 pc (a comparison length, independent of the 10 pc sampled diameter); default star-area extent 12 pc with a 110 CSS-pixel right gutter for ruler labels; 1 pc per render unit. Display the 62 HYG v4.1 entries with catalog distance ≤5 pc, including the Sun. This older, incomplete catalog is not a complete local stellar census. Preserve binary components at their catalog coordinates, including overlaps. The Sun is exactly at the origin (override HYG's tiny plotting offset). Epoch/equinox J2000; source equatorial (x,y,z) becomes scene (x,z,−y), Y toward celestial north, X toward the vernal equinox. Convert input parsecs to canonical SI meters before normalization. No proper-motion propagation. The small committed subset is CC BY-SA 4.0, David Nash / Astronexus, reproduced by `scripts/prepare-nearby-stars.py` from the documented HYG CSV. Source metadata lives in `stellarData.ts`.
 
-### Galactic-center neighborhood sibling
+Use additive Gaussian core/halo points like the unresolved solar display, with a fixed 24 CSS-pixel footprint at every zoom. They mark positions, not physical stellar diameters. Adopt an approximate B−V display palette, falling back to spectral class and then solar-like neutral color. Compress absolute V magnitudes monotonically for visible brightness; do not claim flux calibration, spectral integration, extinction, or a view from a physical observer. The shader and display mapping are shared by both stellar scenes.
 
-Compare stellar number density at exactly the same scale. Preserve viewport, camera, projection, zoom, orientation, point sizes, sampling, labels, and scale bar. Use no bridge; a short lateral slide/crossfade is acceptable. Apply all density-honesty requirements in the scientific guidelines.
+Sun has a persistent annotation. Hover/tap identifies all catalog entries within 10 CSS pixels (including close binaries). A checkbox enables every in-view name; screen-space leader endpoints remain at true positions while label placement avoids collisions. An accessible select offers all catalog names independently of pointer precision. Names outside the viewport are not pinned to invented positions. Default camera faces +Z toward the Sun; common controls support rotation, pan, zoom and reset.
+
+Two physical Y-parallel rulers lie beside the sampled sphere in the XY plane, centered on Y=0: the 8 pc reference at X=5.2 pc and the 20,000 AU comparison at X=5.6 pc. Their orientation is derived from the default camera’s screen-up basis, perpendicular to its viewing direction, and then fixed in world coordinates. Interactive orbiting never rotates the rulers to face the camera. Both numeric labels sit to the right of their rulers, away from the star sample in the default view. The host fits the star area and reserves a right gutter at startup/reset, so labels fit on mobile; both siblings share this framing. The smaller length is a user-adopted exact 20,000 AU comparison (1:200 from 100 AU). Solar System ↔ neighborhood now has only one standalone comparison (100 AU → 20,000 AU). Next transfers that same bar into the neighborhood over 1000 ms and reveals the stars/reference bar; reverse restores the comparison, removes the scene, and enlarges it back into the bridge. Other bridge edges retain their own lengths. Reduced motion skips visual delays. Arrival snapshots are consumed after the reveal, so a later lateral return never replays a bridge transfer.
+
+### Galactic bulge sibling
+
+Keep the stable `galactic-center-neighborhood` ID, but display “銀河系バルジ内 / Inside the Galactic bulge”; the lateral button names its destination. This is an independent same-scale scene, not a main hierarchy level or a physical continuation of the local star map. Preserve camera memory, projection, zoom, viewport, sampled radius, shader, photometric display convention, and both 3D rulers.
+
+Adopt (x,y,z)=(1,0,0) kpc in the analytic model axes of Balbi, Hami & Kovačević (2020), §3.2, equations 2–5, DOI 10.3390/life10080132. The bulge-plus-disk number density is ~12.4 stars/pc³; approximate it as constant over the 5 pc radius sample. Render round(density × volume)=6,476 stars using fixed-seed uniform-volume sampling (cube-root radius), one point per modeled star without thinning. Random positions are not observed stars. Reuse nearby-catalog colors/magnitudes as explicitly disclosed display templates, not as a measured bulge luminosity function. The older local catalog's raw count must not be presented as a measured density ratio. This volume is not a physical star cluster boundary.
+
+This location is distinct from the nuclear star cluster at Sagittarius A*. A third sibling centered on Sagittarius A* is feasible but remains unimplemented: it needs a separately sourced nuclear-cluster density profile, explicit sampling weights and treatment of unknown line-of-sight coordinates; the black hole itself would be a labeled subpixel position at this scale. Do not reuse this bulge density as the nuclear density.
 
 ## 8. Milky Way
 

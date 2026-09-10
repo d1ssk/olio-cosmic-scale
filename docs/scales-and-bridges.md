@@ -12,8 +12,8 @@ These centralized defaults scaffold the ladder; several are adopted conventions 
 | `sun`                          |        1.3914 million km | Gm        | nominal photospheric diameter (IAU 2015 B3) |
 | `earth-sun`                    |                     1 AU | AU        | separation convention                       |
 | `solar-system`                 |                   100 AU | AU        | adopted comparison span                     |
-| `solar-neighborhood`           |                    10 pc | pc        | provisional full span                       |
-| `galactic-center-neighborhood` |                    10 pc | pc        | same scale as sibling                       |
+| `solar-neighborhood`           |                     8 pc | pc        | adopted comparison length                   |
+| `galactic-center-neighborhood` |                     8 pc | pc        | same scale as sibling                       |
 | `milky-way`                    |                   30 kpc | kpc       | representative stellar disk diameter        |
 | `local-group`                  |                    3 Mpc | Mpc       | provisional extent                          |
 | `virgo`                        |                 16.5 Mpc | Mpc       | provisional Local Group–Virgo distance      |
@@ -49,7 +49,7 @@ type BridgeConfig = {
 };
 ```
 
-Automatic steps use geometric spacing: choose the smallest step count satisfying the ratio cap, then use the same multiplicative ratio at every step. Do not round stored intermediate lengths. The active scene edges have no manual milestones, so ratios stay balanced across each full transition.
+Automatic steps use geometric spacing: choose the smallest step count satisfying the ratio cap, then use the same multiplicative ratio at every step. Do not round stored intermediate lengths. Solar System–Solar neighborhood uses the user-adopted 20,000 AU intermediate length across viewport sizes (a 1:200 step from 100 AU); only the first comparison is standalone, with the final comparison inside the neighborhood.
 
 Support both automatic planning and per-transition `bridgeMilestones`. Manual milestones remain subject to legibility: the planner may fill an overlarge segment rather than producing an invisible bar.
 
@@ -74,7 +74,7 @@ Cover modest and large ratios, responsive widths, manual milestones, and exact f
 
 - Human → Earth uses two bridge screens plus an in-scene Earth comparison, with the 1:200 cap, each about 1:195.7.
 - Earth → Earth and Moon → Sun and Sun → 1 AU may need only a direct frame when legible.
-- Solar System → Solar neighborhood uses equal-ratio automatic comparisons.
+- Solar System → Solar neighborhood uses one standalone 100 AU → 20,000 AU comparison; the final ~1:82.5 comparison is in the scene, with an exact world-fixed small ruler and reversible transfer.
 - Solar neighborhood → Milky Way uses equal-ratio automatic comparisons.
 - Local Group → Virgo needs no artificial decade.
 - Virgo → BAO is moderate.

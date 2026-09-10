@@ -1,4 +1,17 @@
 export const en = {
+  "stellar.allLabels": "Label all stars",
+  "stellar.select": "Find a star",
+  "stellar.hover": "Hover or tap a star",
+  "stellar.localSummary": "Radius 5 pc \u00b7 {count} catalog entries \u00b7 Incomplete census",
+  "stellar.bulgeSummary":
+    "Radius 5 pc \u00b7 {count} modeled stars \u00b7 {density} stars/pc\u00b3 \u00b7 One point per star",
+  "stellar.display":
+    "Light points have a fixed 24 px footprint, like the distant Sun; they are not stellar diameters. Color approximates catalog B\u2212V (spectral class fallback); absolute V magnitudes set compressed display brightness. This orthographic map does not reproduce apparent flux, exposure or extinction.",
+  "stellar.catalog":
+    "HYG v4.1: Sun-centered, epoch/equinox J2000. X points to the vernal equinox, Y to celestial north, \u2212Z to RA 6h. All 62 entries within 5 pc are retained, including catalog binary components; positions are not separated artificially. This older catalog is incomplete, so point counts do not measure the true local density. Unknown photometry uses a neutral solar-like color. The small ruler is 20,000 AU; both rulers are fixed in 3D.",
+  "stellar.model":
+    "A local volume 1 kpc from the Galactic center, on the x axis of the Balbi et al. (2020) bulge model. Equations 2\u20135 give bulge + disk number density, approximated as uniform within 5 pc. Positions are seeded random samples, one point per modeled star, with no thinning. Colors and luminosities reuse the nearby sample for display consistency; they are not a measured bulge population. The camera, volume, point rendering and rulers match the Solar neighborhood. This is not the nuclear star cluster around Sagittarius A*.",
+
   "hud.description": "Model and scene details",
   "hud.barRatio": "Bar length ratio 1 : {ratio}",
   "solar.sunDiameter": "Sun diameter",
@@ -32,7 +45,7 @@ export const en = {
   "action.previous": "Previous scale",
   "action.next": "Next scale",
   "action.reset": "Reset view",
-  "action.compare": "Compare same scale",
+  "action.compare": "Go to Galactic bulge",
   "action.return": "Return to Solar neighborhood",
   "language.label": "Language",
   "language.ja": "日本語",
@@ -61,7 +74,7 @@ export const en = {
   "scene.earthSun.title": "Earth–Sun system",
   "scene.solarSystem.title": "Solar System",
   "scene.solarNeighborhood.title": "Solar neighborhood",
-  "scene.galacticCenterNeighborhood.title": "Galactic-center neighborhood",
+  "scene.galacticCenterNeighborhood.title": "Inside the Galactic bulge",
   "scene.milkyWay.title": "Milky Way",
   "scene.localGroup.title": "Local Group",
   "scene.virgo.title": "Virgo environment",
@@ -73,7 +86,7 @@ export const en = {
   "origin.earthSun": "Heliocentric reference frame",
   "origin.solarSystem": "Heliocentric reference frame",
   "origin.solarNeighborhood": "Heliocentric stellar frame",
-  "origin.galacticCenterNeighborhood": "Galactic-center local frame",
+  "origin.galacticCenterNeighborhood": "Stellar density model, 1 kpc from the Galactic center",
   "origin.milkyWay": "Galactocentric reference frame",
   "origin.localGroup": "Local Group reference frame (provisional)",
   "origin.virgo": "Local large-scale reference frame (provisional)",

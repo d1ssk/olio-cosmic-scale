@@ -46,7 +46,7 @@ describe("shared scale UI", () => {
     const navigate = vi.fn();
     render(<ScaleAxis sceneId="human" locale="en" onNavigate={navigate} />);
     const solar = screen.getByRole("button", { name: /^Solar neighborhood/ });
-    const center = screen.getByRole("button", { name: /^Galactic-center neighborhood/ });
+    const center = screen.getByRole("button", { name: /^Inside the Galactic bulge/ });
     expect(solar.style.left).toBe(center.style.left);
     expect(parseFloat(solar.style.left)).toBeCloseTo(
       (Math.log10(sceneRegistry["solar-neighborhood"].referenceLengthMeters) / 27) * 100,
@@ -136,4 +136,29 @@ describe("shared scale UI", () => {
       expect(complete).toHaveBeenCalledTimes(1);
     },
   );
+});
+
+it.each([
+  ["solar-system", "solar-neighborhood", "next"],
+  ["solar-neighborhood", "solar-system", "previous"],
+  ["galactic-center-neighborhood", "solar-system", "previous"],
+] as const)("has just one reversible stellar bridge for %s → %s", (origin, target, direction) => {
+  vi.useFakeTimers();
+  const complete = vi.fn();
+  const ref = createRef<BridgeControls>();
+  render(
+    <ScaleBridge
+      ref={ref}
+      originSceneId={origin}
+      targetSceneId={target}
+      locale="en"
+      onComplete={complete}
+      onCancel={vi.fn()}
+    />,
+  );
+  expect(screen.getByRole("status")).toHaveTextContent("1 of 1");
+  expect(screen.getByText("20,000 AU")).toBeInTheDocument();
+  act(() => ref.current?.navigate(direction));
+  act(() => vi.advanceTimersByTime(180));
+  expect(complete).toHaveBeenCalledOnce();
 });

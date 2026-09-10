@@ -1,3 +1,4 @@
+import { STELLAR_COMPARISON_METERS } from "../scenes/stellar-neighborhood/stellarData";
 import { isSolarWorld, isContinuousSolarEdge } from "../scenes/solar-system/solarScale";
 import { cameraStateStore, cameraStateKey } from "./cameraState";
 import type { SceneHostControls } from "../scenes/shared/SceneHost";
@@ -50,20 +51,41 @@ export function App(): React.JSX.Element {
     kind: "reference" | "comparison";
     delay?: number;
   } | null>(null);
+  const completeSceneArrival = useCallback(() => {
+    // A bridge snapshot belongs to one arrival, never a later sibling visit.
+    setSceneEntry(null);
+    release();
+  }, [release]);
   const finishBridge = (complete: boolean) => {
     if (state.mode.kind !== "bridge") return;
     const sceneId = complete ? state.mode.targetSceneId : state.mode.originSceneId;
-    const bar =
-      sceneId === "earth" || sceneId === "human" || sceneId === "solar-system"
-        ? captureBridgeBar(
-            sceneId === "earth"
-              ? EARTH_COMPARISON_METERS
+    const stellarArrival =
+      ["solar-neighborhood", "galactic-center-neighborhood"].includes(sceneId) &&
+      [state.mode.originSceneId, state.mode.targetSceneId].includes("solar-system");
+    const bar = [
+      "earth",
+      "human",
+      "solar-system",
+      "solar-neighborhood",
+      "galactic-center-neighborhood",
+    ].includes(sceneId)
+      ? captureBridgeBar(
+          sceneId === "earth"
+            ? EARTH_COMPARISON_METERS
+            : stellarArrival
+              ? STELLAR_COMPARISON_METERS
               : sceneRegistry[sceneId].referenceLengthMeters,
-          )
-        : null;
+        )
+      : null;
     setBusy(Boolean(bar));
     setSceneEntry(
-      bar ? { sceneId, bar, kind: sceneId === "earth" ? "comparison" : "reference" } : null,
+      bar
+        ? {
+            sceneId,
+            bar,
+            kind: sceneId === "earth" || stellarArrival ? "comparison" : "reference",
+          }
+        : null,
     );
     if (complete) state.completeBridge();
     else state.cancelBridge();
@@ -133,7 +155,14 @@ export function App(): React.JSX.Element {
       )
         ? "none"
         : (from === "earth" && direction === "previous") ||
-            (["earth-moon", "sun", "earth-sun"].includes(from) && direction === "previous")
+            ([
+              "earth-moon",
+              "sun",
+              "earth-sun",
+              "solar-neighborhood",
+              "galactic-center-neighborhood",
+            ].includes(from) &&
+              direction === "previous")
           ? "comparison"
           : "reference";
       if (!(await sceneRef.current?.prepareDeparture(keep))) {
@@ -153,7 +182,15 @@ export function App(): React.JSX.Element {
             }
           : null,
       );
-      setEntryBar(captureReferenceBar(state.mode.sceneId === "earth" ? "comparison" : "reference"));
+      setEntryBar(
+        captureReferenceBar(
+          ["earth", "solar-neighborhood", "galactic-center-neighborhood"].includes(
+            state.mode.sceneId,
+          ) && direction === "previous"
+            ? "comparison"
+            : "reference",
+        ),
+      );
       state.navigateMain(
         direction,
         exit === "sun" ? "earth-sun" : exit === "outer-exit" ? "solar-system" : undefined,
@@ -192,7 +229,7 @@ export function App(): React.JSX.Element {
             observationDate={observationDate}
             onObservationDateChange={setObservationDate}
             ref={sceneRef}
-            onArrivalComplete={release}
+            onArrivalComplete={completeSceneArrival}
             key={isSolarWorld(state.mode.sceneId) ? "solar-world" : state.mode.sceneId}
             sceneId={state.mode.sceneId}
             entryKind={sceneEntry?.kind}
@@ -258,6 +295,8 @@ function SceneView({
   const [zooming, setZooming] = useState(false);
   const [ready, setReady] = useState(false);
   const [arrived, setArrived] = useState(false);
+  const [showAllStarLabels, setShowAllStarLabels] = useState(false);
+  const [selectedStarId, setSelectedStarId] = useState<number | null>(null);
   const [barsHidden, setBarsHidden] = useState(false);
   const [onlyBar, setOnlyBar] = useState<BarKind | "none" | null>(null);
   const [departing, setDeparting] = useState(false);
@@ -320,6 +359,8 @@ function SceneView({
           >
             <Scene
               active
+              showAllStarLabels={showAllStarLabels}
+              selectedStarId={selectedStarId}
               observationDate={observationDate}
               locale={state.locale}
               metadata={scene}
@@ -330,7 +371,16 @@ function SceneView({
           </BarVisibilityContext>
         </SceneHost>
       </Suspense>
-      {["human", "earth", "earth-moon", "sun", "earth-sun", "solar-system"].includes(scene.id) && (
+      {[
+        "human",
+        "earth",
+        "earth-moon",
+        "sun",
+        "earth-sun",
+        "solar-system",
+        "solar-neighborhood",
+        "galactic-center-neighborhood",
+      ].includes(scene.id) && (
         <ReferenceBarOverlay
           kind={entryKind ?? (scene.id === "human" ? "reference" : "comparison")}
           delay={entryDelay}
@@ -342,6 +392,10 @@ function SceneView({
       )}
       {!ready && <div className="loading-state">{translate(state.locale, "loading.scene")}</div>}
       <SceneHUD
+        showAllStarLabels={showAllStarLabels}
+        onShowAllStarLabelsChange={setShowAllStarLabels}
+        selectedStarId={selectedStarId}
+        onSelectedStarIdChange={setSelectedStarId}
         barPair={barPair}
         observationDate={observationDate}
         onObservationDateChange={onObservationDateChange}

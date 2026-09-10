@@ -1,3 +1,4 @@
+import { STELLAR_REFERENCE_METERS } from "../scenes/stellar-neighborhood/stellarData";
 import {
   SOLAR_METERS_PER_UNIT,
   SOLAR_PRESET_CAMERA_POSITION,
@@ -18,6 +19,8 @@ import {
   PARSEC_METERS,
 } from "../physics/constants";
 import type { SceneDefinition, SceneId } from "../scenes/types";
+
+const StellarScene = lazy(() => import("../scenes/stellar-neighborhood/StellarScene"));
 
 const SunScene = lazy(() => import("../scenes/sun/SunScene"));
 const EarthSunScene = lazy(() => import("../scenes/earth-sun/EarthSunScene"));
@@ -187,13 +190,20 @@ export const sceneRegistry: Record<SceneId, SceneDefinition> = {
     kind: "scene",
     titleKey: "scene.solarNeighborhood.title",
     originDescriptionKey: "origin.solarNeighborhood",
-    referenceLengthMeters: 10 * PARSEC_METERS,
+    referenceLengthMeters: STELLAR_REFERENCE_METERS,
     defaultViewportExtentMeters: 12 * PARSEC_METERS,
     metersPerSceneUnit: PARSEC_METERS,
     preferredPrimaryUnit: "pc",
     secondaryUnits: ["ly", "AU"],
-    camera: orthographic,
-    component: PlaceholderScene,
+    camera: {
+      ...orthographic,
+      position: [0, 0, 20],
+      fitToViewport: true,
+      rightGutterPixels: 110,
+      minZoom: 5,
+      maxZoom: 600,
+    },
+    component: StellarScene,
     previous: "solar-system",
     next: "milky-way",
     lateralSibling: "galactic-center-neighborhood",
@@ -203,13 +213,20 @@ export const sceneRegistry: Record<SceneId, SceneDefinition> = {
     kind: "scene",
     titleKey: "scene.galacticCenterNeighborhood.title",
     originDescriptionKey: "origin.galacticCenterNeighborhood",
-    referenceLengthMeters: 10 * PARSEC_METERS,
+    referenceLengthMeters: STELLAR_REFERENCE_METERS,
     defaultViewportExtentMeters: 12 * PARSEC_METERS,
     metersPerSceneUnit: PARSEC_METERS,
     preferredPrimaryUnit: "pc",
     secondaryUnits: ["ly", "AU"],
-    camera: orthographic,
-    component: PlaceholderScene,
+    camera: {
+      ...orthographic,
+      position: [0, 0, 20],
+      fitToViewport: true,
+      rightGutterPixels: 110,
+      minZoom: 5,
+      maxZoom: 600,
+    },
+    component: StellarScene,
     previous: "solar-system",
     next: "milky-way",
     lateralSibling: "solar-neighborhood",

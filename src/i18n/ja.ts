@@ -1,6 +1,18 @@
 import type { TranslationKey } from "./index";
 
 export const ja: Record<TranslationKey, string> = {
+  "stellar.allLabels": "すべての星に名前を表示",
+  "stellar.select": "星を選択",
+  "stellar.hover": "星にカーソルを合わせる／タップ",
+  "stellar.localSummary": "半径5 pc · カタログの{count}天体 · 網羅的な星の一覧ではありません",
+  "stellar.bulgeSummary": "半径5 pc · モデルの星{count}個 · {density}個/pc³ · 1光点＝1個のモデル星",
+  "stellar.display":
+    "遠方の太陽と同様の光点表示です。光の範囲は画面上24 pxで、星の直径ではありません。色はカタログのB−V色指数（欠測時はスペクトル型）から近似し、明るさは絶対V等級の差を圧縮して表現しています。正投影の地図であり、見かけの光束・露出・星間減光は再現していません。",
+  "stellar.catalog":
+    "HYG v4.1の半径5 pc以内の62天体を収録。太陽中心・元期／分点J2000で、Xは春分点、Yは天の北極、−Zは赤経6時方向です。連星成分も収録座標のまま表示し、見やすさのために引き離していません。古いカタログで未収録の星があるため、光点の数から真の近傍密度は求められません。色情報がない星は太陽に近い中性色です。小さい棒は20,000 AU。2本とも3D空間に固定されています。",
+  "stellar.model":
+    "Balbiほか（2020）のモデルのx軸上、銀河中心から1 kpcの場所を採用。式2〜5のバルジ＋円盤の恒星数密度を、半径5 pc内では一様と近似しています。固定乱数の位置に、1光点＝1個のモデル星として間引かず配置。色・明るさは表示条件を揃えるため近傍カタログから再標本化したもので、バルジの実測星種構成ではありません。体積・カメラ・光点の表示規則・比較棒は太陽系近傍と共通です。いて座A*周囲の核星団ではありません。",
+
   "hud.description": "モデル・シーンの説明",
   "hud.barRatio": "棒の長さ比 1 : {ratio}",
   "solar.sunDiameter": "太陽直径",
@@ -33,8 +45,8 @@ export const ja: Record<TranslationKey, string> = {
   "action.previous": "前のスケールへ",
   "action.next": "次のスケールへ",
   "action.reset": "視点をリセット",
-  "action.compare": "同じスケールで比較",
-  "action.return": "太陽近傍へ戻る",
+  "action.compare": "銀河系バルジ内へ",
+  "action.return": "太陽系近傍へ戻る",
   "language.label": "言語",
   "language.ja": "日本語",
   "language.en": "English",
@@ -61,8 +73,8 @@ export const ja: Record<TranslationKey, string> = {
   "scene.sun.title": "太陽",
   "scene.earthSun.title": "地球–太陽系",
   "scene.solarSystem.title": "太陽系",
-  "scene.solarNeighborhood.title": "太陽近傍",
-  "scene.galacticCenterNeighborhood.title": "銀河中心近傍",
+  "scene.solarNeighborhood.title": "太陽系近傍",
+  "scene.galacticCenterNeighborhood.title": "銀河系バルジ内",
   "scene.milkyWay.title": "天の川銀河",
   "scene.localGroup.title": "局所銀河群",
   "scene.virgo.title": "おとめ座銀河団周辺",
@@ -74,7 +86,7 @@ export const ja: Record<TranslationKey, string> = {
   "origin.earthSun": "太陽中心基準系",
   "origin.solarSystem": "太陽中心基準系",
   "origin.solarNeighborhood": "太陽中心の恒星座標系",
-  "origin.galacticCenterNeighborhood": "銀河中心付近の局所座標系",
+  "origin.galacticCenterNeighborhood": "銀河中心から1 kpc離れた場所の恒星密度モデル",
   "origin.milkyWay": "銀河中心基準系",
   "origin.localGroup": "局所銀河群の基準系（暫定）",
   "origin.virgo": "局所大規模構造の基準系（暫定）",

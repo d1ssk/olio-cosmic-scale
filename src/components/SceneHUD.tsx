@@ -1,3 +1,9 @@
+import {
+  BULGE_DENSITY_PER_PC3,
+  BULGE_STAR_COUNT,
+  NEARBY_STARS,
+  STELLAR_SOURCES,
+} from "../scenes/stellar-neighborhood/stellarData";
 import { lazy, Suspense } from "react";
 import { SUN_TEXTURE } from "../scenes/sun/sunData";
 const EphemerisControls = lazy(() => import("../scenes/earth-sun/EphemerisControls"));
@@ -10,6 +16,10 @@ import { HACHIKO_MODEL } from "../scenes/human/humanData";
 import { ScaleReadout } from "./ScaleReadout";
 
 type SceneHUDProps = {
+  showAllStarLabels?: boolean;
+  onShowAllStarLabelsChange?: (value: boolean) => void;
+  selectedStarId?: number | null;
+  onSelectedStarIdChange?: (value: number | null) => void;
   barPair?: readonly [number, number] | null;
   observationDate: string;
   onObservationDateChange: (value: string) => void;
@@ -23,6 +33,10 @@ type SceneHUDProps = {
 };
 
 export function SceneHUD({
+  showAllStarLabels,
+  onShowAllStarLabelsChange,
+  selectedStarId,
+  onSelectedStarIdChange,
   barPair,
   observationDate,
   onObservationDateChange,
@@ -34,6 +48,7 @@ export function SceneHUD({
   onBarsHiddenChange,
   transitioning,
 }: SceneHUDProps): React.JSX.Element {
+  const stellar = scene.id === "solar-neighborhood" || scene.id === "galactic-center-neighborhood";
   const level = hierarchyPosition(scene.id);
   return (
     <aside className="scene-hud">
@@ -53,7 +68,7 @@ export function SceneHUD({
       />
 
       <div
-        className={`scene-status ${["human", "earth", "earth-moon", "sun", "earth-sun", "solar-system"].includes(scene.id) ? "human-status" : ""}`}
+        className={`scene-status ${["human", "earth", "earth-moon", "sun", "earth-sun", "solar-system", "solar-neighborhood", "galactic-center-neighborhood"].includes(scene.id) ? "human-status" : ""}`}
       >
         {(scene.id === "earth-sun" || scene.id === "solar-system") && (
           <Suspense fallback={null}>
@@ -64,6 +79,21 @@ export function SceneHUD({
               disabled={transitioning}
             />
           </Suspense>
+        )}
+        {stellar && (
+          <p className="stellar-summary">
+            {translate(
+              locale,
+              scene.id === "solar-neighborhood" ? "stellar.localSummary" : "stellar.bulgeSummary",
+              {
+                count: (scene.id === "solar-neighborhood"
+                  ? NEARBY_STARS.length
+                  : BULGE_STAR_COUNT
+                ).toLocaleString(locale),
+                density: BULGE_DENSITY_PER_PC3.toFixed(1),
+              },
+            )}
+          </p>
         )}
         <details className="scene-description">
           <summary>{translate(locale, "hud.description")}</summary>
@@ -160,6 +190,28 @@ export function SceneHUD({
                   </span>
                 )}
               </>
+            ) : stellar ? (
+              <>
+                <span>{translate(locale, "stellar.display")}</span>
+                <span>
+                  {translate(
+                    locale,
+                    scene.id === "solar-neighborhood" ? "stellar.catalog" : "stellar.model",
+                  )}
+                </span>
+                {STELLAR_SOURCES.map((source) => (
+                  <a key={source.id} href={source.url} target="_blank" rel="noreferrer">
+                    {source.title}
+                  </a>
+                ))}
+                <a
+                  href="https://creativecommons.org/licenses/by-sa/4.0/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  HYG · CC BY-SA 4.0
+                </a>
+              </>
             ) : (
               <span>{translate(locale, "hud.placeholder")}</span>
             )}
@@ -178,6 +230,38 @@ export function SceneHUD({
             })}
           </span>
         )}
+        {scene.id === "solar-neighborhood" && (
+          <div className="stellar-label-controls">
+            <label className="hide-scale-bars">
+              <input
+                type="checkbox"
+                checked={showAllStarLabels ?? false}
+                disabled={transitioning}
+                onChange={(event) => onShowAllStarLabelsChange?.(event.target.checked)}
+              />
+              {translate(locale, "stellar.allLabels")}
+            </label>
+            <label className="stellar-picker">
+              {translate(locale, "stellar.select")}
+              <select
+                value={selectedStarId ?? ""}
+                disabled={transitioning}
+                onChange={(event) =>
+                  onSelectedStarIdChange?.(
+                    event.target.value === "" ? null : Number(event.target.value),
+                  )
+                }
+              >
+                <option value="">{translate(locale, "stellar.hover")}</option>
+                {NEARBY_STARS.map((star) => (
+                  <option key={star.id} value={star.id}>
+                    {star.id === 0 ? translate(locale, "scene.sun.title") : star.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+        )}
         <label className="hide-scale-bars">
           <input
             type="checkbox"
@@ -189,7 +273,7 @@ export function SceneHUD({
         </label>
         <div className="utility-actions">
           {scene.lateralSibling && (
-            <button type="button" onClick={onLateral}>
+            <button type="button" disabled={transitioning} onClick={onLateral}>
               {translate(
                 locale,
                 scene.id === "galactic-center-neighborhood" ? "action.return" : "action.compare",

@@ -21,6 +21,7 @@ export type SceneId =
 export type CameraConfig = {
   projection: "perspective" | "orthographic";
   fitToViewport?: boolean;
+  rightGutterPixels?: number;
   position: readonly [number, number, number];
   target: readonly [number, number, number];
   near: number;
@@ -45,6 +46,8 @@ export type SceneMetadata = {
 
 export type ScaleSceneProps = {
   observationDate?: string;
+  showAllStarLabels?: boolean;
+  selectedStarId?: number | null;
   active: boolean;
   locale: Locale;
   metadata: SceneMetadata;

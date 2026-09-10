@@ -1,6 +1,6 @@
 # Implementation status and continuation
 
-This is the handoff after completing the common framework and the first six hierarchy levels (with a shared continuous Solar System world). The focused design documents describe the current decisions; `archive/initial-project-spec.md` is historical and must not override them.
+This is the handoff after completing the common framework and the first seven hierarchy levels and the Galactic bulge sibling (with a shared continuous Solar System world). The focused design documents describe the current decisions; `archive/initial-project-spec.md` is historical and must not override them.
 
 ## Implemented and next
 
@@ -12,9 +12,11 @@ This is the handoff after completing the common framework and the first six hier
 | `sun` — 太陽 / Sun                       | Nominal IAU photospheric sphere, local Solar System Scope texture, subtle unlit animated shader         | Solar diameter and mean Earth–Moon distance; direct transfers both directions    |
 | `earth-sun` — 地球–太陽系 / Earth–Sun    | Inner preset of the shared world; eight planets and Moon, dated positions and textured physical spheres | 1 AU persists; solar diameter fades; 100 AU appears on zoom-out                  |
 | `solar-system` — 太陽系 / Solar System   | Outer preset of the same mounted world; 105 AU view, 160 AU manual zoom limit                           | Adopted 100 AU comparison; continuous camera zoom to/from Earth–Sun              |
-| Larger scales, Galactic-center sibling   | Registry, metadata, navigation and shared HUD exist; scientific rendering is still `PlaceholderScene`   | Direct physical transfers are not automatically implemented by the registry      |
+| `solar-neighborhood`                     | HYG v4.1 subset: 62 entries within 5 pc, catalog color/absolute magnitude display, hover/all labels     | 8 pc and 20,000 AU world-fixed bars; one standalone bridge to Solar System       |
+| `galactic-center-neighborhood`           | Galactic bulge at model x=1 kpc; 6,476 deterministic modeled stars, same volume and camera              | Same bars and display rules; lateral comparison without bridge                   |
+| Larger scales                            | Registry, metadata, navigation and shared HUD exist; scientific rendering is still `PlaceholderScene`   | Direct physical transfers are not automatically implemented by the registry      |
 
-The next scene to implement is **Solar neighborhood**. Its predecessor is `solar-system`. The main hierarchy contains **12** levels; the Galactic-center neighborhood remains the same-scale sibling of level **7 / 12**. Keep the stable ID `earth-moon` despite the display-name change.
+The next scene to implement is **Milky Way**. Its predecessor is `solar-neighborhood`. The main hierarchy contains **12** levels; the Galactic-center neighborhood remains the same-scale sibling of level **7 / 12**. Keep the stable ID `earth-moon` despite the display-name change.
 
 ## Decisions to preserve
 
@@ -33,7 +35,7 @@ The next scene to implement is **Solar neighborhood**. Its predecessor is `solar
 1. Read `scenes.md`, `scientific-guidelines.md`, and `scales-and-bridges.md`; verify the new scene's scientific values and record sources. Registry values for unimplemented scenes remain provisional.
 2. Add data, coordinate/model transforms, and rendering separately. Reuse `SceneHost`, shared controls, readout and translation keys.
 3. Use `SceneReferenceBar` for physical bars. Its `reference`/`comparison` identity selects the hidden SVG endpoint carrier, while its GPU geometry determines visible depth. Its length comes from the supplied metadata; a comparison bar must use the actual connecting SI length.
-4. Extend the explicit transfer selection in `App`, scene overlay inclusion, and any incoming `entryBarKind` visibility. Keep all new bars hidden until the transfer finishes via `BarVisibilityContext`. This wiring currently covers the six implemented scene entries; it is a deliberate extension point, not a universal transfer engine.
+4. Extend the explicit transfer selection in `App`, scene overlay inclusion, and any incoming `entryBarKind` visibility. Keep all new bars hidden until the transfer finishes via `BarVisibilityContext`. This wiring currently covers the implemented scenes through both stellar neighborhoods; it is a deliberate extension point, not a universal transfer engine.
 5. Add new scene selectors to the mobile flow layout if needed. `fitToViewport` is available for fitting a perspective default camera to the horizontal viewport extent; Earth and Moon is an example.
 6. Test physical dimensions and graph changes. Browser-check both directions, a hidden-bar departure, midpoint animation visibility, orbit/reset, direct axis/URL entry, narrow screens, and reduced motion. Run `npm run check` and `npm run build`.
 7. Update these status notes and the relevant specifications with the final implementation.
@@ -42,7 +44,7 @@ The next scene to implement is **Solar neighborhood**. Its predecessor is `solar
 
 The committed `public/models/hachiko/hachiko.glb` embeds its geometry and texture; its source/license are alongside it. The Earth JPEG is also committed with NASA attribution. Builds have no dependency on source downloads in `tmp/`; the redundant originals were removed. `scripts/prepare-hachiko.py` remains available if the documented input is obtained again.
 
-At handoff, the automated suite has 65 passing tests. Solar additions cover nominal radius, common normalization, independent JPL J2000 approximate-position fixtures, lunar composition and curve anchors, seasonal distance changes and date limits. Browser smoke checks covered scene and bridge sequencing, non-inherited bar visibility, mobile/portrait layout, reduced motion, physical occlusion, and camera reset. The temporary browser harness is not part of the repository. The production build succeeds with the existing shared Three.js chunk-size warning. No deployment or remote push is part of this handoff.
+At this handoff, the automated suite has 87 passing tests, including stellar coordinate integrity, density sampling, photometry ordering and single-frame bridge reversal. Solar additions cover nominal radius, common normalization, independent JPL J2000 approximate-position fixtures, lunar composition and curve anchors, seasonal distance changes and date limits. Browser smoke checks covered scene and bridge sequencing, non-inherited bar visibility, mobile/portrait layout, reduced motion, physical occlusion, and camera reset. The temporary browser harness is not part of the repository. The production build succeeds with the existing shared Three.js chunk-size warning. No deployment or remote push is part of this handoff.
 
 ## Solar-world continuation notes
 
@@ -53,3 +55,7 @@ All eight planets plus Earth's Moon have real mean spherical radii and local tex
 Astronomy Engine 2.1.19 remains a local dependency; UTC selection covers 1900–2100 and persists across navigation. Position, pole, radius, texture and ring provenance is recorded in `src/data/sources.ts` and the local asset READMEs. Map longitudes, illumination, solar surface motion and ring opacity are illustrative. The Moon's curve is geocentric at Earth's selected-date position. No runtime external API is used.
 
 Automated checks cover common units, eight planets plus Moon, physical ring intervals, independent JPL inner-planet fixtures, all orbit midpoint anchors, polar-vector normalization, UTC limits, seasonal distances, continuous-edge isolation, logarithmic interpolation symmetry, bounds and opacity thresholds. Browser QA verifies retained Canvas identity through forward/reverse playback, cursor anchoring, no wheel navigation, 160 AU clamp, Sun entry reset, faded departure-bar restoration, mobile 320/390 px, reduced motion, and Saturn/Jupiter/Neptune close-ups. The production build retains the known shared Three.js chunk warning. JPL Horizons precision comparison was unavailable (HTTP 503); the independent JPL fixture is a lower-accuracy regression comparison, not a precision claim.
+
+## Stellar-neighborhood verification
+
+Implemented the two requested stellar scenes; display naming is Galactic bulge / 銀河系バルジ内 to distinguish the chosen x=1 kpc location from Sagittarius A*. See `scenes.md` §7 for all source, sampling, incomplete-catalog, photometry and bar conventions. Browser checks cover default and all labels, hover, sibling camera preservation, forward/reverse bridges, mobile, and reduced motion. Catalog binaries can overlap physically; labels separate without changing their positions. There are no new dependencies, large catalogs or live data calls.
