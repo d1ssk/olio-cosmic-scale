@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { StarDistanceTable } from "../src/components/StarDistanceTable";
 import { FAMOUS_STAR_DISTANCES } from "../src/scenes/stellar-neighborhood/famousStarDistances";
@@ -24,6 +24,32 @@ describe("famous-star distances", () => {
       expect(translate("en", star.nameKey)).toBeTruthy();
       expect(translate("ja", star.nameKey)).toBeTruthy();
     }
+  });
+  it("previews only modeled stars on hover/focus and clears on leave, close and disable", () => {
+    expect(
+      FAMOUS_STAR_DISTANCES.filter((s) => s.sceneStarId !== null).map((s) => s.sceneStarId),
+    ).toEqual([70666, 32263, 37173]);
+    const preview = vi.fn();
+    const view = render(<StarDistanceTable locale="en" onPreviewStarChange={preview} />);
+    fireEvent.click(screen.getByRole("button", { name: "Distances to stars" }));
+    const sirius = screen.getByRole("button", { name: "Sirius" });
+    fireEvent.pointerEnter(sirius);
+    expect(preview).toHaveBeenLastCalledWith(32263);
+    fireEvent.pointerLeave(sirius);
+    expect(preview).toHaveBeenLastCalledWith(null);
+    const procyon = screen.getByRole("button", { name: "Procyon" });
+    fireEvent.focus(procyon);
+    expect(preview).toHaveBeenLastCalledWith(37173);
+    fireEvent.blur(procyon);
+    expect(preview).toHaveBeenLastCalledWith(null);
+    expect(screen.queryByRole("button", { name: "Vega" })).not.toBeInTheDocument();
+    fireEvent.pointerEnter(sirius);
+    fireEvent.keyDown(sirius, { key: "Escape" });
+    expect(preview).toHaveBeenLastCalledWith(null);
+    fireEvent.click(screen.getByRole("button", { name: "Distances to stars" }));
+    fireEvent.pointerEnter(sirius);
+    view.rerender(<StarDistanceTable locale="en" onPreviewStarChange={preview} disabled />);
+    expect(preview).toHaveBeenLastCalledWith(null);
   });
   it("toggles a bilingual table with both units and supports Escape", () => {
     const view = render(<StarDistanceTable locale="ja" />);

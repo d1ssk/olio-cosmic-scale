@@ -1,6 +1,39 @@
 import type { TranslationKey } from "./index";
 
 export const ja: Record<TranslationKey, string> = {
+  "stellar.distances.highlight": "3Dモデルの天体名を表示",
+  "origin.localGroup": "天の川–M31の中点・銀河座標軸・比較長3 Mpc",
+  "localGroup.mw": "天の川銀河",
+  "localGroup.m31": "アンドロメダ銀河（M31）",
+  "localGroup.m33": "さんかく座銀河（M33）",
+  "localGroup.lmc": "大マゼラン雲",
+  "localGroup.smc": "小マゼラン雲",
+  "localGroup.summary":
+    "カタログの{count}天体・候補天体。モデルの位置と寸法は同じ縮尺です。輪は中心位置のマーカーで、銀河の大きさではありません。選択して3Dモデルを拡大できます。",
+  "localGroup.select": "銀河・矮小銀河を選択",
+  "localGroup.overview": "天体を選択",
+  "localGroup.labels": "名前を表示（重ならない範囲）",
+  "localGroup.focus": "選択した銀河を拡大",
+  "localGroup.unknown": "不明",
+  "localGroup.type": "カタログの形態分類：{type}",
+  "localGroup.distance": "太陽からの距離：{distance} kpc（+{plus} / −{minus} kpc）",
+  "localGroup.size.extent":
+    "採用した代表的な恒星分布の半径：{radius} kpc。唯一の境界ではありません。",
+  "localGroup.size.halfLight":
+    "半光長半径：{rh} kpc。モデルはその3倍（{radius} kpc）まで描画します。観測された境界ではありません。",
+  "localGroup.size.missing": "大きさのデータなし：位置マーカーのみ。",
+  "localGroup.galacticPlane": "円盤は銀河面に一致。天の川銀河sceneと同じ簡易モデルです。",
+  "localGroup.diskAngles":
+    "円盤の位置角／交線方向：北から東へ{pa}°、傾斜角：{i}°。手前・奥の傾きの符号は、このモデルでの仮定です。",
+  "localGroup.projected": "観測された長軸の位置角：北から東へ{pa}°、投影軸比 b/a：{q}。",
+  "localGroup.depth":
+    "奥行きの半径は投影短半径と等しいと仮定。位置角が不明なら0°、軸比が不明なら球形を採用します。",
+  "localGroup.flagged":
+    "カタログには不確実性・部分構造・所属や分類などの注記があります。出典の表を参照してください。",
+  "localGroup.details":
+    "J2000の赤経・赤緯とカタログの太陽距離を銀河座標軸（X：太陽方向、Y：銀河北極、Z：銀経90°方向）へ変換し、原点を天の川–M31の中点へ移しています。軌道シミュレーションや地球からの見え方ではなく、空間配置の比較です。矮小銀河は測定のある半光半径・楕円率・位置角を反映し、奥行きは仮定します。渦状腕・円盤の厚み・色・粒子のぼかしは模式表現で、個々の恒星や測光値ではありません。M31・M33・大マゼラン雲には文献の円盤傾斜を採用しますが、手前・奥の符号の曖昧さは残ります。小マゼラン雲は球状の分布で近似します。潮汐の尾・暗黒物質ハロー・ガスは省略。3 Mpcは比較長で、銀河群の境界ではありません。",
+  "localGroup.catalog":
+    "McConnachie（2012）の固定版から、所属欄がG・A・Lの75天体を候補天体も含めて収録。現在の完全な一覧や、球形範囲内の全数調査ではありません。大きさが未測定なら位置のみを示し、後年の発見は未収録です。不確実性のフラグと原論文参照番号はローカルデータに保持しています。",
   "stellar.distanceStar.11734": "ポラリス",
   "stellar.distanceStar.24378": "リゲル",
   "stellar.distanceStar.27919": "ベテルギウス",
@@ -134,7 +167,6 @@ export const ja: Record<TranslationKey, string> = {
   "origin.solarNeighborhood": "太陽中心の恒星座標系",
   "origin.galacticCenterNeighborhood": "銀河中心から1 kpc離れた場所の恒星密度モデル",
   "origin.milkyWay": "銀河中心基準系",
-  "origin.localGroup": "局所銀河群の基準系（暫定）",
   "origin.virgo": "局所大規模構造の基準系（暫定）",
   "origin.bao": "共動座標（規約は要確定）",
   "origin.observableUniverse": "観測者中心の共動座標（規約は要確定）",

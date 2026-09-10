@@ -1,3 +1,5 @@
+import { LOCAL_GROUP_GALAXIES } from "../scenes/local-group/localGroupData";
+import { galaxyPosition } from "../scenes/local-group/localGroupModel";
 import type { GalaxyVariant, VolumeStatus } from "../scenes/milky-way/volumeData";
 import { MILKY_WAY_COMPARISON_METERS } from "../scenes/milky-way/milkyWayData";
 import { STELLAR_COMPARISON_METERS } from "../scenes/stellar-neighborhood/stellarData";
@@ -109,6 +111,8 @@ export function App(): React.JSX.Element {
       if (outerDeparture) from = "solar-system";
       const target = sceneRegistry[from][direction];
       const connected =
+        (from === "milky-way" && target === "local-group") ||
+        (from === "local-group" && target === "milky-way") ||
         (from === "earth" && target === "earth-moon") ||
         (from === "earth-moon" && target === "earth") ||
         (from === "earth-moon" && target === "sun") ||
@@ -170,6 +174,7 @@ export function App(): React.JSX.Element {
               "solar-neighborhood",
               "galactic-center-neighborhood",
               "milky-way",
+              "local-group",
             ].includes(from) &&
               direction === "previous")
           ? "comparison"
@@ -236,6 +241,10 @@ export function App(): React.JSX.Element {
       <main className="app-main">
         {state.mode.kind === "scene" ? (
           <SceneView
+            onFocusBusyChange={(value) => {
+              navigationLock.current = value;
+              setBusy(value);
+            }}
             autoSolarLabel={!busy}
             observationDate={observationDate}
             onObservationDateChange={setObservationDate}
@@ -280,6 +289,7 @@ type SceneControls = {
 };
 
 function SceneView({
+  onFocusBusyChange,
   autoSolarLabel,
   observationDate,
   onObservationDateChange,
@@ -290,6 +300,7 @@ function SceneView({
   entryKind,
   entryDelay,
 }: {
+  onFocusBusyChange: (value: boolean) => void;
   autoSolarLabel: boolean;
   observationDate: string;
   onObservationDateChange: (value: string) => void;
@@ -309,6 +320,9 @@ function SceneView({
   const [galaxyVariant, setGalaxyVariant] = useState<GalaxyVariant>("volume");
   const [volumeStatus, setVolumeStatus] = useState<VolumeStatus>("idle");
   const [showAllStarLabels, setShowAllStarLabels] = useState(false);
+  const [selectedGalaxyId, setSelectedGalaxyId] = useState<number | null>(null);
+  const [showAllGalaxyLabels, setShowAllGalaxyLabels] = useState(false);
+  const [previewStarId, setPreviewStarId] = useState<number | null>(null);
   const [selectedStarId, setSelectedStarId] = useState<number | null>(null);
   const [barsHidden, setBarsHidden] = useState(false);
   const [onlyBar, setOnlyBar] = useState<BarKind | "none" | null>(null);
@@ -339,9 +353,13 @@ function SceneView({
       },
       async prepareDeparture(kind) {
         setDeparting(true);
-        // The physical comparison can be offscreen or edge-on after exploration.
-        // Recover its known frame while the galaxy is still visible, then transfer.
-        if (sceneId === "milky-way" && kind === "comparison") {
+        // Preserve the explored view when the connecting segment is wholly in frame.
+        // Hidden bars still have physical endpoints and are restored below.
+        if (
+          (sceneId === "milky-way" || sceneId === "local-group") &&
+          kind !== "none" &&
+          !hostRef.current?.isBarFullyInView(kind)
+        ) {
           if (!(await hostRef.current?.animateTo(sceneRegistry[sceneId], 650))) {
             if (mounted.current) setDeparting(false);
             return false;
@@ -385,11 +403,14 @@ function SceneView({
             value={{ hidden: barsHidden || Boolean(entryBar && !arrived), only: onlyBar }}
           >
             <Scene
+              selectedGalaxyId={selectedGalaxyId}
+              showAllGalaxyLabels={showAllGalaxyLabels}
               galaxyVariant={galaxyVariant}
               volumeStatus={volumeStatus}
               onVolumeStatusChange={setVolumeStatus}
               active
               showAllStarLabels={showAllStarLabels}
+              previewStarId={previewStarId}
               selectedStarId={selectedStarId}
               observationDate={observationDate}
               locale={state.locale}
@@ -411,6 +432,7 @@ function SceneView({
         "solar-neighborhood",
         "galactic-center-neighborhood",
         "milky-way",
+        "local-group",
       ].includes(scene.id) && (
         <ReferenceBarOverlay
           kind={entryKind ?? (scene.id === "human" ? "reference" : "comparison")}
@@ -423,6 +445,31 @@ function SceneView({
       )}
       {!ready && <div className="loading-state">{translate(state.locale, "loading.scene")}</div>}
       <SceneHUD
+        onPreviewStarChange={setPreviewStarId}
+        selectedGalaxyId={selectedGalaxyId}
+        onSelectedGalaxyIdChange={setSelectedGalaxyId}
+        showAllGalaxyLabels={showAllGalaxyLabels}
+        onShowAllGalaxyLabelsChange={setShowAllGalaxyLabels}
+        onGalaxyFocus={async () => {
+          const galaxy = LOCAL_GROUP_GALAXIES.find((g) => g.id === selectedGalaxyId);
+          if (!galaxy || zooming || departing) return;
+          const target = galaxyPosition(galaxy, scene.metersPerSceneUnit);
+          setZooming(true);
+          onFocusBusyChange(true);
+          await hostRef.current?.animateTo(
+            {
+              ...scene,
+              defaultViewportExtentMeters: Math.max(
+                (galaxy.radiusMeters ?? scene.metersPerSceneUnit * 0.01) * 5,
+                scene.metersPerSceneUnit * 0.0001,
+              ),
+              camera: { ...scene.camera, target, position: [target[0], target[1], target[2] + 40] },
+            },
+            650,
+          );
+          if (mounted.current) setZooming(false);
+          onFocusBusyChange(false);
+        }}
         galaxyVariant={galaxyVariant}
         volumeStatus={volumeStatus}
         onGalaxyVariantChange={(variant) => {

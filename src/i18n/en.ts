@@ -1,4 +1,38 @@
 export const en = {
+  "stellar.distances.highlight": "Show the star name in the 3D model",
+  "origin.localGroup": "Milky Way–M31 midpoint · Galactic axes · 3 Mpc comparison span",
+  "localGroup.mw": "Milky Way",
+  "localGroup.m31": "Andromeda (M31)",
+  "localGroup.m33": "Triangulum (M33)",
+  "localGroup.lmc": "Large Magellanic Cloud",
+  "localGroup.smc": "Small Magellanic Cloud",
+  "localGroup.summary":
+    "{count} catalog objects and candidates · true-scale model positions and extents. Rings mark centers, not galaxy sizes. Select an object to inspect its 3D model.",
+  "localGroup.select": "Galaxy / dwarf galaxy",
+  "localGroup.overview": "Select an object",
+  "localGroup.labels": "Show names (when space permits)",
+  "localGroup.focus": "View selected galaxy up close",
+  "localGroup.unknown": "unknown",
+  "localGroup.type": "Catalog morphology: {type}",
+  "localGroup.distance": "Sun distance: {distance} kpc (+{plus} / −{minus} kpc)",
+  "localGroup.size.extent":
+    "Adopted representative stellar radius: {radius} kpc (not a unique edge).",
+  "localGroup.size.halfLight":
+    "Half-light semimajor radius: {rh} kpc. Model support: 3 × this radius ({radius} kpc), not a measured boundary.",
+  "localGroup.size.missing": "Size unavailable: position marker only.",
+  "localGroup.galacticPlane":
+    "Disk follows the Galactic plane; same simple model as the Milky Way scene.",
+  "localGroup.diskAngles":
+    "Disk PA / line of nodes: {pa}° east of north; inclination: {i}°. Near/far tilt sign is adopted, not constrained here.",
+  "localGroup.projected": "Observed major-axis PA: {pa}° east of north; projected b/a: {q}.",
+  "localGroup.depth":
+    "Depth adopts the projected minor radius. Missing PA uses 0°; missing b/a uses a sphere. These are model assumptions.",
+  "localGroup.flagged":
+    "The catalog flags uncertainty, substructure, or an association/classification caveat; see the source tables.",
+  "localGroup.details":
+    "Centers use J2000 sky positions and catalog heliocentric distances, transformed to Galactic axes (X toward the Sun, Y north, Z toward l=90°), then shifted to the Milky Way–M31 midpoint. This is a spatial comparison, not an orbit simulation or a view from Earth. Dwarf models preserve measured projected sizes, ellipticities and position angles where available; their depth is assumed. Spiral patterns, disk thicknesses, color and Gaussian smoothing are illustrative, not individual stars or calibrated brightness. M31, M33 and LMC use published disk inclinations; the near/far ambiguity remains. SMC uses an approximate spherical envelope. Tidal tails, dark matter halos and gas are omitted. The 3 Mpc ruler is a comparison length, not a group boundary.",
+  "localGroup.catalog":
+    "Fixed McConnachie (2012) snapshot: all 75 entries tagged G, A or L, including uncertain candidates. It is not a complete present-day census or a volume-limited sample. Missing sizes remain markers; later discoveries are absent. Catalog uncertainty flags and source references are retained in the local data.",
   "stellar.distanceStar.11734": "Polaris",
   "stellar.distanceStar.24378": "Rigel",
   "stellar.distanceStar.27919": "Betelgeuse",
@@ -134,7 +168,6 @@ export const en = {
   "origin.solarNeighborhood": "Heliocentric stellar frame",
   "origin.galacticCenterNeighborhood": "Stellar density model, 1 kpc from the Galactic center",
   "origin.milkyWay": "Galactocentric reference frame",
-  "origin.localGroup": "Local Group reference frame (provisional)",
   "origin.virgo": "Local large-scale reference frame (provisional)",
   "origin.bao": "Comoving coordinates (convention pending)",
   "origin.observableUniverse": "Observer-centered comoving coordinates (convention pending)",

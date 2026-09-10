@@ -4,9 +4,9 @@
 
 The default client stack is Vite, TypeScript, React, Three.js, React Three Fiber, and Drei. Tooling includes ESLint, Prettier, Vitest, and React Testing Library when component behavior benefits from it. Keep Playwright to a few valuable smoke tests if it remains lightweight. Avoid extra state libraries until complexity warrants one.
 
-The common framework is implemented, along with Human (Hachikō), Earth, Earth and Moon, Sun, Earth–Sun, Solar System, Solar neighborhood, the Galactic bulge sibling, and Milky Way. It includes the 12-level registry, fixed navigation, compact logarithmic axis, bilingual HUD, physical depth-tested bars, sequential/manual bridges, direct Earth–Earth and Moon bar transfers, scene-local bar visibility, camera memory, static licensed assets, and automated checks. The remaining scenes use `PlaceholderScene`; their geometry is not scientific content. See [implementation status and handoff](implementation-status.md) before continuing.
+The common framework is implemented, along with Human (Hachikō), Earth, Earth and Moon, Sun, Earth–Sun, Solar System, Solar neighborhood, the Galactic bulge sibling, Milky Way, and Local Group. It includes the 12-level registry, fixed navigation, compact logarithmic axis, bilingual HUD, physical depth-tested bars, sequential/manual bridges, direct Earth–Earth and Moon bar transfers, scene-local bar visibility, camera memory, static licensed assets, and automated checks. The remaining scenes use `PlaceholderScene`; their geometry is not scientific content. See [implementation status and handoff](implementation-status.md) before continuing.
 
-Live APIs, backend services, authentication, analytics, large catalogs, a universal 3D world, and automatic hierarchy playback remain out of scope. Implement further scientific scenes incrementally; the next is Local Group.
+Live APIs, backend services, authentication, analytics, large catalogs, a universal 3D world, and automatic hierarchy playback remain out of scope. Implement further scientific scenes incrementally; the next is Virgo environment.
 
 ## Commands
 

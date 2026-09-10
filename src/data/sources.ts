@@ -10,6 +10,55 @@ export type SourceInfo = {
 
 export const SOURCES: readonly SourceInfo[] = [
   {
+    id: "mcconnachie-2012",
+    title: "McConnachie (2012), AJ 144, 4 — Local Group catalog",
+    organization: "CDS / Alan W. McConnachie",
+    url: "https://cdsarc.cds.unistra.fr/viz-bin/ReadMe/J/AJ/144/4?format=html&tex=true",
+    accessed: "2026-09-11",
+    notes:
+      "Tables 1–3: all 75 entries with membership G, A or L, including disputed candidates. Fixed 2012 snapshot, not a modern census; no volume-completeness claim. J2000 RA/Dec, heliocentric distance and errors, semimajor half-light radii, PA east of north, ellipticity, source flags. Rounded tabulated distances and radii retained. Milky Way center overrides catalog position. Raw subset and reproducible parser committed.",
+  },
+  {
+    id: "local-group-shapes",
+    title: "M31 — representative extent (NASA/JPL)",
+    url: "https://www.jpl.nasa.gov/images/pia16682-cool-andromeda/",
+    accessed: "2026-09-11",
+    notes:
+      "Representative 200,000 ly diameter, not a unique stellar edge. Other model conventions and source links are documented in src/scenes/local-group/README.md.",
+  },
+  {
+    id: "local-group-m31-orientation",
+    title: "M31 disk geometry — rotation-curve study (2024)",
+    url: "https://academic.oup.com/mnras/article/528/2/2653/7512223",
+    accessed: "2026-09-11",
+    notes:
+      "Adopt PA 38 degrees, inclination 77 degrees. No signed near-side reconstruction; opposite tilt remains an ambiguity.",
+  },
+  {
+    id: "local-group-m33",
+    title: "M33 optical disk — A&A 700, A57 (2025)",
+    url: "https://www.aanda.org/articles/aa/pdf/2025/08/aa55408-25.pdf",
+    accessed: "2026-09-11",
+    notes:
+      "R25 approximately 8.6 kpc adopted as representative optical radius. Inclination 54 degrees; PA 23 degrees from McConnachie table 3 (paper uses 22). Warp beyond optical disk omitted. M33 has no prominent bulge; no bulge sampled.",
+  },
+  {
+    id: "local-group-clouds",
+    title: "Magellanic Clouds — ESO",
+    url: "https://www.eso.org/public/images/potw2216a/",
+    accessed: "2026-09-11",
+    notes:
+      "Representative diameters LMC 14,000 ly and SMC 7,000 ly. SMC spherical envelope is explicitly adopted, not a reconstructed shape.",
+  },
+  {
+    id: "local-group-lmc-orientation",
+    title: "LMC geometry — van der Marel & Cioni (2001)",
+    url: "https://ned.ipac.caltech.edu/level5/March04/Marel/Marel6.html",
+    accessed: "2026-09-11",
+    notes:
+      "LMC inclination 34.7 degrees and line of nodes PA 122.5 degrees; population-dependent estimate. Circular irregular disk simplification; no reconstructed bar or tidal structure.",
+  },
+  {
     id: "bipm-light-second",
     title: "SI defining constants — speed of light in vacuum",
     organization: "BIPM",

@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { translate, type Locale } from "../i18n";
 import { LIGHT_YEAR_METERS, PARSEC_METERS } from "../physics/constants";
 import { FAMOUS_STAR_DISTANCES } from "../scenes/stellar-neighborhood/famousStarDistances";
@@ -6,13 +6,23 @@ import { STELLAR_SOURCES } from "../scenes/stellar-neighborhood/stellarData";
 
 export function StarDistanceTable({
   locale,
+  onPreviewStarChange,
   disabled = false,
 }: {
   locale: Locale;
+  onPreviewStarChange?: (id: number | null) => void;
   disabled?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
+  useEffect(() => {
+    if (disabled) onPreviewStarChange?.(null);
+    return () => onPreviewStarChange?.(null);
+  }, [disabled, onPreviewStarChange]);
+  const close = () => {
+    setOpen(false);
+    onPreviewStarChange?.(null);
+  };
   const title = translate(locale, "stellar.distances.title");
   const format = (value: number, approximate: boolean) => {
     const formatted = new Intl.NumberFormat(locale, {
@@ -26,7 +36,7 @@ export function StarDistanceTable({
     <div
       className="star-distance-control"
       onKeyDown={(event) => {
-        if (event.key === "Escape") setOpen(false);
+        if (event.key === "Escape") close();
       }}
     >
       <button
@@ -34,7 +44,7 @@ export function StarDistanceTable({
         aria-expanded={open}
         aria-controls={panelId}
         disabled={disabled}
-        onClick={() => setOpen(!open)}
+        onClick={() => (open ? close() : setOpen(true))}
       >
         <span aria-hidden="true">{open ? "▼" : "▲"}</span> {title}
       </button>
@@ -52,7 +62,20 @@ export function StarDistanceTable({
             {FAMOUS_STAR_DISTANCES.map((star) => (
               <tr key={star.id}>
                 <th scope="row">
-                  {star.sourceUrl ? (
+                  {star.sceneStarId !== null ? (
+                    <button
+                      type="button"
+                      className="star-distance-name"
+                      title={translate(locale, "stellar.distances.highlight")}
+                      onPointerEnter={() => onPreviewStarChange?.(star.sceneStarId)}
+                      onPointerLeave={() => onPreviewStarChange?.(null)}
+                      onFocus={() => onPreviewStarChange?.(star.sceneStarId)}
+                      onBlur={() => onPreviewStarChange?.(null)}
+                      onClick={() => onPreviewStarChange?.(star.sceneStarId)}
+                    >
+                      {translate(locale, star.nameKey)}
+                    </button>
+                  ) : star.sourceUrl ? (
                     <a href={star.sourceUrl} target="_blank" rel="noreferrer">
                       {translate(locale, star.nameKey)}
                     </a>

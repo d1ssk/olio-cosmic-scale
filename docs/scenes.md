@@ -1,6 +1,6 @@
 # Scene specifications
 
-Sections 1–7 and the Galactic bulge sibling describe implemented behavior; sections 8–12 describe future scientific scenes currently represented by development placeholders. Establish the exact reference length, viewport, authoritative sources, coordinate frame, and representation mode before implementing each remaining scene.
+Sections 1–9 and the Galactic bulge sibling describe implemented behavior; sections 10–12 describe future scientific scenes currently represented by development placeholders. Establish the exact reference length, viewport, authoritative sources, coordinate frame, and representation mode before implementing each remaining scene.
 
 ## 1. Human
 
@@ -56,7 +56,7 @@ Reference 8 pc (a comparison length, independent of the 10 pc sampled diameter);
 
 Use additive Gaussian core/halo points like the unresolved solar display, with a fixed 24 CSS-pixel footprint at every zoom. They mark positions, not physical stellar diameters. Adopt an approximate B−V display palette, falling back to spectral class and then solar-like neutral color. Compress absolute V magnitudes monotonically for visible brightness; do not claim flux calibration, spectral integration, extinction, or a view from a physical observer. The shader and display mapping are shared by both stellar scenes.
 
-Sun has a persistent annotation. Stable SVG nodes are projected every rendered frame after updating the camera matrices, without throttled React position state. The Sun receives first placement priority so hover/selection of other names does not displace it. Hover/tap identifies all catalog entries within 10 CSS pixels (including close binaries). A checkbox enables every in-view name; screen-space leader endpoints remain at true positions while label placement avoids collisions. An accessible select offers all catalog names independently of pointer precision. Names outside the viewport are not pinned to invented positions. Default camera faces +Z toward the Sun; common controls support rotation, pan, zoom and reset.
+Sun has a persistent annotation. Stable SVG nodes are projected every rendered frame after updating the camera matrices, without throttled React position state. The Sun receives first placement priority so hover/selection of other names does not displace it. Hover/tap identifies all catalog entries within 10 CSS pixels (including close binaries). A checkbox enables every in-view name; screen-space leader endpoints remain at true positions while label placement avoids collisions. An accessible select offers all catalog names independently of pointer precision. The all-names checkbox and selector sit inside the lower-left information box. Sibling navigation sits immediately below the upper-left title card. In the distance table, hovering or keyboard-focusing Proxima Centauri, Sirius or Procyon temporarily adds that model annotation without replacing the selected star; leaving, closing or disabling the table clears the preview. Names outside the viewport are not pinned to invented positions. Default camera faces +Z toward the Sun; common controls support rotation, pan, zoom and reset.
 
 Two physical Y-parallel rulers lie beside the sampled sphere in the XY plane, centered on Y=0: the 8 pc reference at X=5.2 pc and the 20,000 AU comparison at X=5.6 pc. Their orientation is derived from the default camera’s screen-up basis, perpendicular to its viewing direction, and then fixed in world coordinates. Interactive orbiting never rotates the rulers to face the camera. Both numeric labels sit to the right of their rulers, away from the star sample in the default view. The host fits the star area and reserves a right gutter at startup/reset, so labels fit on mobile; both siblings share this framing. The smaller length is a user-adopted exact 20,000 AU comparison (1:200 from 100 AU). Solar System ↔ neighborhood now has only one standalone comparison (100 AU → 20,000 AU). Next transfers that same bar into the neighborhood over 1000 ms and reveals the stars/reference bar; reverse restores the comparison, removes the scene, and enlarges it back into the bridge. Other bridge edges retain their own lengths. Reduced motion skips visual delays. Arrival snapshots are consumed after the reveal, so a later lateral return never replays a bridge transfer.
 
@@ -98,7 +98,51 @@ Galactic center/Sun annotations retain fixed SVG nodes and update their physical
 
 ## 9. Local Group
 
-Show Milky Way, Andromeda, M33, and major satellites/groups on one spatial scale, including the Milky Way–Andromeda separation. Use real relative centers where known; supported visible/stellar extents can be approximately to scale. Small galaxies need explicit markers and labels.
+Implemented as an independent orthographic world, normalized at 100 kpc per unit.
+The 3 Mpc reference is an adopted comparison span, independent of the 2.4 Mpc
+short-side viewport and without claiming a unique group boundary. Origin is the
+geometric MW–M31 midpoint, not a mass barycenter; axes match the Milky Way scene.
+Astronomy Engine EQJ→Galactic transforms the catalog J2000 directions, adds the
+existing 8,178 pc solar offset, and shifts the origin. No orbital propagation.
+
+The fixed McConnachie (2012) CDS tables 1–3 subset contains all 75 G/A/L-tagged
+entries, including uncertain candidates; it is explicitly neither a current
+complete census nor a volume-complete sample. Distances and asymmetric errors,
+PA, ellipticity, half-light radii, flags and original reference numbers are retained.
+72 entries have physical model geometry; Canis Major, Bootes III and Andromeda XX
+have no catalog radius and use position markers only. See
+[the scene's data/model notes](../src/scenes/local-group/README.md) for sources,
+reproduction and detailed caveats.
+
+Milky Way reuses its exact simple model. M31 and M33 use representative optical/
+stellar extents and sourced PA/inclination; only M31 has a central bulge. LMC uses
+a sourced inclined disk approximation, SMC a disclosed spherical envelope.
+Dwarfs preserve measured sky ellipticity, PA and semimajor half-light radius with
+a Gaussian envelope truncated at 3 half-light radii. Their unknown depth adopts
+the projected minor radius; missing PA adopts zero and missing ellipticity a
+sphere. Disk near/far tilt sign, thickness, arm pattern, color and sampling are
+explicit assumptions. No dark halos, tidal debris, resolved stars or calibrated
+brightness are implied. The model does not reconstruct unknown 3D morphology.
+
+All center rings are fixed CSS-pixel markers, never physical diameters. Hovering a center (8 px tolerance) or a rendered point cloud (6 px ray-picking tolerance at the current zoom) temporarily prioritizes its name; pointer leave, drag start and wheel clear the hover. Selected/all-name settings are preserved. Stable
+SVG names follow real positions every frame, prioritizing the selection and
+suppressing overlaps. A bilingual keyboard-accessible catalog selector provides
+per-object measurements/caveats and an explicit close-view button, with no
+hierarchy change. Common orbit, pan, cursor zoom, camera memory and Reset remain.
+Focus and departure respect reduced motion; mobile uses the common flow layout.
+Drag-start pivot depth follows the nearest resolved galaxy to the screen center,
+using the same projection-preserving depth helpers as the solar world. Major
+labels use longer leaders and prefer the object's left/right screen half.
+
+World-fixed 3 Mpc and 30 kpc X-parallel rulers at Y=−0.65 and −0.75 Mpc use common
+bar visibility and projection carriers. MW ↔ Local Group transfers 30 kpc directly
+(ratio 100). The current frame is retained when the connecting ruler is wholly
+in view (including depth) and at least 0.5 px long; otherwise restore the default
+frame first. Hidden bars use the same physical endpoint test.
+Arrival waits for scene readiness. Virgo remains a placeholder with explicit
+navigation. Unit tests check catalog integrity, independent coordinate fixtures,
+solar offset and midpoint, unchanged MW geometry, PA/ellipticity, disk inclination,
+deterministic bounded clouds and scale hierarchy.
 
 ## 10. Virgo environment
 

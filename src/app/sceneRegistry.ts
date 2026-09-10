@@ -1,4 +1,9 @@
 import {
+  LOCAL_GROUP_REFERENCE_METERS,
+  LOCAL_GROUP_VIEW_METERS,
+  LOCAL_GROUP_UNIT_METERS,
+} from "../scenes/local-group/localGroupData";
+import {
   MILKY_WAY_DIAMETER_METERS,
   MILKY_WAY_METERS_PER_UNIT,
   MILKY_WAY_VIEW_METERS,
@@ -23,6 +28,8 @@ import {
   PARSEC_METERS,
 } from "../physics/constants";
 import type { SceneDefinition, SceneId } from "../scenes/types";
+
+const LocalGroupScene = lazy(() => import("../scenes/local-group/LocalGroupScene"));
 
 const MilkyWayScene = lazy(() => import("../scenes/milky-way/MilkyWayScene"));
 
@@ -263,13 +270,19 @@ export const sceneRegistry: Record<SceneId, SceneDefinition> = {
     kind: "scene",
     titleKey: "scene.localGroup.title",
     originDescriptionKey: "origin.localGroup",
-    referenceLengthMeters: 3 * MEGAPARSEC_METERS,
-    defaultViewportExtentMeters: 4 * MEGAPARSEC_METERS,
-    metersPerSceneUnit: 0.3 * MEGAPARSEC_METERS,
+    referenceLengthMeters: LOCAL_GROUP_REFERENCE_METERS,
+    defaultViewportExtentMeters: LOCAL_GROUP_VIEW_METERS,
+    metersPerSceneUnit: LOCAL_GROUP_UNIT_METERS,
     preferredPrimaryUnit: "Mpc",
     secondaryUnits: ["Mly", "kpc"],
-    camera: orthographic,
-    component: PlaceholderScene,
+    camera: {
+      ...orthographic,
+      position: [0, 0, 40],
+      fitToViewport: true,
+      minZoom: 2,
+      maxZoom: 2000000,
+    },
+    component: LocalGroupScene,
     previous: "milky-way",
     next: "virgo",
   },

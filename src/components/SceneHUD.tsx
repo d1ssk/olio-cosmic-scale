@@ -1,3 +1,5 @@
+import { LOCAL_GROUP_GALAXIES, LOCAL_GROUP_SOURCES } from "../scenes/local-group/localGroupData";
+import { LocalGroupControls } from "../scenes/local-group/LocalGroupControls";
 import { StarDistanceTable } from "./StarDistanceTable";
 import type { GalaxyVariant, VolumeStatus } from "../scenes/milky-way/volumeData";
 import { MILKY_WAY_SOURCES } from "../scenes/milky-way/milkyWayData";
@@ -19,6 +21,12 @@ import { HACHIKO_MODEL } from "../scenes/human/humanData";
 import { ScaleReadout } from "./ScaleReadout";
 
 type SceneHUDProps = {
+  onPreviewStarChange?: (id: number | null) => void;
+  selectedGalaxyId?: number | null;
+  onSelectedGalaxyIdChange?: (id: number | null) => void;
+  showAllGalaxyLabels?: boolean;
+  onShowAllGalaxyLabelsChange?: (value: boolean) => void;
+  onGalaxyFocus?: () => void;
   galaxyVariant?: GalaxyVariant;
   volumeStatus?: VolumeStatus;
   onGalaxyVariantChange?: (variant: GalaxyVariant) => void;
@@ -39,6 +47,12 @@ type SceneHUDProps = {
 };
 
 export function SceneHUD({
+  onPreviewStarChange,
+  selectedGalaxyId,
+  onSelectedGalaxyIdChange,
+  showAllGalaxyLabels,
+  onShowAllGalaxyLabelsChange,
+  onGalaxyFocus,
   galaxyVariant = "volume",
   volumeStatus = "idle",
   onGalaxyVariantChange,
@@ -67,6 +81,19 @@ export function SceneHUD({
         </span>
         <h1>{translate(locale, scene.titleKey)}</h1>
         <p>{translate(locale, scene.originDescriptionKey)}</p>
+        {scene.lateralSibling && (
+          <button
+            className="stellar-sibling-navigation"
+            type="button"
+            disabled={transitioning}
+            onClick={onLateral}
+          >
+            {translate(
+              locale,
+              scene.id === "galactic-center-neighborhood" ? "action.return" : "action.compare",
+            )}
+          </button>
+        )}
       </div>
 
       <ScaleReadout
@@ -77,7 +104,7 @@ export function SceneHUD({
       />
 
       <div
-        className={`scene-status ${["human", "earth", "earth-moon", "sun", "earth-sun", "solar-system", "solar-neighborhood", "galactic-center-neighborhood", "milky-way"].includes(scene.id) ? "human-status" : ""}`}
+        className={`scene-status ${["human", "earth", "earth-moon", "sun", "earth-sun", "solar-system", "solar-neighborhood", "galactic-center-neighborhood", "milky-way", "local-group"].includes(scene.id) ? "human-status" : ""}`}
       >
         {(scene.id === "earth-sun" || scene.id === "solar-system") && (
           <Suspense fallback={null}>
@@ -88,6 +115,22 @@ export function SceneHUD({
               disabled={transitioning}
             />
           </Suspense>
+        )}
+        {scene.id === "local-group" && (
+          <>
+            <p className="stellar-summary">
+              {translate(locale, "localGroup.summary", { count: LOCAL_GROUP_GALAXIES.length })}
+            </p>
+            <LocalGroupControls
+              locale={locale}
+              selected={selectedGalaxyId}
+              onSelect={onSelectedGalaxyIdChange}
+              all={showAllGalaxyLabels}
+              onAll={onShowAllGalaxyLabelsChange}
+              onFocus={onGalaxyFocus}
+              disabled={transitioning}
+            />
+          </>
         )}
         {scene.id === "milky-way" && (
           <>
@@ -136,6 +179,38 @@ export function SceneHUD({
               },
             )}
           </p>
+        )}
+        {scene.id === "solar-neighborhood" && (
+          <div className="stellar-label-controls">
+            <label className="hide-scale-bars">
+              <input
+                type="checkbox"
+                checked={showAllStarLabels ?? false}
+                disabled={transitioning}
+                onChange={(event) => onShowAllStarLabelsChange?.(event.target.checked)}
+              />
+              {translate(locale, "stellar.allLabels")}
+            </label>
+            <label className="stellar-picker">
+              {translate(locale, "stellar.select")}
+              <select
+                value={selectedStarId ?? ""}
+                disabled={transitioning}
+                onChange={(event) =>
+                  onSelectedStarIdChange?.(
+                    event.target.value === "" ? null : Number(event.target.value),
+                  )
+                }
+              >
+                <option value="">{translate(locale, "stellar.hover")}</option>
+                {NEARBY_STARS.map((star) => (
+                  <option key={star.id} value={star.id}>
+                    {star.id === 0 ? translate(locale, "scene.sun.title") : star.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
         )}
         <details className="scene-description">
           <summary>{translate(locale, "hud.description")}</summary>
@@ -236,6 +311,18 @@ export function SceneHUD({
                   </span>
                 )}
               </>
+            ) : scene.id === "local-group" ? (
+              <>
+                <span>{translate(locale, "localGroup.details")}</span>
+                <span>{translate(locale, "localGroup.catalog")}</span>
+                {LOCAL_GROUP_SOURCES.map((source) => (
+                  <span key={source.id}>
+                    <a href={source.url} target="_blank" rel="noreferrer">
+                      {source.title}
+                    </a>
+                  </span>
+                ))}
+              </>
             ) : scene.id === "milky-way" ? (
               <>
                 <span>
@@ -301,7 +388,11 @@ export function SceneHUD({
       </div>
 
       {scene.id === "solar-neighborhood" && (
-        <StarDistanceTable locale={locale} disabled={transitioning} />
+        <StarDistanceTable
+          locale={locale}
+          disabled={transitioning}
+          onPreviewStarChange={onPreviewStarChange}
+        />
       )}
 
       <div className="scene-actions">
@@ -314,38 +405,7 @@ export function SceneHUD({
             })}
           </span>
         )}
-        {scene.id === "solar-neighborhood" && (
-          <div className="stellar-label-controls">
-            <label className="hide-scale-bars">
-              <input
-                type="checkbox"
-                checked={showAllStarLabels ?? false}
-                disabled={transitioning}
-                onChange={(event) => onShowAllStarLabelsChange?.(event.target.checked)}
-              />
-              {translate(locale, "stellar.allLabels")}
-            </label>
-            <label className="stellar-picker">
-              {translate(locale, "stellar.select")}
-              <select
-                value={selectedStarId ?? ""}
-                disabled={transitioning}
-                onChange={(event) =>
-                  onSelectedStarIdChange?.(
-                    event.target.value === "" ? null : Number(event.target.value),
-                  )
-                }
-              >
-                <option value="">{translate(locale, "stellar.hover")}</option>
-                {NEARBY_STARS.map((star) => (
-                  <option key={star.id} value={star.id}>
-                    {star.id === 0 ? translate(locale, "scene.sun.title") : star.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-        )}
+
         <label className="hide-scale-bars">
           <input
             type="checkbox"
@@ -356,14 +416,6 @@ export function SceneHUD({
           {translate(locale, "action.hideScaleBars")}
         </label>
         <div className="utility-actions">
-          {scene.lateralSibling && (
-            <button type="button" disabled={transitioning} onClick={onLateral}>
-              {translate(
-                locale,
-                scene.id === "galactic-center-neighborhood" ? "action.return" : "action.compare",
-              )}
-            </button>
-          )}
           <button type="button" disabled={transitioning} onClick={onReset}>
             {translate(locale, "action.reset")}
           </button>

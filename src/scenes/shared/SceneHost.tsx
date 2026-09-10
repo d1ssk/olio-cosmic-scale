@@ -1,3 +1,4 @@
+import { projectPhysicalBar, wholeBarInView } from "./barProjection";
 import { AU_METERS } from "../../physics/constants";
 import {
   isSolarWorld,
@@ -6,14 +7,8 @@ import {
   SOLAR_ZOOM_DURATION_MS,
   interpolateSolarZoom,
 } from "../solar-system/solarScale";
-import {
-  solarExitIntent,
-  visibleSegmentFraction,
-  solarViewLabel,
-  visibleBarPair,
-} from "../solar-system/solarNavigation";
+import { solarExitIntent, solarViewLabel, visibleBarPair } from "../solar-system/solarNavigation";
 import { solarDiameterOpacity } from "../solar-system/solarScale";
-import type { Line2 } from "three-stdlib";
 import { reducedMotion } from "../../bridges/transitionTiming";
 import { Vector3, Quaternion, Matrix4 } from "three";
 /* React Three Fiber exposes mutable Three.js camera/control objects by design. */
@@ -39,6 +34,7 @@ import type { SceneMetadata } from "../types";
 
 export type SceneHostControls = {
   animateTo: (metadata: SceneMetadata, duration?: number) => Promise<boolean>;
+  isBarFullyInView: (kind: "reference" | "comparison") => boolean;
   exitIntent: (
     direction: "previous" | "next",
   ) => "sun" | "outer-direct" | "outer-exit" | "outer-preset" | "inner-preset" | null;
@@ -188,27 +184,12 @@ function CameraController({
   useImperativeHandle(
     ref,
     () => ({
+      isBarFullyInView(kind) {
+        return wholeBarInView(projectPhysicalBar(scene, camera, size, `physical-${kind}-bar`));
+      },
       exitIntent(direction) {
         camera.updateMatrixWorld();
-        const projectBar = (name: string) => {
-          const line = scene.getObjectByName(name)?.children[0] as Line2 | undefined;
-          if (!line) return { fraction: 0, pixels: 0 };
-          const a = line.geometry.attributes.instanceStart;
-          const b = line.geometry.attributes.instanceEnd;
-          const start = line
-            .localToWorld(new Vector3(a.getX(0), a.getY(0), a.getZ(0)))
-            .project(camera);
-          const end = line
-            .localToWorld(new Vector3(b.getX(0), b.getY(0), b.getZ(0)))
-            .project(camera);
-          return {
-            fraction: visibleSegmentFraction(start.toArray(), end.toArray()),
-            pixels: Math.hypot(
-              ((end.x - start.x) * size.width) / 2,
-              ((end.y - start.y) * size.height) / 2,
-            ),
-          };
-        };
+        const projectBar = (name: string) => projectPhysicalBar(scene, camera, size, name);
         const au = projectBar("solar-au-world-bar");
         const solar = projectBar("solar-diameter-world-bar"),
           outer = projectBar("solar-outer-world-bar");
@@ -245,7 +226,7 @@ function CameraController({
           !controls ||
           !(
             (isSolarWorld(metadata.id) && isSolarWorld(destination.id)) ||
-            (metadata.id === "milky-way" && destination.id === metadata.id)
+            (["milky-way", "local-group"].includes(metadata.id) && destination.id === metadata.id)
           ) ||
           animation.current
         )

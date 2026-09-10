@@ -20,6 +20,7 @@ export default function StellarScene({
   onReady,
   showAllStarLabels = false,
   selectedStarId = null,
+  previewStarId = null,
 }: ScaleSceneProps) {
   const local = metadata.id === "solar-neighborhood";
   const visibility = useContext(BarVisibilityContext);
@@ -42,6 +43,7 @@ export default function StellarScene({
             locale={locale}
             all={showAllStarLabels}
             selected={selectedStarId}
+            preview={previewStarId}
           />
         )}
       </group>
@@ -117,11 +119,13 @@ function StarLabels({
   locale,
   all,
   selected,
+  preview,
 }: {
   stars: StellarPoint[];
   locale: ScaleSceneProps["locale"];
   all: boolean;
   selected: number | null;
+  preview: number | null;
 }) {
   const { camera, size, gl } = useThree();
   const [hovered, setHovered] = useState<number[]>([]);
@@ -174,7 +178,14 @@ function StarLabels({
     // Controls run at priority -1. Project using this frame's camera matrices.
     camera.updateMatrixWorld();
     const projected = stars
-      .filter((star) => all || star.id === 0 || star.id === selected || hovered.includes(star.id))
+      .filter(
+        (star) =>
+          all ||
+          star.id === 0 ||
+          star.id === selected ||
+          star.id === preview ||
+          hovered.includes(star.id),
+      )
       .flatMap((star) => {
         point.fromArray(star.position).project(camera);
         if (Math.abs(point.x) > 1 || Math.abs(point.y) > 1 || Math.abs(point.z) > 1) return [];
@@ -256,6 +267,7 @@ function StarLabels({
           <g
             key={star.id}
             data-star-annotation={star.id}
+            className={star.id === preview ? "is-table-preview" : undefined}
             ref={(element) => {
               if (element) groups.current.set(star.id, element);
               else groups.current.delete(star.id);

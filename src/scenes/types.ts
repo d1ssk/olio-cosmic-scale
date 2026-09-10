@@ -46,6 +46,9 @@ export type SceneMetadata = {
 };
 
 export type ScaleSceneProps = {
+  previewStarId?: number | null;
+  selectedGalaxyId?: number | null;
+  showAllGalaxyLabels?: boolean;
   galaxyVariant?: GalaxyVariant;
   volumeStatus?: VolumeStatus;
   onVolumeStatusChange?: (status: VolumeStatus) => void;

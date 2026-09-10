@@ -4,21 +4,21 @@
 
 These centralized defaults scaffold the ladder; several are adopted conventions to validate when their scene is implemented. Never silently change a definition because that changes both the pedagogical meaning and bridge sequence.
 
-| ID                             | Adopted reference length | Main unit | Status                                      |
-| ------------------------------ | -----------------------: | --------- | ------------------------------------------- |
-| `human`                        |                    1.7 m | m         | representative height                       |
-| `earth`                        |                12,742 km | km        | mean spherical diameter                     |
-| `earth-moon`                   |               384,400 km | km        | mean center-to-center separation            |
-| `sun`                          |        1.3914 million km | Gm        | nominal photospheric diameter (IAU 2015 B3) |
-| `earth-sun`                    |                     1 AU | AU        | separation convention                       |
-| `solar-system`                 |                   100 AU | AU        | adopted comparison span                     |
-| `solar-neighborhood`           |                     8 pc | pc        | adopted comparison length                   |
-| `galactic-center-neighborhood` |                     8 pc | pc        | same scale as sibling                       |
-| `milky-way`                    |                   30 kpc | kpc       | representative stellar disk diameter        |
-| `local-group`                  |                    3 Mpc | Mpc       | provisional extent                          |
-| `virgo`                        |                 16.5 Mpc | Mpc       | provisional Local Group–Virgo distance      |
-| `bao`                          |            147 Mpc class | Mpc       | convention to document                      |
-| `observable-universe`          |  28.5 Gpc class diameter | Gpc       | distance convention to document             |
+| ID                             | Adopted reference length | Main unit | Status                                       |
+| ------------------------------ | -----------------------: | --------- | -------------------------------------------- |
+| `human`                        |                    1.7 m | m         | representative height                        |
+| `earth`                        |                12,742 km | km        | mean spherical diameter                      |
+| `earth-moon`                   |               384,400 km | km        | mean center-to-center separation             |
+| `sun`                          |        1.3914 million km | Gm        | nominal photospheric diameter (IAU 2015 B3)  |
+| `earth-sun`                    |                     1 AU | AU        | separation convention                        |
+| `solar-system`                 |                   100 AU | AU        | adopted comparison span                      |
+| `solar-neighborhood`           |                     8 pc | pc        | adopted comparison length                    |
+| `galactic-center-neighborhood` |                     8 pc | pc        | same scale as sibling                        |
+| `milky-way`                    |                   30 kpc | kpc       | representative stellar disk diameter         |
+| `local-group`                  |                    3 Mpc | Mpc       | adopted comparison span (not group boundary) |
+| `virgo`                        |                 16.5 Mpc | Mpc       | provisional Local Group–Virgo distance       |
+| `bao`                          |            147 Mpc class | Mpc       | convention to document                       |
+| `observable-universe`          |  28.5 Gpc class diameter | Gpc       | distance convention to document              |
 
 Solar-neighborhood span, Milky Way boundary, Local Group extent, Virgo reference, BAO convention, and observable-universe convention require an explicit source/definition pass with the relevant scene.
 
@@ -87,3 +87,11 @@ Do not freeze exact frame counts without testing the responsive rendering.
 Earth–Sun ↔ Solar System shares a single coordinate world and animates the camera instead of transferring bars. Its 1 AU and 100 AU references remain fixed while the camera moves between short-side extents of 2.05 and 105 AU. Manual cursor-targeted zoom is limited to 160 AU and never exits the shared solar world. The 100 AU comparison is not a Solar System boundary; no Oort Cloud is rendered. The 1 AU ruler and label persist, while planetary leaders fade and the 100 AU ruler appears as it fits. Primary solar rulers are physically exact world-fixed segments. Only the additional close-inspection solar-diameter ruler follows the orthographic camera-target plane, with no length exaggeration and a Gm label. This exception does not change any other bridge timing or scene boundary.
 
 Milky Way now adopts a representative 30 kpc stellar disk (ESA; no unique edge). Neighborhood ↔ Milky Way uses one standalone comparison, 8 pc → ~490 pc (geometric mean of 8 pc and 30 kpc). The final ~490 pc → 30 kpc comparison is inside the galaxy; both ratios are ~61.2. See `scenes.md` §8 for physical plane and camera conventions.
+
+Local Group uses an adopted 3 Mpc comparison span and a separate 2.4 Mpc viewport.
+Its 30 kpc comparison transfers directly to/from the Milky Way's reference, ratio
+100, using the existing sequential resize/reveal timing and reduced-motion path.
+Both directions preserve the explored frame when the connecting bar is wholly
+inside the view volume and at least 0.5 px long. Only clipped/edge-on bars recover
+default framing before capture; hidden-bar departures restore only the connecting
+physical bar. A transition without a connecting bar needs no recovery. The world remains independent.

@@ -693,7 +693,8 @@ a {
     .solar-system-view,
     .solar-neighborhood-view,
     .galactic-center-neighborhood-view,
-    .milky-way-view
+    .milky-way-view,
+    .local-group-view
   ):has(.scene-entry-bar):not(.is-arriving)
   .scene-canvas {
   opacity: 0;
@@ -719,7 +720,8 @@ a {
     .solar-system-view,
     .solar-neighborhood-view,
     .galactic-center-neighborhood-view,
-    .milky-way-view
+    .milky-way-view,
+    .local-group-view
   ) {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -737,7 +739,8 @@ a {
       .solar-system-view,
       .solar-neighborhood-view,
       .galactic-center-neighborhood-view,
-      .milky-way-view
+      .milky-way-view,
+      .local-group-view
     )
     .scene-hud {
     display: contents;
@@ -751,7 +754,8 @@ a {
       .solar-system-view,
       .solar-neighborhood-view,
       .galactic-center-neighborhood-view,
-      .milky-way-view
+      .milky-way-view,
+      .local-group-view
     )
     .scene-heading {
     grid-row: 1;
@@ -767,7 +771,8 @@ a {
       .solar-system-view,
       .solar-neighborhood-view,
       .galactic-center-neighborhood-view,
-      .milky-way-view
+      .milky-way-view,
+      .local-group-view
     )
     .scale-readout {
     grid-row: 2;
@@ -783,7 +788,8 @@ a {
       .solar-system-view,
       .solar-neighborhood-view,
       .galactic-center-neighborhood-view,
-      .milky-way-view
+      .milky-way-view,
+      .local-group-view
     )
     .scene-canvas {
     grid-row: 3;
@@ -801,7 +807,8 @@ a {
       .solar-system-view,
       .solar-neighborhood-view,
       .galactic-center-neighborhood-view,
-      .milky-way-view
+      .milky-way-view,
+      .local-group-view
     )
     .scene-status {
     grid-row: 4;
@@ -817,7 +824,8 @@ a {
       .solar-system-view,
       .solar-neighborhood-view,
       .galactic-center-neighborhood-view,
-      .milky-way-view
+      .milky-way-view,
+      .local-group-view
     )
     .scene-actions {
     grid-row: 5;
@@ -832,7 +840,8 @@ a {
       .solar-system-view,
       .solar-neighborhood-view,
       .galactic-center-neighborhood-view,
-      .milky-way-view
+      .milky-way-view,
+      .local-group-view
     )
     #scene-reference-overlay {
     top: 0;
@@ -919,7 +928,8 @@ a {
     .solar-system-view,
     .solar-neighborhood-view,
     .galactic-center-neighborhood-view,
-    .milky-way-view
+    .milky-way-view,
+    .local-group-view
   ) {
     grid-template-rows: auto auto minmax(300px, 1fr) auto auto;
   }
@@ -929,7 +939,8 @@ a {
       .solar-system-view,
       .solar-neighborhood-view,
       .galactic-center-neighborhood-view,
-      .milky-way-view
+      .milky-way-view,
+      .local-group-view
     )
     .scene-canvas {
     min-height: 300px;
@@ -1119,4 +1130,76 @@ a {
     justify-self: start;
     width: min(100%, 24rem);
   }
+}
+
+.local-group-annotations circle {
+  fill: none;
+  stroke: #8295a6;
+  stroke-width: 1;
+  opacity: 0.75;
+}
+.local-group-annotations .is-selected circle {
+  stroke: #fff0b9;
+  stroke-width: 1.5;
+}
+.local-group-controls {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+.local-group-controls select {
+  width: 100%;
+  min-width: 0;
+}
+.local-group-facts {
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+.local-group-view.is-departing .scene-canvas {
+  pointer-events: none;
+}
+
+.stellar-sibling-navigation {
+  display: block;
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  max-width: 100%;
+  font-size: 0.75rem;
+}
+.scene-status .stellar-label-controls {
+  margin: 0.8rem 0;
+}
+.star-distance-name {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+.star-distance-name:hover,
+.star-distance-name:focus-visible {
+  color: var(--accent);
+  background: transparent;
+}
+
+.scene-heading:has(.stellar-sibling-navigation) {
+  position: relative;
+  margin-bottom: 3.25rem;
+}
+
+/* Keep the table's transient target legible among all-name annotations, without motion. */
+.stellar-annotations .is-table-preview text {
+  fill: #ffe4a3;
+  font-weight: 700;
+  filter: drop-shadow(0 0 3px rgb(255 215 128 / 60%));
+}
+.stellar-annotations .is-table-preview path {
+  stroke: #ffe4a3;
+  stroke-width: 1.8;
+  opacity: 1;
+  filter: drop-shadow(0 0 2px rgb(255 215 128 / 45%));
 }

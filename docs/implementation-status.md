@@ -1,23 +1,24 @@
 # Implementation status and continuation
 
-This is the handoff after completing the common framework and the first eight hierarchy levels and the Galactic bulge sibling (with a shared continuous Solar System world). The focused design documents describe the current decisions; `archive/initial-project-spec.md` is historical and must not override them.
+This is the handoff after completing the common framework and the first nine hierarchy levels and the Galactic bulge sibling (with a shared continuous Solar System world). The focused design documents describe the current decisions; `archive/initial-project-spec.md` is historical and must not override them.
 
 ## Implemented and next
 
-| Scene                                    | Status                                                                                                   | Connecting bars                                                                                               |
-| ---------------------------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `human` — 人間 / Human                   | Locally hosted, attributed Hachikō scan; adopted full height 1.7 m including base                        | 1.7 m physical bar beside the statue                                                                          |
-| `earth` — 地球 / Earth                   | Spherical Earth, mean diameter 12,742 km; local NASA monthly texture                                     | Diameter bar beside Earth over the Pacific; ~65.1 km comparison bar alongside it                              |
-| `earth-moon` — 地球と月 / Earth and Moon | Both diameters and adopted mean center distance to the same scale; Moon is a smooth gray sphere          | 384,400 km center-distance bar and the Earth-diameter bar beside Earth                                        |
-| `sun` — 太陽 / Sun                       | Nominal IAU photospheric sphere, local Solar System Scope texture, subtle unlit animated shader          | Solar diameter and mean Earth–Moon distance; direct transfers both directions                                 |
-| `earth-sun` — 地球と太陽 / Earth and Sun | Inner preset of the shared world; eight planets and Moon, dated positions and textured physical spheres  | 1 AU persists; solar diameter fades; 100 AU appears on zoom-out                                               |
-| `solar-system` — 太陽系 / Solar System   | Outer preset of the same mounted world; 105 AU view, 160 AU manual zoom limit                            | Adopted 100 AU comparison; continuous camera zoom to/from Earth–Sun                                           |
-| `solar-neighborhood`                     | HYG v4.1 subset: 62 entries within 5 pc, catalog color/absolute magnitude display, hover/all labels      | 8 pc and 20,000 AU world-fixed bars; one standalone bridge to Solar System                                    |
-| `galactic-center-neighborhood`           | Galactic bulge at model x=1 kpc; 6,476 deterministic modeled stars, same volume and camera               | Same bars and display rules; lateral comparison without bridge                                                |
-| `milky-way`                              | Sourced representative disk and Sun distance; deterministic schematic arms and bulge/bar; oblique camera | 30 kpc and ~490 pc horizontal bars in the foreground disk plane; one standalone bridge from the neighborhoods |
-| Larger scales                            | Registry, metadata, navigation and shared HUD exist; scientific rendering is still `PlaceholderScene`    | Direct physical transfers are not automatically implemented by the registry                                   |
+| Scene                                    | Status                                                                                                                          | Connecting bars                                                                                               |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `human` — 人間 / Human                   | Locally hosted, attributed Hachikō scan; adopted full height 1.7 m including base                                               | 1.7 m physical bar beside the statue                                                                          |
+| `earth` — 地球 / Earth                   | Spherical Earth, mean diameter 12,742 km; local NASA monthly texture                                                            | Diameter bar beside Earth over the Pacific; ~65.1 km comparison bar alongside it                              |
+| `earth-moon` — 地球と月 / Earth and Moon | Both diameters and adopted mean center distance to the same scale; Moon is a smooth gray sphere                                 | 384,400 km center-distance bar and the Earth-diameter bar beside Earth                                        |
+| `sun` — 太陽 / Sun                       | Nominal IAU photospheric sphere, local Solar System Scope texture, subtle unlit animated shader                                 | Solar diameter and mean Earth–Moon distance; direct transfers both directions                                 |
+| `earth-sun` — 地球と太陽 / Earth and Sun | Inner preset of the shared world; eight planets and Moon, dated positions and textured physical spheres                         | 1 AU persists; solar diameter fades; 100 AU appears on zoom-out                                               |
+| `solar-system` — 太陽系 / Solar System   | Outer preset of the same mounted world; 105 AU view, 160 AU manual zoom limit                                                   | Adopted 100 AU comparison; continuous camera zoom to/from Earth–Sun                                           |
+| `solar-neighborhood`                     | HYG v4.1 subset: 62 entries within 5 pc, catalog color/absolute magnitude display, hover/all labels                             | 8 pc and 20,000 AU world-fixed bars; one standalone bridge to Solar System                                    |
+| `galactic-center-neighborhood`           | Galactic bulge at model x=1 kpc; 6,476 deterministic modeled stars, same volume and camera                                      | Same bars and display rules; lateral comparison without bridge                                                |
+| `milky-way`                              | Sourced representative disk and Sun distance; deterministic schematic arms and bulge/bar; oblique camera                        | 30 kpc and ~490 pc horizontal bars in the foreground disk plane; one standalone bridge from the neighborhoods |
+| `local-group`                            | 75 catalog entries/candidates (McConnachie 2012), 72 sourced-size model envelopes; selection, close view and per-object caveats | 3 Mpc comparison and 30 kpc direct transfer to/from Milky Way                                                 |
+| Larger scales                            | Registry, metadata, navigation and shared HUD exist; scientific rendering is still `PlaceholderScene`                           | Direct physical transfers are not automatically implemented by the registry                                   |
 
-The next scene to implement is **Local Group**. Its predecessor is `milky-way`. The main hierarchy contains **12** levels; the Galactic-center neighborhood remains the same-scale sibling of level **7 / 12**. Keep the stable ID `earth-moon` despite the display-name change.
+The next scene to implement is **Virgo environment**. Its predecessor is `local-group`. The main hierarchy contains **12** levels; the Galactic-center neighborhood remains the same-scale sibling of level **7 / 12**. Keep the stable ID `earth-moon` despite the display-name change.
 
 ## Decisions to preserve
 
@@ -98,3 +99,72 @@ Next skips outer-preset framing and its pause when the entire 100 AU ruler is vi
 ## Famous-star distance table
 
 Solar neighborhood has a right-side triangle toggle opening a scrollable table upward. Seventeen selected stars (HYG v4.1 plus documented Betelgeuse/Deneb estimates) show Earth-distance approximations in ly and pc, sorted nearest first. Only Proxima Centauri, Sirius and Procyon overlap the 3D sample. The six added bright stars have approximate distance labels. Bilingual names, catalog/CC BY-SA attribution and the beyond-5-pc distinction are included. It supports keyboard activation and Escape; mobile places the toggle at the lower right of the canvas.
+
+## Local Group implementation
+
+Added the ninth independent physical scene: 75 tagged catalog entries including
+candidates, with 72 simple 3D galaxy models and three explicit size-missing
+position markers. Geometry uses catalog J2000 directions, heliocentric distances,
+projected half-light radii, ellipticities and PA where available. MW reuses its
+existing simple model; M31/M33/LMC use sourced disk tilts; SMC and unknown dwarf
+depths use disclosed approximations. The sample is a fixed 2012 snapshot, not a
+present-day census. See `scenes.md` §9 and the scene README for all conventions.
+
+Bilingual selection, close view, per-object uncertainty/size details, non-overlapping
+names and visible marker disclosure accompany the existing controls. The 30 kpc
+bar transfers both ways to MW; the 3 Mpc comparison span is independent of viewport.
+No other major hierarchy scene is implemented in this change.
+
+Validation: `npm run check` passes (109 tests across 20 files), and `npm run build`
+succeeds with the existing shared Three.js chunk warning. Chrome smoke checks
+cover seven selected objects (including a missing-size entry), all 72 active
+point-material uniforms, orbit/reset, hidden-bar MW return and direct forward
+transfer, outgoing Virgo navigation, and Japanese 390/320 px layouts with reduced
+motion. No page exceptions were observed. Desktop Chrome at those mobile viewport
+sizes measured about 16.7 ms median animation frames over 45 frames; this is a
+VSync-limited desktop measurement, not a real-mobile/GPU benchmark.
+
+### Local Group framing and interaction refinement
+
+Initial/reset view tightens from 3.6 to 2.4 Mpc. Reference/comparison rulers move
+to Y=−0.65/−0.75 Mpc; these values and the 100/40 px desktop/mobile annotation
+gaps are centralized in `localGroupData.ts`. Default names use both screen sides,
+measured text widths, longer bent leaders and collision fallback.
+
+Drag-start pivot depth now follows the nearest resolved on-screen galaxy using
+the solar world's projection-preserving helpers, with full-world depth fitting.
+MW and Local Group departures preserve the current camera when the connecting
+bar is wholly in the view volume and at least 0.5 px long, even if hidden. Only
+clipped or edge-on bars trigger recovery; transitions without a carrier do not.
+
+Refinement validation: 113 tests in 21 files and the production build pass (the
+existing shared chunk warning remains). Chrome checks verify no projection jump
+on drag-start depth correction, a centered M31 through rotation, unchanged zoom
+on both non-default-view direct transfers (including hidden bars), and recovery
+when the carrier is clipped. Existing solar full/partial ruler exits also pass.
+Desktop and 390/320 px layouts retain all five default names; annotation placement
+reserves the ruler-number areas. No page exceptions were observed.
+
+## Galaxy hover and stellar controls
+
+Local Group now identifies hovered center markers and resolved point-cloud samples,
+including samples away from the center. Hover annotations have placement priority
+and clear on leave, drag and zoom without changing selection. Solar-neighborhood
+name controls move into the lower-left information box; both sibling navigation
+buttons sit directly below their title cards. The distance table maps exactly
+Proxima Centauri, Sirius and Procyon to the existing catalog IDs and previews their
+annotations on hover or keyboard focus. Leave, Escape, closing and disabling the
+table clear only the transient preview, preserving explicit selection.
+
+Validation: 114 tests and the production build pass with the existing shared
+chunk warning. Chrome verifies off-center galaxy-cloud hover/leave, all three
+table previews and cleanup, retained star selection, both sibling directions,
+and desktop plus 390/320 px layouts without page exceptions.
+
+### Distance-table annotation emphasis
+
+The table's transient star preview now uses warm highlighted, bold text with a
+soft glow and a brighter/thicker leader. This also works with all names enabled;
+leaving the name clears the emphasis while keeping the existing names/selection.
+Keyboard focus uses the same treatment. The effect is static, including under
+reduced motion, and leaves physical anchors and label layout unchanged.
