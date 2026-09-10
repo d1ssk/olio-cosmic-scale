@@ -682,7 +682,9 @@ a {
   }
 }
 
-:is(.human-view, .earth-view, .earth-moon-view):has(.scene-entry-bar):not(.is-arriving)
+:is(.human-view, .earth-view, .earth-moon-view, .sun-view, .earth-sun-view, .solar-system-view):has(
+    .scene-entry-bar
+  ):not(.is-arriving)
   .scene-canvas {
   opacity: 0;
 }
@@ -698,7 +700,7 @@ a {
 }
 /* Let larger conversions take their natural height instead of covering the mobile canvas. */
 @media (max-width: 720px) {
-  :is(.human-view, .earth-view, .earth-moon-view) {
+  :is(.human-view, .earth-view, .earth-moon-view, .sun-view, .earth-sun-view, .solar-system-view) {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto minmax(160px, 1fr) auto auto;
@@ -706,36 +708,43 @@ a {
     padding: 0.75rem;
     overflow-y: auto;
   }
-  :is(.human-view, .earth-view, .earth-moon-view) .scene-hud {
+  :is(.human-view, .earth-view, .earth-moon-view, .sun-view, .earth-sun-view, .solar-system-view)
+    .scene-hud {
     display: contents;
   }
-  :is(.human-view, .earth-view, .earth-moon-view) .scene-heading {
+  :is(.human-view, .earth-view, .earth-moon-view, .sun-view, .earth-sun-view, .solar-system-view)
+    .scene-heading {
     grid-row: 1;
     grid-column: 1;
     max-width: none;
   }
-  :is(.human-view, .earth-view, .earth-moon-view) .scale-readout {
+  :is(.human-view, .earth-view, .earth-moon-view, .sun-view, .earth-sun-view, .solar-system-view)
+    .scale-readout {
     grid-row: 2;
     grid-column: 1;
     width: 100%;
   }
-  :is(.human-view, .earth-view, .earth-moon-view) .scene-canvas {
+  :is(.human-view, .earth-view, .earth-moon-view, .sun-view, .earth-sun-view, .solar-system-view)
+    .scene-canvas {
     grid-row: 3;
     grid-column: 1;
     top: auto;
     height: 100%;
     min-height: 160px;
   }
-  :is(.human-view, .earth-view, .earth-moon-view) .scene-status {
+  :is(.human-view, .earth-view, .earth-moon-view, .sun-view, .earth-sun-view, .solar-system-view)
+    .scene-status {
     grid-row: 4;
     grid-column: 1;
     max-width: none;
   }
-  :is(.human-view, .earth-view, .earth-moon-view) .scene-actions {
+  :is(.human-view, .earth-view, .earth-moon-view, .sun-view, .earth-sun-view, .solar-system-view)
+    .scene-actions {
     grid-row: 5;
     grid-column: 1;
   }
-  :is(.human-view, .earth-view, .earth-moon-view) #scene-reference-overlay {
+  :is(.human-view, .earth-view, .earth-moon-view, .sun-view, .earth-sun-view, .solar-system-view)
+    #scene-reference-overlay {
     top: 0;
     height: 100%;
   }
@@ -760,4 +769,79 @@ a {
 }
 .scene-actions {
   gap: 0.75rem;
+}
+
+.body-annotation-anchor {
+  pointer-events: none;
+}
+.body-annotation {
+  position: relative;
+  pointer-events: none;
+  color: var(--ink);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.body-annotation svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: visible;
+}
+.body-annotation path {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1;
+}
+.body-annotation span {
+  position: absolute;
+  left: 46px;
+  top: -34px;
+  text-shadow: 0 1px 3px var(--canvas);
+}
+.annotation-below span {
+  top: 16px;
+}
+.ephemeris-controls {
+  display: grid;
+  gap: 0.4rem;
+}
+.ephemeris-controls input {
+  width: 100%;
+  min-height: 42px;
+  padding: 0.4rem;
+  color: var(--ink);
+  background: var(--canvas);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font: inherit;
+}
+.ephemeris-controls button {
+  font-size: 0.75rem;
+}
+.ephemeris-controls input:focus-visible {
+  outline: 2px solid var(--focus);
+}
+
+@media (max-width: 720px) {
+  :is(.sun-view, .earth-sun-view, .solar-system-view) {
+    grid-template-rows: auto auto minmax(300px, 1fr) auto auto;
+  }
+  :is(.sun-view, .earth-sun-view, .solar-system-view) .scene-canvas {
+    min-height: 300px;
+  }
+}
+
+.scene-description summary {
+  cursor: pointer;
+  color: var(--ink);
+}
+.scene-description-content {
+  display: grid;
+  gap: 0.35rem;
+  padding-top: 0.5rem;
+}
+.scene-bar-ratio {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
 }

@@ -44,6 +44,7 @@ export type SceneMetadata = {
 };
 
 export type ScaleSceneProps = {
+  observationDate?: string;
   active: boolean;
   locale: Locale;
   metadata: SceneMetadata;

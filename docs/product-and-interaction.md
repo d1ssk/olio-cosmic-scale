@@ -8,7 +8,7 @@ The experience is deliberately discrete:
 
 > understand one scale as its own world → compare it explicitly with the previous scale → enter the next world
 
-It is not a continuous zoom, cinematic cosmic flight, planetarium, generic space simulator, N-body simulation, photorealism showcase, astronomy-fact dashboard, or a collection of unrelated size analogies.
+The user-authorized Earth–Sun / Solar System pair is the sole continuous-zoom exception. Its shared physical world has two explicit camera presets; manual zoom remains inside that world. Other scales retain discrete scenes and scale bridges.
 
 ## Hierarchy
 
@@ -33,7 +33,7 @@ The Galactic-center neighborhood is a lateral, same-scale sibling of level 7. It
 
 ### Scene mode
 
-A scene is an independent interactive 3D world. As scientifically appropriate it supports orbit, pan, bounded zoom, selection/focus, reset, labels, and mouse, trackpad, touch, and keyboard input. A scene chooses perspective or orthographic projection. Zooming or scrolling never changes hierarchy.
+A scene is an independent interactive 3D world. As scientifically appropriate it supports orbit, pan, bounded zoom, selection/focus, reset, labels, and mouse, trackpad, touch, and keyboard input. A scene chooses perspective or orthographic projection. Zooming never exits a scene world; within the shared solar world only, its Earth–Sun / Solar System label follows the zoom.
 
 ### Scale bridge mode
 
@@ -59,7 +59,7 @@ Language resolution order is URL → saved preference → browser language → J
 
 Each scene retains its camera state for the current browser session, and Reset restores the canonical view. The neighborhood sibling views synchronize camera state for a direct density comparison.
 
-Every animated scale action proceeds sequentially: remove bars absent from the destination → resize/reposition the shared bar → reveal new bars and the destination. Never overlap resizing and the appearance of new bars. Standalone comparisons remain manual, one per action. Never shrink the old scene into the new one. Reduced-motion preferences remove or minimize animation.
+Except for Earth–Sun ↔ Solar System continuous camera zoom, every animated scale action proceeds sequentially: remove bars absent from the destination → resize/reposition the shared bar → reveal new bars and the destination. Never overlap resizing and the appearance of new bars. Standalone comparisons remain manual, one per action. Outside the shared solar pair, never shrink the old scene into the new one. Reduced-motion preferences remove or minimize animation.
 
 The hierarchy indicator ignores bridge frames and treats the Galactic-center comparison as level 7 of 12.
 

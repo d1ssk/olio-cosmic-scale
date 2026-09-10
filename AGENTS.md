@@ -2,9 +2,9 @@
 
 ## Project-wide invariants
 
-- This is a sequence of independent, physically grounded scale scenes joined by explicit DOM/SVG scale bridges; it is never a continuous powers-of-ten zoom or one universal 3D world.
+- This is a sequence of independent, physically grounded scale scenes joined by explicit DOM/SVG scale bridges; it is never one universal 3D world. The user-authorized exception is `earth-sun` ↔ `solar-system`: these share one physical world and continuous camera zoom; other scenes stay independent.
 - Store canonical lengths in SI meters, normalize render coordinates per scene, centralize scientific values, record provenance, and label every marker, exaggeration, density proxy, model, and adopted convention honestly.
-- Keep `referenceLength` distinct from `viewportExtent`. Hierarchy changes require explicit controls; in-scene zoom never navigates.
+- Keep `referenceLength` distinct from `viewportExtent`. Hierarchy changes require explicit controls except for the user-authorized automatic Earth–Sun / Solar System labels within their shared world; zoom never exits that world.
 - Japanese and English are supported from the start. Shared user-facing prose must use translation keys.
 - The main hierarchy has 12 levels, including Earth and Moon between Earth and Sun. The Galactic-center neighborhood is a same-scale sibling of the Solar neighborhood, not a thirteenth level.
 - Keep the app static-first, responsive, accessible, reduced-motion aware, deterministic where sampled, and usable on modern desktop and mobile hardware.

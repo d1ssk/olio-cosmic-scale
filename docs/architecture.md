@@ -2,7 +2,7 @@
 
 ## Independent coordinate worlds
 
-Never place human meters and cosmic meters in one Three.js coordinate system. Scientific data retains physical units, while each scene selects `metersPerSceneUnit` so typical render coordinates remain roughly order 1–1,000:
+Never place human meters and cosmic meters in one Three.js coordinate system. The authorized `earth-sun` / `solar-system` exception shares one normalized Solar System world and the mounted Canvas; its two IDs are camera presets, not separate physical models. Scientific data retains physical units, while each scene selects `metersPerSceneUnit` so typical render coordinates remain roughly order 1–1,000:
 
 ```ts
 sceneUnits = physicalMeters / metersPerSceneUnit;
@@ -96,4 +96,10 @@ Shared code belongs under `src/app`, `src/components`, `src/bridges`, `src/physi
 
 `ReferenceBarOverlay` owns invisible SVG endpoint carriers and a temporary fixed DOM bar. SVG is not the visible scene bar. `barTransition.ts` captures viewport endpoints before unmount and matches bridge bars by SI length. Wait for both the lazy scene's `onReady` and actual endpoint projection; keep the destination canvas and new bars hidden until resizing completes.
 
-The current direct transfer graph is intentionally explicit in `App`: Human ↔ bridge ↔ Earth uses the 1.7 m / ~65.1 km connecting lengths; Earth ↔ Earth and Moon uses the Earth diameter. Only these implemented scenes mount the projection overlay. Future scenes must extend this routing, the selected bar identities, and the scene-overlay inclusion rather than assuming that a registry entry automatically creates physical-bar transfers. Generic bridge planning and direct-edge bypass already cover the full hierarchy. See the [handoff](implementation-status.md) for the continuation checklist.
+The current direct transfer graph is intentionally explicit in `App`: Human ↔ bridge ↔ Earth uses the 1.7 m / ~65.1 km connecting lengths; Earth ↔ Earth and Moon uses the Earth diameter. Only these implemented scenes mount the projection overlay. Sun and the two Solar System presets now also mount the projection overlay. Earth–Sun ↔ Solar System instead uses the host camera animation handle and a stable `solar-world` view key. Other future scenes must extend this routing, the selected bar identities, and the scene-overlay inclusion rather than assuming that a registry entry automatically creates physical-bar transfers. Generic bridge planning and direct-edge bypass already cover the full hierarchy. See the [handoff](implementation-status.md) for the continuation checklist.
+
+## Continuous solar camera exception
+
+`solarScale.ts` centralizes the two preset extents (3/105 AU), 100 AU adopted comparison, manual zoom bounds (4,000 km–160 AU on the viewport's shorter side), logarithmic interpolation and annotation opacity rules. Both registry entries use `EarthSunScene` and AU/10 meters per render unit. `SceneView.zoomToScene` restores bars, calls `SceneHost.animateTo`, and preserves the mounted world. On completion `App` changes the hierarchy ID and URL; the target camera snapshot prevents a reset on that metadata change. Cursor-targeted OrbitControls zoom is enabled in the shared host. Reduced motion and cancellation release animation locks.
+
+`SolarCameraRig` adjusts the local pivot depth at drag start and fits camera depth to the complete orbit/ruler bounds without altering orthographic scale. Primary solar rulers remain world-fixed. `SceneReferenceBar.screenBottom` supports the additional close-inspection solar-diameter ruler on the camera-target plane; it updates GPU line endpoints and invisible projected carriers together. An auxiliary ruler can remain visible without owning a reference/comparison carrier. Zoom-dependent opacity never overrides an explicit departure-bar restoration. `BodyAnnotation` uses actual body positions and screen-space leaders only.

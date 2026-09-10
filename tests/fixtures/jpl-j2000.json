@@ -1,0 +1,10 @@
+{
+  "source": "https://ssd.jpl.nasa.gov/planets/approx_pos.html",
+  "epoch": "J2000.0 (JD 2451545.0 TDB)",
+  "notes": "Independent Kepler solution of Table 1 at T=0, in AU, J2000 ecliptic XYZ. Earth entry is Earth\u2013Moon barycenter, not Earth center. Regression tolerance includes model approximation, Earth/barycenter difference and UTC/TT offset. Not Horizons precision validation.",
+  "positions": {
+    "Mercury": [-0.13008862039899785, -0.44729233660209183, -0.024598819714780926],
+    "Venus": [-0.7183163556380716, -0.032706661636120904, 0.04101562434829496],
+    "Earth": [-0.17717124910462528, 0.9672144849669473, -2.5844929400887544e-7]
+  }
+}

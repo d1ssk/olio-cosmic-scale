@@ -4,23 +4,23 @@
 
 These centralized defaults scaffold the ladder; several are adopted conventions to validate when their scene is implemented. Never silently change a definition because that changes both the pedagogical meaning and bridge sequence.
 
-| ID                             | Adopted reference length | Main unit | Status                                 |
-| ------------------------------ | -----------------------: | --------- | -------------------------------------- |
-| `human`                        |                    1.7 m | m         | representative height                  |
-| `earth`                        |                12,742 km | km        | diameter                               |
-| `earth-moon`                   |               384,400 km | km        | mean center-to-center separation       |
-| `sun`                          |        1.3927 million km | Gm        | diameter                               |
-| `earth-sun`                    |                     1 AU | AU        | separation convention                  |
-| `solar-system`                 |                   100 AU | AU        | provisional span                       |
-| `solar-neighborhood`           |                    10 pc | pc        | provisional full span                  |
-| `galactic-center-neighborhood` |                    10 pc | pc        | same scale as sibling                  |
-| `milky-way`                    |                   30 kpc | kpc       | representative stellar disk diameter   |
-| `local-group`                  |                    3 Mpc | Mpc       | provisional extent                     |
-| `virgo`                        |                 16.5 Mpc | Mpc       | provisional Local Group–Virgo distance |
-| `bao`                          |            147 Mpc class | Mpc       | convention to document                 |
-| `observable-universe`          |  28.5 Gpc class diameter | Gpc       | distance convention to document        |
+| ID                             | Adopted reference length | Main unit | Status                                      |
+| ------------------------------ | -----------------------: | --------- | ------------------------------------------- |
+| `human`                        |                    1.7 m | m         | representative height                       |
+| `earth`                        |                12,742 km | km        | mean spherical diameter                     |
+| `earth-moon`                   |               384,400 km | km        | mean center-to-center separation            |
+| `sun`                          |        1.3914 million km | Gm        | nominal photospheric diameter (IAU 2015 B3) |
+| `earth-sun`                    |                     1 AU | AU        | separation convention                       |
+| `solar-system`                 |                   100 AU | AU        | adopted comparison span                     |
+| `solar-neighborhood`           |                    10 pc | pc        | provisional full span                       |
+| `galactic-center-neighborhood` |                    10 pc | pc        | same scale as sibling                       |
+| `milky-way`                    |                   30 kpc | kpc       | representative stellar disk diameter        |
+| `local-group`                  |                    3 Mpc | Mpc       | provisional extent                          |
+| `virgo`                        |                 16.5 Mpc | Mpc       | provisional Local Group–Virgo distance      |
+| `bao`                          |            147 Mpc class | Mpc       | convention to document                      |
+| `observable-universe`          |  28.5 Gpc class diameter | Gpc       | distance convention to document             |
 
-Solar System extent, Solar-neighborhood span, Milky Way boundary, Local Group extent, Virgo reference, BAO convention, and observable-universe convention require an explicit source/definition pass with the relevant scene.
+Solar-neighborhood span, Milky Way boundary, Local Group extent, Virgo reference, BAO convention, and observable-universe convention require an explicit source/definition pass with the relevant scene.
 
 ## Canonical lengths and formatting
 
@@ -37,7 +37,7 @@ Do not use unfamiliar legal prefixes just because they exist. Prefer conventiona
 
 ## Bridge legibility
 
-Adjacent scene ratios at or below 1:200 bypass the bridge in both directions. The Earth ↔ Earth and Moon edge connects its shared Earth-diameter bar directly in both directions. Other direct scene-to-scene reference bars are deferred; these edges currently have no transition animation. Larger ratios get intermediate scale-only frames.
+Adjacent scene ratios at or below 1:200 bypass the bridge in both directions. Earth ↔ Earth and Moon shares the Earth-diameter bar; Earth and Moon ↔ Sun shares the mean lunar-distance bar; Sun ↔ Earth–Sun shares the nominal solar-diameter bar. Each transfers directly in both directions. Larger unimplemented scenes still defer physical transfers. Larger ratios get intermediate scale-only frames.
 
 Planning caps each comparison at 1:200. The main bar occupies 94% of the measured comparison width; the smaller bar retains its exact ratio without a minimum-width exaggeration. A 1 CSS-pixel legibility floor reduces the cap only for exceptionally narrow containers. These values are shared design tokens:
 
@@ -81,3 +81,7 @@ Cover modest and large ratios, responsive widths, manual milestones, and exact f
 - BAO → Observable Universe switches directly because its ratio is below 200.
 
 Do not freeze exact frame counts without testing the responsive rendering.
+
+## Solar System continuous-zoom exception
+
+Earth–Sun ↔ Solar System shares a single coordinate world and animates the camera instead of transferring bars. Its 1 AU and 100 AU references remain fixed while the camera moves between short-side extents of 2.05 and 105 AU. Manual cursor-targeted zoom is limited to 160 AU and never exits the shared solar world. The 100 AU comparison is not a Solar System boundary; no Oort Cloud is rendered. The 1 AU ruler and label persist, while planetary leaders fade and the 100 AU ruler appears as it fits. Primary solar rulers are physically exact world-fixed segments. Only the additional close-inspection solar-diameter ruler follows the orthographic camera-target plane, with no length exaggeration and a Gm label. This exception does not change any other bridge timing or scene boundary.

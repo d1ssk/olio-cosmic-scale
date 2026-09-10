@@ -1,4 +1,25 @@
 export const en = {
+  "hud.description": "Model and scene details",
+  "hud.barRatio": "Bar length ratio 1 : {ratio}",
+  "solar.sunDiameter": "Sun diameter",
+  "solar.earthDiameter": "Earth diameter",
+  "sun.convention":
+    "Nominal photospheric radius 695,700 km (IAU). Textured sphere with illustrative surface motion and limb darkening; not imagery for a selected date. Comparison bar: mean Earth–Moon distance. The distant solar glow illustrates the point-spread function (PSF) of a bright unresolved source. Its fixed 24 px display footprint is not the solar diameter. This orthographic view does not calibrate observing angles, flux or exposure.",
+  "earthSun.convention":
+    "Sizes and distances share one scale; leaders anchor to actual positions. Zoom toward the cursor; Next/Previous animates between inner and outer views. 100 AU is a comparison length, not a Solar System boundary. Maximum short-side extent: 160 AU; no Oort Cloud. Positions use an approximate ephemeris; surfaces, lighting and ring shading are illustrative. The distant solar glow illustrates the point-spread function (PSF) of a bright unresolved source. Its fixed 24 px display footprint is not the solar diameter. This orthographic view does not calibrate observing angles, flux or exposure.",
+  "solar.mars": "Mars",
+  "solar.jupiter": "Jupiter",
+  "solar.saturn": "Saturn",
+  "solar.uranus": "Uranus",
+  "solar.neptune": "Neptune",
+  "earthSun.mercury": "Mercury",
+  "earthSun.venus": "Venus",
+  "earthSun.datetime": "Date and time (UTC · 1900–2100)",
+  "earthSun.invalidDate":
+    "Enter a valid UTC date between 1900 and 2100. The last valid positions remain displayed.",
+  "earthSun.today": "Return to now",
+  "earthSun.distance": "Sun–Earth distance: {distance} AU",
+
   "scene.earthMoon.title": "Earth and Moon",
   "origin.earthMoon": "Earth–Moon midpoint coordinates",
   "earthMoon.moon": "Moon",

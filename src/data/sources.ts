@@ -10,6 +10,78 @@ export type SourceInfo = {
 
 export const SOURCES: readonly SourceInfo[] = [
   {
+    id: "esa-iso-psf",
+    title: "ISO Handbook — Point Spread Function",
+    organization: "ESA",
+    url: "https://general-tools.cosmos.esa.int/iso/manuals/HANDBOOK/cam_hb/node33.php",
+    accessed: "2026-09-10",
+    notes:
+      "Background for unresolved-source imaging only. The solar glow uses an adopted 24 CSS px display footprint, not this instrument's calibrated PSF, flux or angular resolution.",
+  },
+  {
+    id: "cassini-major-rings",
+    title: "Cassini Launch Press Kit — The Rings of Saturn",
+    organization: "NASA / JPL",
+    url: "https://www.jpl.nasa.gov/news/press_kits/cassini.pdf",
+    accessed: "2026-09-10",
+    notes:
+      "Printed p.10 (PDF p.12), October 1997. Adopted C ring 74510–92000 km; B 92000–117580 km; A 122170–136780 km from the center. Thin flat annuli, no thickness or small ringlets; colors and optical depths illustrative.",
+  },
+  {
+    id: "sss-planets",
+    title: "Solar System Scope planet and Moon textures",
+    organization: "Solar System Scope / INOVE",
+    url: "https://www.solarsystemscope.com/textures/",
+    accessed: "2026-09-10",
+    notes:
+      "CC BY 4.0 unmodified 2k JPG maps: Mercury, Venus atmosphere, Mars, Jupiter, Saturn, Uranus, Neptune and Moon. Local assets. Tuned colors and synthesized gaps; not dated maps. Mean spherical radii, no oblateness; texture longitudes are illustrative.",
+  },
+  {
+    id: "nasa-lunar-period",
+    title: "Eclipses and the Moon’s Orbit",
+    organization: "NASA GSFC / Fred Espenak",
+    url: "https://eclipse.gsfc.nasa.gov/SEhelp/moonorbit.html",
+    accessed: "2026-09-10",
+    notes:
+      "Sidereal month 27.32166 days, adopted solely for the lunar trajectory sampling interval.",
+  },
+  {
+    id: "iau-solar-radius",
+    title: "IAU 2015 Resolution B3",
+    organization: "IAU",
+    url: "https://arxiv.org/abs/1510.07674",
+    accessed: "2026-09-10",
+    notes:
+      "Nominal photospheric radius 6.957e8 m; replaces provisional solar diameter. Fixed conversion constant, not instantaneous measurement.",
+  },
+  {
+    id: "sss-sun",
+    title: "Solar System Scope textures",
+    organization: "Solar System Scope / INOVE",
+    url: "https://www.solarsystemscope.com/textures/",
+    accessed: "2026-09-10",
+    notes:
+      "Unmodified 2k Sun JPEG, CC BY 4.0. Illustrative texture with shader brightness evolution and limb darkening; no dated surface claim.",
+  },
+  {
+    id: "astronomy-engine",
+    title: "Astronomy Engine",
+    organization: "Don Cross",
+    url: "https://github.com/cosinekitty/astronomy",
+    accessed: "2026-09-10",
+    notes:
+      "MIT-licensed local ephemeris. Geometric heliocentric EQJ vectors transformed to fixed J2000 ecliptic. UI supports 1900–2100; one-period trajectories extend by up to about 82.4 years outside it for Neptune. RotationAxis supplies pole directions, but surface longitude and lighting are illustrative. No light-time or aberration corrections. Library target angular accuracy approximately one arcminute, not a uniform positional error guarantee.",
+  },
+  {
+    id: "jpl-planet-radii",
+    title: "Planetary Physical Parameters",
+    organization: "NASA/JPL",
+    url: "https://ssd.jpl.nasa.gov/planets/phys_par.html",
+    accessed: "2026-09-10",
+    notes:
+      "Mean radii (km): Mercury 2439.4, Venus 6051.8, Mars 3389.50, Jupiter 69911, Saturn 58232, Uranus 25362, Neptune 24622. Sidereal periods (Julian years): Mercury 0.2408467, Venus 0.61519726, Earth 1.0000174, Mars 1.8808476, Jupiter 11.862615, Saturn 29.447498, Uranus 84.016846, Neptune 164.79132. Curves are open time samples, not exact closed ellipses.",
+  },
+  {
     id: "jpl-lunar-distance",
     title: "Lunar distance (LD)",
     organization: "NASA/JPL",

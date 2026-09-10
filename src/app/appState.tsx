@@ -17,7 +17,10 @@ type AppStateValue = {
   mode: AppMode;
   resetVersion: number;
   setLocale: (locale: Locale) => void;
-  navigateMain: (direction: "previous" | "next") => void;
+  navigateMain: (
+    direction: "previous" | "next",
+    solarOrigin?: "earth-sun" | "solar-system",
+  ) => void;
   navigateLateral: () => void;
   navigateToScene: (sceneId: SceneId) => void;
   cancelBridge: () => void;
@@ -59,12 +62,15 @@ export function AppStateProvider({ children }: PropsWithChildren): React.JSX.Ele
     setLocaleState(nextLocale);
   }, []);
 
-  const navigateMain = useCallback((direction: "previous" | "next") => {
-    setMode((current) => {
-      if (current.kind !== "scene") return current;
-      return mainNavigationMode(current.sceneId, direction);
-    });
-  }, []);
+  const navigateMain = useCallback(
+    (direction: "previous" | "next", solarOrigin?: "earth-sun" | "solar-system") => {
+      setMode((current) => {
+        if (current.kind !== "scene") return current;
+        return mainNavigationMode(solarOrigin ?? current.sceneId, direction);
+      });
+    },
+    [],
+  );
 
   const navigateLateral = useCallback(() => {
     setMode((current) => {

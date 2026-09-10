@@ -1,6 +1,27 @@
 import type { TranslationKey } from "./index";
 
 export const ja: Record<TranslationKey, string> = {
+  "hud.description": "モデル・シーンの説明",
+  "hud.barRatio": "棒の長さ比 1 : {ratio}",
+  "solar.sunDiameter": "太陽直径",
+  "solar.earthDiameter": "地球直径",
+  "sun.convention":
+    "光球の公称半径695,700 km（IAU）。表面模様・動き・周縁減光は模式表現で、指定日時の観測画像ではありません。比較棒は地球–月の平均距離です。 遠方の太陽の光点は、明るい未分解光源の像の広がり（PSF）を模した表示です。光の幅は画面上で一定（24 pxの範囲）で、実際の太陽直径ではありません。正投影のため観測角度への換算や光束・露出の再現は行っていません。",
+  "earthSun.convention":
+    "天体の大きさ・距離は同じ縮尺。引き出し線は実位置を示します。カーソル位置へズームでき、次／前で内惑星と太陽系全体の範囲を連続ズームします。100 AUは比較用の長さで、太陽系の境界ではありません。最大表示範囲は短辺160 AU。オールトの雲は含みません。日時は近似暦、表面・照明・環の濃淡は模式表現です。 遠方の太陽の光点は、明るい未分解光源の像の広がり（PSF）を模した表示です。光の幅は画面上で一定（24 pxの範囲）で、実際の太陽直径ではありません。正投影のため観測角度への換算や光束・露出の再現は行っていません。",
+  "solar.mars": "火星",
+  "solar.jupiter": "木星",
+  "solar.saturn": "土星",
+  "solar.uranus": "天王星",
+  "solar.neptune": "海王星",
+  "earthSun.mercury": "水星",
+  "earthSun.venus": "金星",
+  "earthSun.datetime": "日時（UTC・1900〜2100年）",
+  "earthSun.invalidDate":
+    "1900〜2100年の有効なUTC日時を入力してください。直前の有効な配置を表示しています。",
+  "earthSun.today": "現在日時に戻る",
+  "earthSun.distance": "太陽–地球の中心間距離：{distance} AU",
+
   "scene.earthMoon.title": "地球と月",
   "origin.earthMoon": "地球と月の中点を原点とする座標",
   "earthMoon.moon": "月",

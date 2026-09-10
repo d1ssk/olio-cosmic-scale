@@ -1,3 +1,11 @@
+import {
+  SOLAR_METERS_PER_UNIT,
+  SOLAR_PRESET_CAMERA_POSITION,
+  INNER_VIEW_METERS,
+  OUTER_VIEW_METERS,
+  OUTER_REFERENCE_METERS,
+} from "../scenes/solar-system/solarScale";
+import { SUN_DIAMETER_METERS } from "../scenes/sun/sunData";
 import { EARTH_MOON_DISTANCE_METERS } from "../scenes/earth-moon/earthMoonData";
 import { EARTH_DIAMETER_METERS } from "../scenes/earth/earthData";
 import { HUMAN_REFERENCE_METERS } from "../scenes/human/humanData";
@@ -11,6 +19,8 @@ import {
 } from "../physics/constants";
 import type { SceneDefinition, SceneId } from "../scenes/types";
 
+const SunScene = lazy(() => import("../scenes/sun/SunScene"));
+const EarthSunScene = lazy(() => import("../scenes/earth-sun/EarthSunScene"));
 const EarthMoonScene = lazy(() => import("../scenes/earth-moon/EarthMoonScene"));
 const EarthScene = lazy(() => import("../scenes/earth/EarthScene"));
 const HumanScene = lazy(() => import("../scenes/human/HumanScene"));
@@ -114,13 +124,19 @@ export const sceneRegistry: Record<SceneId, SceneDefinition> = {
     kind: "scene",
     titleKey: "scene.sun.title",
     originDescriptionKey: "origin.sun",
-    referenceLengthMeters: 1.3927e9,
+    referenceLengthMeters: SUN_DIAMETER_METERS,
     defaultViewportExtentMeters: 2.1e9,
-    metersPerSceneUnit: 1.3927e8,
+    metersPerSceneUnit: SUN_DIAMETER_METERS / 10,
     preferredPrimaryUnit: "Gm",
     secondaryUnits: ["km", "AU"],
-    camera: perspective,
-    component: PlaceholderScene,
+    camera: {
+      ...perspective,
+      position: [0, 0, 24],
+      fitToViewport: true,
+      minDistance: 12,
+      maxDistance: 60,
+    },
+    component: SunScene,
     previous: "earth-moon",
     next: "earth-sun",
   },
@@ -130,12 +146,18 @@ export const sceneRegistry: Record<SceneId, SceneDefinition> = {
     titleKey: "scene.earthSun.title",
     originDescriptionKey: "origin.earthSun",
     referenceLengthMeters: AU_METERS,
-    defaultViewportExtentMeters: AU_METERS * 1.35,
-    metersPerSceneUnit: AU_METERS / 10,
+    defaultViewportExtentMeters: INNER_VIEW_METERS,
+    metersPerSceneUnit: SOLAR_METERS_PER_UNIT,
     preferredPrimaryUnit: "AU",
     secondaryUnits: ["Gm", "km"],
-    camera: orthographic,
-    component: PlaceholderScene,
+    camera: {
+      ...orthographic,
+      position: SOLAR_PRESET_CAMERA_POSITION,
+      fitToViewport: true,
+      minZoom: 0.01,
+      maxZoom: 10000000,
+    },
+    component: EarthSunScene,
     previous: "sun",
     next: "solar-system",
   },
@@ -144,13 +166,19 @@ export const sceneRegistry: Record<SceneId, SceneDefinition> = {
     kind: "scene",
     titleKey: "scene.solarSystem.title",
     originDescriptionKey: "origin.solarSystem",
-    referenceLengthMeters: 100 * AU_METERS,
-    defaultViewportExtentMeters: 120 * AU_METERS,
-    metersPerSceneUnit: 10 * AU_METERS,
+    referenceLengthMeters: OUTER_REFERENCE_METERS,
+    defaultViewportExtentMeters: OUTER_VIEW_METERS,
+    metersPerSceneUnit: SOLAR_METERS_PER_UNIT,
     preferredPrimaryUnit: "AU",
     secondaryUnits: ["ly", "Tm"],
-    camera: orthographic,
-    component: PlaceholderScene,
+    camera: {
+      ...orthographic,
+      position: SOLAR_PRESET_CAMERA_POSITION,
+      fitToViewport: true,
+      minZoom: 0.01,
+      maxZoom: 10000000,
+    },
+    component: EarthSunScene,
     previous: "earth-sun",
     next: "solar-neighborhood",
   },

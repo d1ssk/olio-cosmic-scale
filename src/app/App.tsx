@@ -1,3 +1,6 @@
+import { isSolarWorld, isContinuousSolarEdge } from "../scenes/solar-system/solarScale";
+import { cameraStateStore, cameraStateKey } from "./cameraState";
+import type { SceneHostControls } from "../scenes/shared/SceneHost";
 import { mainNavigationMode } from "./navigation";
 import { BarVisibilityContext, type BarKind } from "../scenes/shared/barVisibility";
 import { BAR_TIMING, transitionDelay } from "../bridges/transitionTiming";
@@ -31,6 +34,9 @@ const SceneHost = lazy(() =>
 export function App(): React.JSX.Element {
   const state = useAppState();
   const sceneRef = useRef<SceneControls>(null);
+  const [observationDate, setObservationDate] = useState(
+    () => new Date().toISOString().slice(0, 16) + ":00Z",
+  );
   const [busy, setBusy] = useState(false);
   const navigationLock = useRef(false);
   const release = useCallback(() => {
@@ -48,7 +54,7 @@ export function App(): React.JSX.Element {
     if (state.mode.kind !== "bridge") return;
     const sceneId = complete ? state.mode.targetSceneId : state.mode.originSceneId;
     const bar =
-      sceneId === "earth" || sceneId === "human"
+      sceneId === "earth" || sceneId === "human" || sceneId === "solar-system"
         ? captureBridgeBar(
             sceneId === "earth"
               ? EARTH_COMPARISON_METERS
@@ -67,20 +73,67 @@ export function App(): React.JSX.Element {
     if (busy || navigationLock.current) return;
     if (state.mode.kind === "bridge") bridgeRef.current?.navigate(direction);
     else {
-      const from = state.mode.sceneId;
+      let from = state.mode.sceneId;
+      const exit = isSolarWorld(from) ? sceneRef.current?.exitIntent(direction) : null;
+      if (exit === "sun") from = "earth-sun";
+      if (exit === "outer-exit") from = "solar-system";
       const target = sceneRegistry[from][direction];
       const connected =
         (from === "earth" && target === "earth-moon") ||
-        (from === "earth-moon" && target === "earth");
+        (from === "earth-moon" && target === "earth") ||
+        (from === "earth-moon" && target === "sun") ||
+        (from === "sun" && target === "earth-moon") ||
+        (from === "sun" && target === "earth-sun") ||
+        (from === "earth-sun" && target === "sun");
       if (!target) return;
       navigationLock.current = true;
       setBusy(true);
+      if (exit === "inner-preset") {
+        setSceneEntry(null);
+        if (await sceneRef.current?.zoomToScene("earth-sun")) state.navigateToScene("earth-sun");
+        release();
+        return;
+      }
+      if (exit === "outer-preset") {
+        setSceneEntry(null);
+        if (await sceneRef.current?.zoomToScene("solar-system"))
+          state.navigateToScene("solar-system");
+        release();
+        return;
+      }
+      if (exit === "outer-exit") {
+        setSceneEntry(null);
+        if (!(await sceneRef.current?.zoomToScene("solar-system", 650))) {
+          release();
+          return;
+        }
+        state.navigateToScene("solar-system");
+        // Commit the outer reference carrier before capture, including reduced motion.
+        await new Promise<void>((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+        );
+        await transitionDelay(220);
+      }
+      const recovery = !exit && isSolarWorld(from) ? sceneRef.current?.recoveryPreset() : null;
+      if (recovery) {
+        setSceneEntry(null);
+        if (await sceneRef.current?.zoomToScene(recovery)) state.navigateToScene(recovery);
+        release();
+        return;
+      }
+      if (isContinuousSolarEdge(from, target)) {
+        setSceneEntry(null);
+        if (await sceneRef.current?.zoomToScene(target)) state.navigateMain(direction);
+        release();
+        return;
+      }
+      if (from === "sun" && target === "earth-sun") cameraStateStore.delete(cameraStateKey(target));
       const keep: BarKind | "none" = !(
         connected || mainNavigationMode(from, direction).kind === "bridge"
       )
         ? "none"
         : (from === "earth" && direction === "previous") ||
-            (from === "earth-moon" && direction === "previous")
+            (["earth-moon", "sun", "earth-sun"].includes(from) && direction === "previous")
           ? "comparison"
           : "reference";
       if (!(await sceneRef.current?.prepareDeparture(keep))) {
@@ -88,20 +141,23 @@ export function App(): React.JSX.Element {
         return;
       }
       const bar = connected
-        ? captureReferenceBar(from === "earth" ? "reference" : "comparison")
+        ? captureReferenceBar(direction === "next" ? "reference" : "comparison")
         : null;
       setSceneEntry(
         bar && target
           ? {
               sceneId: target,
               bar,
-              kind: target === "earth" ? "reference" : "comparison",
+              kind: direction === "previous" ? "reference" : "comparison",
               delay: 0,
             }
           : null,
       );
       setEntryBar(captureReferenceBar(state.mode.sceneId === "earth" ? "comparison" : "reference"));
-      state.navigateMain(direction);
+      state.navigateMain(
+        direction,
+        exit === "sun" ? "earth-sun" : exit === "outer-exit" ? "solar-system" : undefined,
+      );
       if (!bar) release();
     }
   };
@@ -125,15 +181,19 @@ export function App(): React.JSX.Element {
         onNavigate={(id) => {
           if (busy) return;
           setSceneEntry(null);
+          if (isSolarWorld(id)) cameraStateStore.delete(cameraStateKey(id));
           state.navigateToScene(id);
         }}
       />
       <main className="app-main">
         {state.mode.kind === "scene" ? (
           <SceneView
+            autoSolarLabel={!busy}
+            observationDate={observationDate}
+            onObservationDateChange={setObservationDate}
             ref={sceneRef}
             onArrivalComplete={release}
-            key={state.mode.sceneId}
+            key={isSolarWorld(state.mode.sceneId) ? "solar-world" : state.mode.sceneId}
             sceneId={state.mode.sceneId}
             entryKind={sceneEntry?.kind}
             entryDelay={sceneEntry?.delay}
@@ -164,9 +224,17 @@ export function App(): React.JSX.Element {
   );
 }
 
-type SceneControls = { prepareDeparture: (kind: BarKind | "none") => Promise<boolean> };
+type SceneControls = {
+  exitIntent: SceneHostControls["exitIntent"];
+  recoveryPreset: () => "earth-sun" | "solar-system" | null;
+  prepareDeparture: (kind: BarKind | "none") => Promise<boolean>;
+  zoomToScene: (id: SceneId, duration?: number) => Promise<boolean>;
+};
 
 function SceneView({
+  autoSolarLabel,
+  observationDate,
+  onObservationDateChange,
   ref,
   onArrivalComplete: release,
   sceneId,
@@ -174,6 +242,9 @@ function SceneView({
   entryKind,
   entryDelay,
 }: {
+  autoSolarLabel: boolean;
+  observationDate: string;
+  onObservationDateChange: (value: string) => void;
   ref?: Ref<SceneControls>;
   onArrivalComplete: () => void;
   sceneId: SceneId;
@@ -182,6 +253,9 @@ function SceneView({
   entryDelay?: number;
 }): React.JSX.Element {
   const state = useAppState();
+  const hostRef = useRef<SceneHostControls>(null);
+  const [barPair, setBarPair] = useState<readonly [number, number] | null>(null);
+  const [zooming, setZooming] = useState(false);
   const [ready, setReady] = useState(false);
   const [arrived, setArrived] = useState(false);
   const [barsHidden, setBarsHidden] = useState(false);
@@ -201,6 +275,16 @@ function SceneView({
   useImperativeHandle(
     ref,
     () => ({
+      exitIntent: (direction) => hostRef.current?.exitIntent(direction) ?? null,
+      recoveryPreset: () => hostRef.current?.recoveryPreset() ?? null,
+      async zoomToScene(id, duration) {
+        setZooming(true);
+        setBarsHidden(false);
+        setOnlyBar(null);
+        const completed = await hostRef.current?.animateTo(sceneRegistry[id], duration);
+        if (mounted.current) setZooming(false);
+        return Boolean(completed);
+      },
       async prepareDeparture(kind) {
         setDeparting(true);
         setOnlyBar(kind);
@@ -223,12 +307,20 @@ function SceneView({
       <Suspense
         fallback={<div className="loading-state">{translate(state.locale, "loading.scene")}</div>}
       >
-        <SceneHost metadata={scene} locale={state.locale} resetVersion={state.resetVersion}>
+        <SceneHost
+          ref={hostRef}
+          metadata={scene}
+          locale={state.locale}
+          resetVersion={state.resetVersion}
+          onSolarViewChange={autoSolarLabel ? state.navigateToScene : undefined}
+          onBarPairChange={setBarPair}
+        >
           <BarVisibilityContext
             value={{ hidden: barsHidden || Boolean(entryBar && !arrived), only: onlyBar }}
           >
             <Scene
               active
+              observationDate={observationDate}
               locale={state.locale}
               metadata={scene}
               onReady={() => setReady(true)}
@@ -238,7 +330,7 @@ function SceneView({
           </BarVisibilityContext>
         </SceneHost>
       </Suspense>
-      {(scene.id === "human" || scene.id === "earth" || scene.id === "earth-moon") && (
+      {["human", "earth", "earth-moon", "sun", "earth-sun", "solar-system"].includes(scene.id) && (
         <ReferenceBarOverlay
           kind={entryKind ?? (scene.id === "human" ? "reference" : "comparison")}
           delay={entryDelay}
@@ -250,13 +342,16 @@ function SceneView({
       )}
       {!ready && <div className="loading-state">{translate(state.locale, "loading.scene")}</div>}
       <SceneHUD
+        barPair={barPair}
+        observationDate={observationDate}
+        onObservationDateChange={onObservationDateChange}
         scene={scene}
         locale={state.locale}
         onLateral={state.navigateLateral}
         onReset={state.resetCamera}
         barsHidden={barsHidden}
         onBarsHiddenChange={setBarsHidden}
-        transitioning={departing || Boolean(entryBar && !arrived)}
+        transitioning={zooming || departing || Boolean(entryBar && !arrived)}
       />
     </section>
   );
