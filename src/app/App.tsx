@@ -33,6 +33,7 @@ import { captureBridgeBar, captureReferenceBar, type BarSnapshot } from "../brid
 import {
   DEFAULT_COSMIC_WEB_QUALITY,
   type BaoLayerMode,
+  type CmbDisplayMode,
   type CosmicWebQuality,
   type SceneId,
 } from "../scenes/types";
@@ -185,6 +186,7 @@ export function App(): React.JSX.Element {
               "local-group",
               "virgo",
               "bao",
+              "observable-universe",
             ].includes(from) &&
               direction === "previous")
           ? "comparison"
@@ -351,6 +353,7 @@ function SceneView({
   const [baoLayerMode, setBaoLayerMode] = useState<BaoLayerMode>("both");
   const [baoReveal, setBaoReveal] = useState(false);
   const [baoSliceFraction, setBaoSliceFraction] = useState(0.5);
+  const [cmbDisplayMode, setCmbDisplayMode] = useState<CmbDisplayMode>("uniform");
   const [cosmicWebMix, setCosmicWebMix] = useState(sceneId === "cosmic-web" ? 1 : 0);
   const [cosmicWebQuality, setCosmicWebQuality] = useState<CosmicWebQuality>(
     DEFAULT_COSMIC_WEB_QUALITY,
@@ -452,7 +455,14 @@ function SceneView({
         // Preserve the explored view when the connecting segment is wholly in frame.
         // Hidden bars still have physical endpoints and are restored below.
         if (
-          ["milky-way", "local-group", "virgo", "bao"].includes(sceneId) &&
+          [
+            "milky-way",
+            "local-group",
+            "virgo",
+            "bao",
+            "cosmic-web",
+            "observable-universe",
+          ].includes(sceneId) &&
           kind !== "none" &&
           !hostRef.current?.isBarFullyInView(kind)
         ) {
@@ -502,6 +512,7 @@ function SceneView({
               baoLayerMode={baoLayerMode}
               baoReveal={baoReveal}
               baoSliceFraction={baoSliceFraction}
+              cmbDisplayMode={cmbDisplayMode}
               cosmicWebMix={cosmicWebMix}
               cosmicWebQuality={cosmicWebQuality}
               densityTransitionActive={densityTransitionActive}
@@ -542,6 +553,8 @@ function SceneView({
         "local-group",
         "virgo",
         "bao",
+        "cosmic-web",
+        "observable-universe",
       ].includes(scene.id) && (
         <ReferenceBarOverlay
           kind={entryKind ?? (scene.id === "human" ? "reference" : "comparison")}
@@ -554,6 +567,8 @@ function SceneView({
       )}
       {!ready && <div className="loading-state">{translate(state.locale, "loading.scene")}</div>}
       <SceneHUD
+        cmbDisplayMode={cmbDisplayMode}
+        onCmbDisplayModeChange={setCmbDisplayMode}
         baoLayerMode={baoLayerMode}
         onBaoLayerModeChange={setBaoLayerMode}
         baoReveal={baoReveal}

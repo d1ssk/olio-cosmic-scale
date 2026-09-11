@@ -1,6 +1,6 @@
 import { Edges } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
   BackSide,
   ClampToEdgeWrapping,
@@ -24,6 +24,7 @@ import {
 } from "./cosmicWebModel";
 import { cosmicSlabFragmentShader, cosmicSlabVertexShader } from "./cosmicSlabShaders";
 import { CosmicWebRulers } from "./CosmicWebRulers";
+import { BarVisibilityContext } from "../shared/barVisibility";
 
 function slabScale(dataset: CosmicSlabDataset): [number, number, number] {
   const full = fullBoxRenderSize(dataset.manifest);
@@ -42,6 +43,8 @@ export function CosmicWebSlab({
   locale,
   mix,
   transitionAnimating,
+  entryBarKind,
+  referenceBarVisible,
   onReady,
 }: {
   quality: CosmicWebQuality;
@@ -50,8 +53,11 @@ export function CosmicWebSlab({
   locale: Locale;
   mix: number;
   transitionAnimating: boolean;
+  entryBarKind?: "reference" | "comparison";
+  referenceBarVisible?: boolean;
   onReady?: () => void;
 }): React.JSX.Element | null {
+  const visibility = useContext(BarVisibilityContext);
   const gl = useThree((state) => state.gl);
   const [dataset, setDataset] = useState<CosmicSlabDataset | null>(null);
   const [error, setError] = useState<Error | null>(null);
@@ -121,7 +127,7 @@ export function CosmicWebSlab({
   const full = fullBoxRenderSize(dataset.manifest);
   return (
     <group>
-      <group visible={opacity > 0.001}>
+      <group visible={opacity > 0.001 && visibility.only === null}>
         <mesh
           ref={mesh}
           scale={scale}
@@ -167,6 +173,8 @@ export function CosmicWebSlab({
         locale={locale}
         mix={mix}
         transitionAnimating={transitionAnimating}
+        entryBarKind={entryBarKind}
+        referenceBarVisible={referenceBarVisible}
       />
     </group>
   );

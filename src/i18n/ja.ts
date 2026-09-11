@@ -1,8 +1,28 @@
 import type { TranslationKey } from "./index";
 
 export const ja: Record<TranslationKey, string> = {
+  "observable.summary":
+    "原点に観測者 · 現在の共動半径 · 黄白色は放射時約3000 K／現在の観測2.7255 K",
+  "observable.shell": "最終散乱面",
+  "observable.lightCone": "過去光円錐のslice · 模式領域",
+  "observable.comovingDistance": "共動距離",
+  "observable.redshift": "赤方偏移",
+  "observable.lookbackTime": "ルックバック時間",
+  "observable.universeAge": "宇宙年齢",
+  "observable.scaleFactor": "スケール因子",
+  "observable.now": "現在",
+  "observable.lookbackShort": "{value} Gyr前",
+  "observable.shellTemperature": "放射時 ≈{emitted} K · 現在の観測 {observed} K",
+  "observable.particleHorizon": "外縁：粒子地平線 ≈{distance} Gpc",
+  "observable.temperatureFluctuations": "温度揺らぎ",
+  "observable.eModePolarization": "Eモード偏光",
+  "observable.realizationNote":
+    "事前生成した同一T/E実現 · 色は増幅表示 · 偏光線はQ/Uで長さが振幅、温度OFF時の色はE scalar",
+  "observable.details":
+    "基準長14 Gpcは、観測者から最終散乱面までの現在の共動半径を丸めて採用した値で、光の移動時間や観測可能な宇宙の直径ではありません。有限厚の球殻は、同じflatなPlanck 2018相当のΛCDM背景（H₀=67.4 km/s/Mpc、Ωm=0.315、放射成分を含む）で計算した粒子地平線まで外側へ延ばしています。内面の黄みを帯びた白は、表示上のwhite balanceを施した放射時約3000 Kのプラズマを表し、その放射は現在2.7255 Kで観測されます。温度・E scalarの色・Q/U偏光線は、同一のjoint T/E実現（B=0）から供給されたHEALPixマップを使い、観測された全天マップではありません。色は各マップの標準偏差±3σで増幅し、線の長さは偏光振幅に比例させ、表示用の倍率で描いています。同時表示時の色は温度を表します。薄い扇形は過去光円錐の模式領域を確保しただけで、物質分布はまだモデル化していません。",
   "cosmicWeb.loading": "cosmic-web slabを読み込んでいます…",
-  "cosmicWeb.summary": "Cosmic Web · Box size：{size} Gpc/h · Snapshot：z = {redshift}",
+  "cosmicWeb.summary": "網目構造 · Box size：{size} Gpc/h · Snapshot：z = {redshift}",
+  "cosmicWeb.referenceRedshift": "z≈1に対応",
   "cosmicWeb.quality": "slabの精細度",
   "cosmicWeb.standard": "標準 · 256³ source（軽量）",
   "cosmicWeb.high": "高精細 · 512³ source（default）",
@@ -224,7 +244,7 @@ export const ja: Record<TranslationKey, string> = {
   "scene.localGroup.title": "局所銀河群",
   "scene.virgo.title": "おとめ座銀河団周辺",
   "scene.bao.title": "BAOスケール",
-  "scene.cosmicWeb.title": "コズミック・ウェブ",
+  "scene.cosmicWeb.title": "網目構造",
   "scene.observableUniverse.title": "観測可能な宇宙",
   "origin.human": "対象中心の局所座標",
   "origin.earth": "地球中心座標",
@@ -236,5 +256,5 @@ export const ja: Record<TranslationKey, string> = {
   "origin.milkyWay": "銀河中心基準系",
   "origin.bao": "Abacus中心Cartesian共動座標 · Mpc/h · z = 0.2",
   "origin.cosmicWeb": "Abacus中心Cartesian共動座標 · 中央固定slab · z = 0.2",
-  "origin.observableUniverse": "観測者中心の共動座標（規約は要確定）",
+  "origin.observableUniverse": "観測者中心 · 現在の共動動径座標",
 };

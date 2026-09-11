@@ -83,7 +83,7 @@ Cover modest and large ratios, responsive widths, manual milestones, and exact f
 - Virgo → BAO transfers the exact 16.5 Mpc Virgo reference into the BAO comparison
   ruler directly; the ratio to 147 Mpc is moderate.
 - BAO → Cosmic Web is an explicit scene change with a same-coordinate zoom/crossfade.
-- Cosmic Web → Observable Universe switches directly because its ratio is below 200.
+- Cosmic Web ↔ Observable Universe uses a direct one-second transfer of the exact 3 Gpc Cosmic Web reference into the final scene's coplanar comparison bar; the hierarchy ratio remains below 200, so no standalone bridge screen is inserted.
 
 Do not freeze exact frame counts without testing the responsive rendering.
 

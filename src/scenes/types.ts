@@ -47,6 +47,7 @@ export type SceneMetadata = {
 };
 
 export type ScaleSceneProps = {
+  cmbDisplayMode?: CmbDisplayMode;
   baoLayerMode?: BaoLayerMode;
   baoReveal?: boolean;
   baoSliceFraction?: number;
@@ -79,6 +80,7 @@ export type ScaleSceneProps = {
 
 export type BaoLayerMode = "halos" | "matter" | "both";
 export type CosmicWebQuality = "standard" | "high";
+export type CmbDisplayMode = "uniform" | "temperature" | "polarization" | "both";
 export const DEFAULT_COSMIC_WEB_QUALITY: CosmicWebQuality = "high";
 
 export type SceneDefinition = SceneMetadata & {

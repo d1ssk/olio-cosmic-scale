@@ -4,9 +4,9 @@
 
 The default client stack is Vite, TypeScript, React, Three.js, React Three Fiber, and Drei. Tooling includes ESLint, Prettier, Vitest, and React Testing Library when component behavior benefits from it. Keep Playwright to a few valuable smoke tests if it remains lightweight. Avoid extra state libraries until complexity warrants one.
 
-The common framework and the first twelve scenes through Cosmic Web are implemented, together with the Galactic bulge sibling. The app includes a 13-level registry, fixed navigation, bilingual HUD, physical transitions, camera memory, static assets, and automated checks. Observable Universe remains a `PlaceholderScene`; its geometry is not scientific content. See [implementation status and handoff](implementation-status.md) before continuing.
+The common framework and all thirteen scenes through the Observable Universe are implemented, together with the Galactic bulge sibling. The app includes a 13-level registry, fixed navigation, bilingual HUD, physical transitions, camera memory, static assets, and automated checks. The final scene includes a finite last-scattering-to-particle-horizon shell, precomputed joint T/E HEALPix temperature and Q/U polarization layers, a radial cosmology ruler, an incoming 3 Gpc transfer, and a reserved light-cone sector; detailed light-cone matter layers remain a future increment. See [implementation status and handoff](implementation-status.md) before continuing.
 
-Live APIs, backend services, authentication, analytics, a universal 3D world, and automatic hierarchy playback remain out of scope. Implement further scientific scenes incrementally; the next is Observable Universe.
+Live APIs, backend services, authentication, analytics, a universal 3D world, and automatic hierarchy playback remain out of scope. Continue the Observable Universe scientific layers incrementally.
 
 ## Commands
 

@@ -14,6 +14,7 @@ const DIRECT_BAR_TRANSFER_EDGES = [
   ["earth", "earth-moon"],
   ["earth-moon", "sun"],
   ["sun", "earth-sun"],
+  ["cosmic-web", "observable-universe"],
 ] as const satisfies readonly (readonly [SceneId, SceneId])[];
 
 export function hasDirectBarTransfer(first: SceneId, second: SceneId | undefined): boolean {

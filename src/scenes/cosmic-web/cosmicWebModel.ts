@@ -40,11 +40,11 @@ export function cosmicRulerPlacements(
   const direction: [number, number, number] = [0, 1, 0];
   return {
     reference: {
-      base: [0, -referenceLength / 2, -halfBox - 1.15],
+      base: [0, -referenceLength / 2, -halfBox - 3.85],
       direction,
     },
     baoComparison: {
-      base: [0, -baoLength / 2, -halfBox - 2.35],
+      base: [0, -baoLength / 2, -halfBox - 5.05],
       direction,
     },
   };

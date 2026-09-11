@@ -45,6 +45,8 @@ export default function CosmicDensityScene(props: ScaleSceneProps): React.JSX.El
           locale={props.locale}
           mix={cosmicWebMix}
           transitionAnimating={densityTransitionAnimating}
+          entryBarKind={props.entryBarKind}
+          referenceBarVisible={props.referenceBarVisible}
           onReady={markCosmicReady}
         />
       )}

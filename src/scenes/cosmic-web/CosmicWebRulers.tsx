@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { Locale } from "../../i18n";
+import { translate, type Locale } from "../../i18n";
 import { BAO_REFERENCE_METERS, baoRulerPlacement } from "../bao/baoModel";
 import { SceneReferenceBar } from "../shared/SceneReferenceBar";
 import type { SceneMetadata } from "../types";
@@ -21,12 +21,16 @@ export function CosmicWebRulers({
   locale,
   mix,
   transitionAnimating,
+  entryBarKind,
+  referenceBarVisible = true,
 }: {
   manifest: BaoManifest;
   metadata: SceneMetadata;
   locale: Locale;
   mix: number;
   transitionAnimating: boolean;
+  entryBarKind?: "reference" | "comparison";
+  referenceBarVisible?: boolean;
 }): React.JSX.Element {
   const placements = useMemo(
     () => cosmicRulerPlacements(manifest, metadata.metersPerSceneUnit),
@@ -53,13 +57,14 @@ export function CosmicWebRulers({
     <group>
       <SceneReferenceBar
         metadata={cosmicMetadata}
+        labelSuffix={translate(locale, "cosmicWeb.referenceRedshift")}
         locale={locale}
         base={placements.reference.base}
         direction={placements.reference.direction}
         kind="reference"
-        barName="cosmic-web-reference-bar"
+        visible={entryBarKind !== "reference" || referenceBarVisible}
         opacity={revealOpacity(mix)}
-        labelOffsetY={-18}
+        labelOffsetY={-50}
       />
       <SceneReferenceBar
         metadata={baoMetadata}

@@ -34,8 +34,13 @@ import { SUN_DIAMETER_METERS } from "../scenes/sun/sunData";
 import { EARTH_MOON_DISTANCE_METERS } from "../scenes/earth-moon/earthMoonData";
 import { EARTH_DIAMETER_METERS } from "../scenes/earth/earthData";
 import { HUMAN_REFERENCE_METERS } from "../scenes/human/humanData";
+import {
+  OBSERVABLE_UNIVERSE_METERS_PER_UNIT,
+  OBSERVABLE_UNIVERSE_REFERENCE_METERS,
+  OBSERVABLE_UNIVERSE_VIEW_METERS,
+} from "../scenes/observable-universe/observableUniverseModel";
 import { lazy } from "react";
-import { AU_METERS, GIGAPARSEC_METERS, PARSEC_METERS } from "../physics/constants";
+import { AU_METERS, PARSEC_METERS } from "../physics/constants";
 import type { SceneDefinition, SceneId } from "../scenes/types";
 
 const VirgoScene = lazy(() => import("../scenes/virgo/VirgoScene"));
@@ -53,7 +58,9 @@ const EarthMoonScene = lazy(() => import("../scenes/earth-moon/EarthMoonScene"))
 const EarthScene = lazy(() => import("../scenes/earth/EarthScene"));
 const HumanScene = lazy(() => import("../scenes/human/HumanScene"));
 
-const PlaceholderScene = lazy(() => import("../scenes/shared/PlaceholderScene"));
+const ObservableUniverseScene = lazy(
+  () => import("../scenes/observable-universe/ObservableUniverseScene"),
+);
 
 const perspective = {
   projection: "perspective" as const,
@@ -367,13 +374,21 @@ export const sceneRegistry: Record<SceneId, SceneDefinition> = {
     kind: "scene",
     titleKey: "scene.observableUniverse.title",
     originDescriptionKey: "origin.observableUniverse",
-    referenceLengthMeters: 28.5 * GIGAPARSEC_METERS,
-    defaultViewportExtentMeters: 32 * GIGAPARSEC_METERS,
-    metersPerSceneUnit: 2.85 * GIGAPARSEC_METERS,
+    referenceLengthMeters: OBSERVABLE_UNIVERSE_REFERENCE_METERS,
+    defaultViewportExtentMeters: OBSERVABLE_UNIVERSE_VIEW_METERS,
+    metersPerSceneUnit: OBSERVABLE_UNIVERSE_METERS_PER_UNIT,
     preferredPrimaryUnit: "Gpc",
     secondaryUnits: ["Gly", "Mpc"],
-    camera: perspective,
-    component: PlaceholderScene,
+    camera: {
+      ...perspective,
+      position: [0, 4.5, 7],
+      target: [3.2, -0.2, -2.7],
+      near: 0.01,
+      far: 100,
+      minDistance: 4,
+      maxDistance: 40,
+    },
+    component: ObservableUniverseScene,
     previous: "cosmic-web",
   },
 };

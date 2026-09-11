@@ -1,6 +1,26 @@
 export const en = {
+  "observable.summary":
+    "Observer at the origin · present-day comoving radius · warm-white ≈3000 K emission / 2.7255 K observed today",
+  "observable.shell": "Last-scattering surface",
+  "observable.lightCone": "Past-light-cone slice · schematic region",
+  "observable.comovingDistance": "Comoving distance",
+  "observable.redshift": "Redshift",
+  "observable.lookbackTime": "Lookback time",
+  "observable.universeAge": "Universe age",
+  "observable.scaleFactor": "Scale factor",
+  "observable.now": "now",
+  "observable.lookbackShort": "{value} Gyr lookback",
+  "observable.shellTemperature": "emitted ≈{emitted} K · observed {observed} K",
+  "observable.particleHorizon": "outer edge: particle horizon ≈{distance} Gpc",
+  "observable.temperatureFluctuations": "Temperature fluctuations",
+  "observable.eModePolarization": "E-mode polarization",
+  "observable.realizationNote":
+    "Precomputed joint T/E realization · amplified colors · Q/U stick length shows amplitude; E scalar colors when temperature is off",
+  "observable.details":
+    "The 14 Gpc reference is an adopted rounded present-day comoving radius from the observer to the last-scattering surface, not light-travel time or the observable-universe diameter. The finite shell extends outward to the particle horizon calculated in the same flat Planck-2018-like ΛCDM background (H₀ 67.4 km/s/Mpc, Ωm 0.315, radiation included). The warm-white inner face represents the roughly 3000 K plasma at emission after display white balance; today that radiation is observed as 2.7255 K. Temperature, E scalar colors and Q/U polarization sticks use supplied HEALPix maps from one joint T/E realization (B=0), not observed sky maps. Colors use ±3 map standard deviations; stick lengths are proportional to polarization amplitude, with an adopted display scale. When both layers are enabled, temperature supplies the colors. The thin sector only reserves a schematic past-light-cone region; matter content is not yet modeled.",
   "cosmicWeb.loading": "Loading the cosmic-web slab…",
   "cosmicWeb.summary": "Cosmic Web · Box size: {size} Gpc/h · Snapshot: z = {redshift}",
+  "cosmicWeb.referenceRedshift": "corresponds to z≈1",
   "cosmicWeb.quality": "Slab detail",
   "cosmicWeb.standard": "Standard · 256³ source (lighter)",
   "cosmicWeb.high": "High · 512³ source (default)",
@@ -238,5 +258,5 @@ export const en = {
   "origin.bao": "Abacus-centered Cartesian comoving coordinates · Mpc/h · z = 0.2",
   "origin.cosmicWeb":
     "Abacus-centered Cartesian comoving coordinates · fixed central slab · z = 0.2",
-  "origin.observableUniverse": "Observer-centered comoving coordinates (convention pending)",
+  "origin.observableUniverse": "Observer-centered · present-day comoving radial coordinates",
 } as const;

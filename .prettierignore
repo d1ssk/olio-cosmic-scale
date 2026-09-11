@@ -8,3 +8,5 @@ public/data/bao/
 
 # User-supplied source models; preserve original files.
 tmp/
+# Preserve supplied authoritative CMB manifest verbatim.
+public/models/cmb/metadata.json

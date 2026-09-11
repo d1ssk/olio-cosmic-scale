@@ -146,6 +146,93 @@ button:disabled {
   touch-action: none;
 }
 
+.cosmic-ruler-tick,
+.cosmic-cone-label,
+.cosmic-shell-label,
+.cosmic-ruler-tooltip {
+  pointer-events: none;
+  user-select: none;
+}
+
+.cosmic-ruler-tick,
+.cosmic-cone-label {
+  padding: 0.16rem 0.35rem;
+  border-radius: 3px;
+  color: #d8e4ee;
+  background: rgb(10 16 26 / 78%);
+  font-size: 0.64rem;
+  white-space: nowrap;
+}
+
+.cosmic-ruler-tick {
+  display: grid;
+  gap: 0.05rem;
+  text-align: center;
+}
+
+.cosmic-ruler-tick span:first-child {
+  color: #f0f4f7;
+}
+
+.cosmic-ruler-tick span:last-child {
+  color: #91a8bc;
+  font-size: 0.57rem;
+}
+
+.cosmic-cone-label {
+  color: #9eb7ce;
+}
+
+.cosmic-shell-label {
+  display: grid;
+  min-width: max-content;
+  gap: 0.12rem;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid rgb(220 191 145 / 32%);
+  border-radius: 4px;
+  color: #f0d4a8;
+  background: rgb(10 16 26 / 82%);
+  text-align: center;
+  font-size: 0.66rem;
+}
+
+.cosmic-shell-label strong {
+  font-weight: 600;
+}
+
+.cosmic-shell-label span {
+  color: #c5ad8a;
+}
+
+.cosmic-ruler-tooltip {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  gap: 0.24rem 0.8rem;
+  min-width: 15.5rem;
+  margin: 0;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid rgb(158 183 206 / 38%);
+  border-radius: 5px;
+  color: var(--ink);
+  background: rgb(10 16 26 / 94%);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 28%);
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.cosmic-ruler-tooltip dt,
+.cosmic-ruler-tooltip dd {
+  margin: 0;
+}
+
+.cosmic-ruler-tooltip dt {
+  color: var(--muted);
+}
+
+.cosmic-ruler-tooltip dd {
+  text-align: right;
+}
+
 .scene-hud {
   position: absolute;
   inset: 0;
@@ -202,6 +289,7 @@ button:disabled {
 .scale-readout {
   grid-column: 3;
   display: grid;
+  min-width: 0;
   align-self: start;
   justify-items: end;
   gap: 0.22rem;
@@ -368,6 +456,7 @@ button:disabled {
     grid-column: 1;
     grid-row: 2;
     justify-self: end;
+    max-width: 100%;
     padding: 0.65rem 0.75rem;
   }
 
@@ -441,6 +530,7 @@ button:disabled {
   justify-content: end;
   gap: 0.3rem 0.8rem;
   max-width: 30rem;
+  min-width: 0;
   color: var(--ink);
   font-size: 0.95rem;
   line-height: 1.65;
@@ -593,8 +683,16 @@ button:disabled {
     font-size: 0.8rem;
   }
   .secondary-lengths {
+    width: 100%;
     max-width: 22rem;
     font-size: 0.85rem;
+  }
+  .cosmic-cone-label {
+    display: none;
+  }
+  .cosmic-ruler-tick span:first-child,
+  .cosmic-ruler-tick span:last-child {
+    display: none;
   }
 }
 
@@ -695,7 +793,9 @@ a {
     .galactic-center-neighborhood-view,
     .milky-way-view,
     .local-group-view,
-    .virgo-view
+    .virgo-view,
+    .cosmic-web-view,
+    .observable-universe-view
   ):has(.scene-entry-bar):not(.is-arriving)
   .scene-canvas {
   opacity: 0;
@@ -723,7 +823,8 @@ a {
     .galactic-center-neighborhood-view,
     .milky-way-view,
     .local-group-view,
-    .virgo-view
+    .virgo-view,
+    .observable-universe-view
   ) {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -743,7 +844,8 @@ a {
       .galactic-center-neighborhood-view,
       .milky-way-view,
       .local-group-view,
-      .virgo-view
+      .virgo-view,
+      .observable-universe-view
     )
     .scene-hud {
     display: contents;
@@ -759,7 +861,8 @@ a {
       .galactic-center-neighborhood-view,
       .milky-way-view,
       .local-group-view,
-      .virgo-view
+      .virgo-view,
+      .observable-universe-view
     )
     .scene-heading {
     grid-row: 1;
@@ -777,7 +880,8 @@ a {
       .galactic-center-neighborhood-view,
       .milky-way-view,
       .local-group-view,
-      .virgo-view
+      .virgo-view,
+      .observable-universe-view
     )
     .scale-readout {
     grid-row: 2;
@@ -795,7 +899,8 @@ a {
       .galactic-center-neighborhood-view,
       .milky-way-view,
       .local-group-view,
-      .virgo-view
+      .virgo-view,
+      .observable-universe-view
     )
     .scene-canvas {
     grid-row: 3;
@@ -815,7 +920,8 @@ a {
       .galactic-center-neighborhood-view,
       .milky-way-view,
       .local-group-view,
-      .virgo-view
+      .virgo-view,
+      .observable-universe-view
     )
     .scene-status {
     grid-row: 4;
@@ -833,7 +939,8 @@ a {
       .galactic-center-neighborhood-view,
       .milky-way-view,
       .local-group-view,
-      .virgo-view
+      .virgo-view,
+      .observable-universe-view
     )
     .scene-actions {
     grid-row: 5;
@@ -939,7 +1046,8 @@ a {
     .galactic-center-neighborhood-view,
     .milky-way-view,
     .local-group-view,
-    .virgo-view
+    .virgo-view,
+    .observable-universe-view
   ) {
     grid-template-rows: auto auto minmax(300px, 1fr) auto auto;
   }
@@ -951,7 +1059,8 @@ a {
       .galactic-center-neighborhood-view,
       .milky-way-view,
       .local-group-view,
-      .virgo-view
+      .virgo-view,
+      .observable-universe-view
     )
     .scene-canvas {
     min-height: 300px;
@@ -1239,14 +1348,28 @@ a {
 }
 
 .bao-controls,
-.cosmic-web-controls {
+.cosmic-web-controls,
+.observable-controls {
   display: grid;
   gap: 0.65rem;
 }
 .bao-controls p,
 .cosmic-web-controls p,
+.observable-controls p,
 .bao-chart {
   margin: 0;
+}
+.observable-controls label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--ink);
+}
+.observable-controls input {
+  accent-color: var(--accent);
+}
+.observable-universe-view.is-departing .scene-canvas {
+  pointer-events: none;
 }
 .bao-controls fieldset,
 .cosmic-web-controls fieldset {

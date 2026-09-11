@@ -49,6 +49,11 @@ describe("main navigation bridge bypass", () => {
     expect(hasDirectBarTransfer("bao", "virgo")).toBe(true);
   });
 
+  it("uses the 3 Gpc carrier in both Cosmic Web–Observable Universe directions", () => {
+    expect(hasDirectBarTransfer("cosmic-web", "observable-universe")).toBe(true);
+    expect(hasDirectBarTransfer("observable-universe", "cosmic-web")).toBe(true);
+  });
+
   it.each([
     ["earth", "earth-moon"],
     ["earth-moon", "sun"],

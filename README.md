@@ -2,7 +2,7 @@
 
 An interactive, bilingual visualization for learning physical and astronomical length scales as discrete scenes connected by explicit length-comparison bridges.
 
-The common application framework and the first twelve levels—from Human (Hachikō) through the AbacusSummit Cosmic Web—are implemented. The 13-level hierarchy ends with an Observable Universe development placeholder. See the [implementation handoff](docs/implementation-status.md) for current conventions.
+The common application framework and all 13 levels—from Human (Hachikō) through the Observable Universe—have an implemented first pass. See the [implementation handoff](docs/implementation-status.md) for current conventions and the remaining scientific layers.
 
 ## Run locally
 

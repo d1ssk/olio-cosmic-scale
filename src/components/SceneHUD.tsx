@@ -15,6 +15,9 @@ import { SUN_TEXTURE } from "../scenes/sun/sunData";
 const VirgoControls = lazy(() => import("../scenes/virgo/VirgoControls"));
 const BaoControls = lazy(() => import("../scenes/bao/BaoControls"));
 const CosmicWebControls = lazy(() => import("../scenes/cosmic-web/CosmicWebControls"));
+const ObservableUniverseControls = lazy(
+  () => import("../scenes/observable-universe/ObservableUniverseControls"),
+);
 const EphemerisControls = lazy(() => import("../scenes/earth-sun/EphemerisControls"));
 import { EARTH_MOON_SOURCES } from "../scenes/earth-moon/earthMoonData";
 import { hierarchyPosition, MAIN_SCENE_ORDER } from "../app/sceneRegistry";
@@ -22,6 +25,7 @@ import { translate, type Locale } from "../i18n";
 import {
   DEFAULT_COSMIC_WEB_QUALITY,
   type BaoLayerMode,
+  type CmbDisplayMode,
   type CosmicWebQuality,
   type SceneDefinition,
 } from "../scenes/types";
@@ -30,6 +34,8 @@ import { HACHIKO_MODEL } from "../scenes/human/humanData";
 import { ScaleReadout } from "./ScaleReadout";
 
 type SceneHUDProps = {
+  cmbDisplayMode?: CmbDisplayMode;
+  onCmbDisplayModeChange?: (mode: CmbDisplayMode) => void;
   cosmicWebQuality?: CosmicWebQuality;
   onCosmicWebQualityChange?: (quality: CosmicWebQuality) => void;
   baoLayerMode?: BaoLayerMode;
@@ -68,6 +74,8 @@ type SceneHUDProps = {
 };
 
 export function SceneHUD({
+  cmbDisplayMode = "uniform",
+  onCmbDisplayModeChange,
   cosmicWebQuality = DEFAULT_COSMIC_WEB_QUALITY,
   onCosmicWebQualityChange,
   baoLayerMode = "both",
@@ -137,8 +145,19 @@ export function SceneHUD({
       />
 
       <div
-        className={`scene-status ${["human", "earth", "earth-moon", "sun", "earth-sun", "solar-system", "solar-neighborhood", "galactic-center-neighborhood", "milky-way", "local-group", "virgo", "bao", "cosmic-web"].includes(scene.id) ? "human-status" : ""}`}
+        className={`scene-status ${["human", "earth", "earth-moon", "sun", "earth-sun", "solar-system", "solar-neighborhood", "galactic-center-neighborhood", "milky-way", "local-group", "virgo", "bao", "cosmic-web", "observable-universe"].includes(scene.id) ? "human-status" : ""}`}
       >
+        {scene.id === "observable-universe" && (
+          <Suspense fallback={null}>
+            <p className="stellar-summary">{translate(locale, "observable.summary")}</p>
+            <ObservableUniverseControls
+              locale={locale}
+              mode={cmbDisplayMode}
+              onModeChange={onCmbDisplayModeChange}
+              disabled={transitioning}
+            />
+          </Suspense>
+        )}
         {scene.id === "cosmic-web" && (
           <Suspense fallback={null}>
             <CosmicWebControls
@@ -379,6 +398,23 @@ export function SceneHUD({
                     </a>
                   </span>
                 )}
+              </>
+            ) : scene.id === "observable-universe" ? (
+              <>
+                <span>{translate(locale, "observable.details")}</span>
+                <span>
+                  <a href="https://arxiv.org/abs/1807.06209" target="_blank" rel="noreferrer">
+                    Planck 2018 VI
+                  </a>
+                  {" · "}
+                  <a
+                    href="https://ui.adsabs.harvard.edu/abs/2009ApJ...707..916F/abstract"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Fixsen (2009) · CMB temperature
+                  </a>
+                </span>
               </>
             ) : scene.id === "cosmic-web" ? (
               <>

@@ -1,0 +1,170 @@
+{
+  "assets": {
+    "E_nside128": {
+      "byte_length": 786432,
+      "effective_lmax": 383,
+      "file": "E_nside128.f32",
+      "max": 11.73641300201416,
+      "mean": 3.7277720679786594e-06,
+      "min": -10.594799041748047,
+      "npix": 196608,
+      "nside": 128,
+      "sha256": "66c5873622bdde68345ae192d6e18f24d620bfe4f2a3e2f94e3168278c0d37a2",
+      "std": 2.460759568282003
+    },
+    "E_nside256": {
+      "byte_length": 3145728,
+      "effective_lmax": 767,
+      "file": "E_nside256.f32",
+      "max": 21.383838653564453,
+      "mean": 3.860450212241536e-06,
+      "min": -20.5971622467041,
+      "npix": 786432,
+      "nside": 256,
+      "sha256": "787aced5b20bce08d48357998c9e92fbe1d15b1ede20a248ddd6fe667025925d",
+      "std": 4.474228339111441
+    },
+    "E_nside512": {
+      "byte_length": 12582912,
+      "effective_lmax": 1535,
+      "file": "E_nside512.f32",
+      "max": 31.03860855102539,
+      "mean": 1.383374658651959e-06,
+      "min": -29.61159324645996,
+      "npix": 3145728,
+      "nside": 512,
+      "sha256": "b22e2aa38b527579cda4a3c1320aa5a8a021bf2dd363893a73f36042f500bd17",
+      "std": 5.982879186036658
+    },
+    "Q_nside32": {
+      "byte_length": 49152,
+      "effective_lmax": 95,
+      "file": "Q_nside32.f32",
+      "max": 1.4084755182266235,
+      "mean": -0.038055476604217674,
+      "min": -1.4471046924591064,
+      "npix": 12288,
+      "nside": 32,
+      "sha256": "6a70343786eaff349a6f4771b00139964ecb0be56f9d886942de3357234f424a",
+      "std": 0.38591209387850745
+    },
+    "Q_nside64": {
+      "byte_length": 196608,
+      "effective_lmax": 191,
+      "file": "Q_nside64.f32",
+      "max": 2.7482550144195557,
+      "mean": -0.037982726895337805,
+      "min": -2.9232521057128906,
+      "npix": 49152,
+      "nside": 64,
+      "sha256": "3b057dd13a53381284f213d857259929f3e93be8297cfc9c25a67147d7b4c257",
+      "std": 0.6898488066781022
+    },
+    "T_nside128": {
+      "byte_length": 786432,
+      "effective_lmax": 383,
+      "file": "T_nside128.f32",
+      "max": 480.6063232421875,
+      "mean": 0.00015556889377421612,
+      "min": -433.5117492675781,
+      "npix": 196608,
+      "nside": 128,
+      "sha256": "c82e624f4a99848ea92beb8914b977b0221c31357bacd49fc0e150270255a98e",
+      "std": 100.31810351535589
+    },
+    "T_nside256": {
+      "byte_length": 3145728,
+      "effective_lmax": 767,
+      "file": "T_nside256.f32",
+      "max": 545.6722412109375,
+      "mean": 2.5570294201212224e-05,
+      "min": -519.671630859375,
+      "npix": 786432,
+      "nside": 256,
+      "sha256": "f1c37c3dd194d06a5cebe0fac6da54159e3f8a4c198d65bf3e5a7d8429f41b06",
+      "std": 107.25984530487607
+    },
+    "T_nside512": {
+      "byte_length": 12582912,
+      "effective_lmax": 1535,
+      "file": "T_nside512.f32",
+      "max": 573.9157104492188,
+      "mean": 1.2052283320536835e-05,
+      "min": -532.2130126953125,
+      "npix": 3145728,
+      "nside": 512,
+      "sha256": "faec47b8491a7bf47f03f78d6329e6e53262e15a4c9c406ccf30293186192470",
+      "std": 111.41313791820477
+    },
+    "U_nside32": {
+      "byte_length": 49152,
+      "effective_lmax": 95,
+      "file": "U_nside32.f32",
+      "max": 1.682925820350647,
+      "mean": -3.491449300341287e-05,
+      "min": -1.533665418624878,
+      "npix": 12288,
+      "nside": 32,
+      "sha256": "580f6548a71f911a1c708f2dcaf2c5bceffe860959024c279367c52f9112c1d7",
+      "std": 0.37972276348539385
+    },
+    "U_nside64": {
+      "byte_length": 196608,
+      "effective_lmax": 191,
+      "file": "U_nside64.f32",
+      "max": 2.9966447353363037,
+      "mean": -1.4347122768062122e-06,
+      "min": -2.727292776107788,
+      "npix": 49152,
+      "nside": 64,
+      "sha256": "2d6efdfc20a23cce6fe1c2e2a60743c19682cc9d139b61a8f739b46c29040434",
+      "std": 0.6852048831954722
+    }
+  },
+  "b_mode": "zero",
+  "beam_fwhm_arcmin": 0.0,
+  "coordinates": "Galactic",
+  "dipole_removed": true,
+  "dtype": "float32",
+  "endianness": "little",
+  "fields": {
+    "E": {
+      "nsides": [
+        128,
+        256,
+        512
+      ],
+      "spin": 0
+    },
+    "Q": {
+      "nsides": [
+        32,
+        64
+      ],
+      "spin": 2
+    },
+    "T": {
+      "nsides": [
+        128,
+        256,
+        512
+      ],
+      "spin": 0
+    },
+    "U": {
+      "nsides": [
+        32,
+        64
+      ],
+      "spin": 2
+    }
+  },
+  "format_version": 1,
+  "lmax": 1535,
+  "monopole_removed": true,
+  "ordering": "NESTED",
+  "pixelization": "HEALPix",
+  "seed": 12345,
+  "source_spectra": "input/cmb_cls.txt",
+  "units": "uK_CMB"
+}

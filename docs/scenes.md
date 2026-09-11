@@ -224,7 +224,23 @@ transition follows the same path backward.
 
 ## 13. Observable Universe
 
-Show an observer-centered final cosmic scale under an explicit cosmological distance convention. Potential elements include radial structure, CMB last-scattering surface, observable boundary, or conceptual light-cone information. Separate comoving distance from light-travel time and do not imply a complete matter catalog.
+Use an observer-centered conceptual view with a 14 Gpc adopted reference: the rounded present-day comoving radial distance from the observer to the last-scattering surface, not the observable-universe diameter and not light-travel time. Normalize this radius to 10 scene units and use a 28 Gpc default viewport extent. A partial last-scattering sphere sits behind the ruler and shows its interior face. Its deliberately subdued warm-white false color represents the roughly 3000 K plasma at emission after an adopted display white balance; the same radiation is observed today at 2.7255 K. The shell has finite radial thickness from last scattering to the particle horizon calculated in the adopted cosmology. Its exposed sides are an opaque orange emissive-style display of the early plasma, not a resolved physical plasma simulation. The camera may zoom out to 40 scene units from its target so the shell and its surrounding context can be viewed with generous margin.
+
+Two independent checkboxes enable temperature and E-mode polarization from the
+user-supplied precomputed joint T/E HEALPix NESTED realization. T/E standard
+NSIDE is 256; Q/U is 64, loaded lazily and cached, with metadata-authoritative
+files and statistics. Temperature colors use T/(3 sigma); polarization-only
+colors use E scalar while headless tangent sticks always use Q/U in the HEALPix
+COSMO basis. Combined display shows T colors and Q/U sticks. OFF restores the
+uniform shell; loading/failure never substitutes procedural data. Both overlays
+follow the same cutaway patch. See the scene README for coordinate conventions,
+source limitations and independent healpy tests.
+
+A single radial ruler runs from the observer to the shell. Its z = 0, 1, 2, 6, 10 and 1100 tick positions and pointer readout use a flat Planck-2018-like ΛCDM background with H₀ = 67.4 km/s/Mpc, Ωm = 0.315 and Ωr = 9.2e-5. The calculated last-scattering distance is scaled by less than 1% to meet the adopted rounded 14 Gpc display endpoint. The readout keeps present-day comoving distance, redshift, lookback time, universe age and scale factor separate.
+
+A translucent, finite-thickness sector marks the reserved past-light-cone slice and ends on the shell. It currently contains no matter reconstruction and is labeled as schematic. Later content must not imply a complete 3D catalog. The patch angular extent and sector opening are provisional display choices.
+
+The exact 3 Gpc Cosmic Web reference appears near the origin as a comparison bar, parallel to the radial ruler and coplanar with—but outside—the light-cone sector. Cosmic Web ↔ Observable Universe transfers this same bar over one second after restoring it when hidden; the shell and other rulers are removed during departure. This is still an explicit scene change from a z = 0.2 spatial snapshot to a past-light-cone representation.
 
 ## Scene completion checklist
 
