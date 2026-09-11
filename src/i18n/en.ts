@@ -148,7 +148,7 @@ export const en = {
   "language.ja": "日本語",
   "language.en": "English",
   "human.calibration":
-    "The full model is scaled to 1.7 m tall, including its base: an adopted display size, not a measurement of the statue.",
+    "The full model is calibrated to an adopted height of 2.17 m, including its pedestal. The reference bar is 1.7 m.",
   "earth.convention":
     "Spherical Earth with mean diameter 12,742 km. July 2004 composite imagery. The diameter-length bar is fixed on the Pacific side at 150°W, parallel to the polar axis.",
   "action.hideScaleBars": "Hide scale bars",

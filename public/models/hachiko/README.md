@@ -8,7 +8,7 @@ Imported on 2026-09-09 from the user's official Sketchfab downloads. Uses the su
 - Supplied lighter texture GLB: 3,540,168 bytes
 - Served GLB: 2,957,240 bytes
 
-Display modification: proportionally scaled to an adopted full height of 1.7 m, including the base, and centered with its base at Y=0. This is a display convention, **not a measured real-world dimension**. The scene displays this convention along with the author, source, and license.
+Display modification: proportionally scaled to an adopted full height of 2.17 m, including the pedestal, and centered with its base at Y=0. This height was supplied by the user on 2026-09-11; it is not an author-provided scan calibration or independently verified measurement. The comparison bar remains 1.7 m. The scene displays this convention along with the author, source, and license.
 
 The temporary original downloads are not retained in the repository. The committed served GLB is sufficient to run and build the app. To repeat preprocessing, obtain the lighter GLB from the source linked above and pass its local path:
 

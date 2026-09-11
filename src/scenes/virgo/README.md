@@ -136,7 +136,8 @@ npm run build
 
 An optional second importer argument overrides the bundled EVCC CSV path. Its
 SHA-256, FITS and SBF source hashes, membership counts and model counts live in
-`manifest.json`. The original CSV under `tmp/` is not modified. The narrow FITS
+`manifest.json`. The redundant CSV copy under `tmp/` was removed after verifying that it matched
+the bundled raw CSV byte for byte. The narrow FITS
 reader validates its expected scalar schema and record sizes. The TeX source
 archive is read by explicit member name without extracting filesystem paths.
 

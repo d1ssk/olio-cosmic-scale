@@ -239,7 +239,7 @@ export const SOURCES: readonly SourceInfo[] = [
     url: "https://sketchfab.com/3d-models/hachiko-fffee43c3cbc4b7ea20d6556a360b25f",
     accessed: "2026-09-09",
     notes:
-      "CC BY 4.0, verified via the official Sketchfab v3 model metadata. 97,157 triangles; 48,819 vertices; one texture. Photogrammetry from 45 photos. No metric calibration stated by author. Imported from user-supplied official GLB. Uses the supplied smaller JPEG variant; index buffer repacked losslessly to uint16. Model displayed at an adopted full height of 1.7 m, not a measured statue height.",
+      "CC BY 4.0, verified via the official Sketchfab v3 model metadata. 97,157 triangles; 48,819 vertices; one texture. Photogrammetry from 45 photos. No metric calibration stated by author. Imported from user-supplied official GLB. Uses the supplied smaller JPEG variant; index buffer repacked losslessly to uint16. Model calibrated to a user-supplied full height of 2.17 m including the pedestal (2026-09-11); this dimension is not supplied by the scan author or independently verified here. Reference bar remains 1.7 m.",
   },
   {
     id: "iau-2012-au",

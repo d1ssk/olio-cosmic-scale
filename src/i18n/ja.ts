@@ -131,7 +131,7 @@ export const ja: Record<TranslationKey, string> = {
 
   "scene.earthMoon.title": "地球と月",
   "origin.earthMoon": "地球と月の中点を原点とする座標",
-  "earthMoon.lightSecond": "光が1秒間に進む距離・真空中",
+  "earthMoon.lightSecond": "光が1秒間に真空中を進む距離",
   "earthMoon.moon": "月",
   "earthMoon.convention":
     "平均中心間距離384,400 km、地球直径12,742 km、月直径3,474.8 kmを同じ縮尺で表示。配置・向き・照明は模式的で、特定日時の状態ではありません。月は地形のない球体です。",
@@ -147,7 +147,7 @@ export const ja: Record<TranslationKey, string> = {
   "language.ja": "日本語",
   "language.en": "English",
   "human.calibration":
-    "模型全体を高さ1.7 mに調整しています（台座を含む表示用の仮定で、実物の測定値ではありません）。",
+    "台座を含む全高2.17 mを採用し、模型の縮尺を調整しています。比較棒は1.7 mです。",
   "earth.convention":
     "平均直径12,742 kmの球として表示。画像は2004年7月の合成画像です。直径と同じ長さの棒を太平洋側（西経150°）に南北軸と平行に配置しています。",
   "action.hideScaleBars": "スケールバーを非表示",

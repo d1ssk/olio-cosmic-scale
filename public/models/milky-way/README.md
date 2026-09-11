@@ -3,8 +3,9 @@
 The lightweight asset is derived from the user-provided
 `tmp/milkyway_volume_data/MilkyWayRGBAVolume1024x1024x128.raw`.
 The original is 536,870,912 bytes (512 MiB); only the derived 8,388,608-byte
-(8 MiB) file is served by this app. The raw source, `MilkyWayPoints.off` and
-`halo.png` remain in the ignored local input directory. The latter two are unused.
+(8 MiB) file is served by this app. The temporary raw source, `MilkyWayPoints.off` and
+`halo.png` are no longer retained locally. The latter two are unused.
+To repeat preprocessing, obtain the source data and place it at the input path above.
 
 ## Provenance and license
 

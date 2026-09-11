@@ -1,4 +1,4 @@
-/** Adopted display calibration, not a measurement of the real statue. */
+/** Representative human height, independent of the statue calibration. */
 export const HUMAN_REFERENCE_METERS = 1.7;
 export const HUMAN_BAR_CLEARANCE_METERS = 0.25;
 export const HACHIKO_MODEL = {
@@ -10,5 +10,7 @@ export const HACHIKO_MODEL = {
   license: "CC BY 4.0",
   licenseUrl: "https://creativecommons.org/licenses/by/4.0/",
   assetUrl: `${import.meta.env.BASE_URL}models/hachiko/hachiko.glb`,
-  displayHeightMeters: HUMAN_REFERENCE_METERS,
+  // User-supplied total height (2026-09-11), including the pedestal.
+  // The scan itself has no author-provided metric calibration.
+  displayHeightMeters: 2.17,
 } as const;
