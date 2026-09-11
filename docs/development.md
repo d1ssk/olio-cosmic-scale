@@ -6,7 +6,9 @@ The default client stack is Vite, TypeScript, React, Three.js, React Three Fiber
 
 The common framework and all thirteen scenes through the Observable Universe are implemented, together with the Galactic bulge sibling. The app includes a 13-level registry, fixed navigation, bilingual HUD, physical transitions, camera memory, static assets, and automated checks. The final scene includes a finite last-scattering-to-particle-horizon shell, precomputed joint T/E HEALPix temperature and Q/U polarization layers, a radial cosmology ruler, an incoming 3 Gpc transfer, and a reserved light-cone sector; detailed light-cone matter layers remain a future increment. See [implementation status and handoff](implementation-status.md) before continuing.
 
-Live APIs, backend services, authentication, analytics, a universal 3D world, and automatic hierarchy playback remain out of scope. Continue the Observable Universe scientific layers incrementally.
+Live APIs, backend services, authentication, a universal 3D world, and automatic hierarchy playback remain out of scope. Continue the Observable Universe scientific layers incrementally.
+
+User-requested GA4 tracking uses measurement ID `G-P4BVZ9ZZ0E`. The Google tag is installed once in the shared `index.html` head, covering all scenes and both languages. No custom analytics events are configured.
 
 ## Commands
 
