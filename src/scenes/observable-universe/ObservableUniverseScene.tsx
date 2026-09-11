@@ -320,8 +320,8 @@ export default function ObservableUniverseScene({
           {!visibility.hidden && hovered && (
             <Html
               style={{ pointerEvents: "none" }}
-              position={tooltipPoint.clone().addScaledVector(UP, 0.6)}
-              center
+              // Anchor to the ruler centerline; CSS keeps the panel above it in screen pixels.
+              position={tooltipPoint}
               zIndexRange={[20, 10]}
             >
               <dl className="cosmic-ruler-tooltip" role="status">

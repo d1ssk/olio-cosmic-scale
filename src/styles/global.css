@@ -231,6 +231,7 @@ button:disabled {
 }
 
 .cosmic-ruler-tooltip {
+  transform: translate(-50%, calc(-100% - 16px));
   display: grid;
   grid-template-columns: max-content max-content;
   gap: 0.24rem 0.8rem;
