@@ -12,6 +12,7 @@ export function BaoHaloCloud({
   opacity?: number;
 }): React.JSX.Element {
   const pixelRatio = useThree((state) => state.gl.getPixelRatio());
+  const mobile = useThree((state) => state.size.width <= 720);
   const cloud = useMemo(() => haloRenderData(dataset), [dataset]);
   return (
     <points frustumCulled={false}>
@@ -23,7 +24,12 @@ export function BaoHaloCloud({
         transparent
         depthWrite={false}
         blending={AdditiveBlending}
-        uniforms={{ pixelRatio: { value: pixelRatio }, layerOpacity: { value: opacity } }}
+        uniforms={{
+          pixelRatio: { value: pixelRatio },
+          layerOpacity: { value: opacity },
+          // Reduce additive overlap on small screens without thinning the halo sample.
+          displayGain: { value: mobile ? 0.05 : 1 },
+        }}
         vertexShader={`
           attribute float haloMass;
           uniform float pixelRatio;
@@ -37,6 +43,7 @@ export function BaoHaloCloud({
         `}
         fragmentShader={`
           uniform float layerOpacity;
+          uniform float displayGain;
           varying float strength;
           void main() {
             vec2 p = gl_PointCoord - 0.5;
@@ -44,7 +51,7 @@ export function BaoHaloCloud({
             if (radius > 1.0) discard;
             float alpha = smoothstep(1.0, 0.15, radius) * mix(0.28, 0.9, strength);
             vec3 tint = mix(vec3(0.34, 0.67, 0.92), vec3(1.0, 0.82, 0.52), strength);
-            gl_FragColor = vec4(tint, alpha * layerOpacity);
+            gl_FragColor = vec4(tint, alpha * layerOpacity * displayGain);
             #include <tonemapping_fragment>
             #include <colorspace_fragment>
           }

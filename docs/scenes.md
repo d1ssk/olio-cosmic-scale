@@ -173,7 +173,10 @@ Implemented from the supplied AbacusSummit export. The ordinary view overlays al
 the 128³ TSC matter-density field in the same Abacus-centered Cartesian axes. The
 sample is a 500 Mpc/h cube from the z=0.2 real-space periodic snapshot. Halo point
 footprints and the density color/opacity transfer are display encodings, not
-physical halo sizes or calibrated emission. The matter reconstruction uses the
+physical halo sizes or calibrated emission. At canvas widths up to 720 CSS px,
+halo alpha is multiplied by 0.05 to reduce additive saturation; wider canvases
+retain the original brightness. Counts, positions, point sizes and relative
+mass encoding remain unchanged. The matter reconstruction uses the
 random 3% particle subsample, does not resolve halo interiors, and does not
 deconvolve the TSC window. It is not an observational light cone; no HOD,
 galaxy-bias model, redshift-space distortion, or claim that halos are galaxies is

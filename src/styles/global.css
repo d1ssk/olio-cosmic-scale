@@ -849,6 +849,8 @@ a {
     .milky-way-view,
     .local-group-view,
     .virgo-view,
+    .bao-view,
+    .cosmic-web-view,
     .observable-universe-view
   ) {
     display: grid;
@@ -870,6 +872,8 @@ a {
       .milky-way-view,
       .local-group-view,
       .virgo-view,
+      .bao-view,
+      .cosmic-web-view,
       .observable-universe-view
     )
     .scene-hud {
@@ -887,6 +891,8 @@ a {
       .milky-way-view,
       .local-group-view,
       .virgo-view,
+      .bao-view,
+      .cosmic-web-view,
       .observable-universe-view
     )
     .scene-heading {
@@ -906,6 +912,8 @@ a {
       .milky-way-view,
       .local-group-view,
       .virgo-view,
+      .bao-view,
+      .cosmic-web-view,
       .observable-universe-view
     )
     .scale-readout {
@@ -925,6 +933,8 @@ a {
       .milky-way-view,
       .local-group-view,
       .virgo-view,
+      .bao-view,
+      .cosmic-web-view,
       .observable-universe-view
     )
     .scene-canvas {
@@ -946,6 +956,8 @@ a {
       .milky-way-view,
       .local-group-view,
       .virgo-view,
+      .bao-view,
+      .cosmic-web-view,
       .observable-universe-view
     )
     .scene-status {
@@ -965,6 +977,8 @@ a {
       .milky-way-view,
       .local-group-view,
       .virgo-view,
+      .bao-view,
+      .cosmic-web-view,
       .observable-universe-view
     )
     .scene-actions {
@@ -1560,15 +1574,14 @@ a {
     width: auto;
     max-width: none;
   }
-  .bao-view .scene-status,
-  .cosmic-web-view .scene-status {
-    display: grid;
-    grid-row: 3;
-    align-self: end;
-    max-width: min(24rem, calc(100vw - 1.6rem));
-    max-height: min(43vh, 22rem);
-    overflow-y: auto;
-    overscroll-behavior: contain;
+  /* Keep the model usable even when the explanation below it is long. */
+  .bao-view,
+  .cosmic-web-view {
+    grid-template-rows: auto auto minmax(280px, 1fr) auto auto;
+  }
+  .bao-view .scene-canvas,
+  .cosmic-web-view .scene-canvas {
+    min-height: 280px;
   }
 }
 
