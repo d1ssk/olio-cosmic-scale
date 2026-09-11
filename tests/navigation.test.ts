@@ -13,8 +13,8 @@ import {
 } from "../src/app/sceneRegistry";
 
 describe("scene graph", () => {
-  it("contains twelve vertical levels and one lateral sibling", () => {
-    expect(MAIN_SCENE_ORDER).toHaveLength(12);
+  it("contains thirteen vertical levels and one lateral sibling", () => {
+    expect(MAIN_SCENE_ORDER).toHaveLength(13);
     expect(MAIN_SCENE_ORDER).not.toContain("galactic-center-neighborhood");
     expect(sceneRegistry["solar-neighborhood"].lateralSibling).toBe("galactic-center-neighborhood");
     expect(sceneRegistry["galactic-center-neighborhood"].lateralSibling).toBe("solar-neighborhood");
@@ -57,7 +57,8 @@ describe("main navigation bridge bypass", () => {
     ["milky-way", "local-group"],
     ["local-group", "virgo"],
     ["virgo", "bao"],
-    ["bao", "observable-universe"],
+    ["bao", "cosmic-web"],
+    ["cosmic-web", "observable-universe"],
   ] as const)("skips the bridge between %s and %s in both directions", (lower, upper) => {
     expect(mainNavigationMode(lower, "next")).toEqual({ kind: "scene", sceneId: upper });
     expect(mainNavigationMode(upper, "previous")).toEqual({ kind: "scene", sceneId: lower });

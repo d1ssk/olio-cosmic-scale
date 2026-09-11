@@ -15,9 +15,11 @@ import { BAO_BOX_RENDER_SIZE, matterSlice, mpcHToScene } from "./baoModel";
 export function BaoMatterSlab({
   dataset,
   fraction,
+  opacity = 1,
 }: {
   dataset: BaoDataset;
   fraction: number;
+  opacity?: number;
 }): React.JSX.Element {
   const slice = useMemo(
     () => matterSlice(dataset.matter, dataset.manifest, fraction),
@@ -50,6 +52,7 @@ export function BaoMatterSlab({
             clipMin: { value: dataset.manifest.matter.clip_min },
             clipMax: { value: dataset.manifest.matter.clip_max },
             densityBase: { value: matterDensityBase(dataset.manifest) },
+            layerOpacity: { value: opacity },
           }}
           vertexShader={`
             varying vec2 texCoord;
@@ -63,6 +66,7 @@ export function BaoMatterSlab({
             uniform float clipMin;
             uniform float clipMax;
             uniform float densityBase;
+            uniform float layerOpacity;
             varying vec2 texCoord;
             void main() {
               float q = texture2D(densityMap, texCoord).r;
@@ -73,7 +77,7 @@ export function BaoMatterSlab({
               vec3 color = mix(vec3(0.035, 0.18, 0.24), vec3(0.38, 0.96, 0.88), bright);
               color = mix(color, vec3(1.0, 0.82, 0.46), smoothstep(0.7, 1.0, signal));
               float alpha = mix(0.035, 0.78, smoothstep(0.05, 0.92, signal));
-              gl_FragColor = linearToOutputTexel(vec4(color, alpha));
+              gl_FragColor = linearToOutputTexel(vec4(color, alpha * layerOpacity));
             }
           `}
         />
@@ -81,7 +85,7 @@ export function BaoMatterSlab({
       <mesh position={[0, 0, z]}>
         <boxGeometry args={[BAO_BOX_RENDER_SIZE, BAO_BOX_RENDER_SIZE, slice.thickness]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
-        <Edges color="#65c5c7" transparent opacity={0.28} />
+        <Edges color="#65c5c7" transparent opacity={0.28 * opacity} />
       </mesh>
     </group>
   );

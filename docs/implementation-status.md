@@ -1,6 +1,6 @@
 # Implementation status and continuation
 
-This is the handoff after completing the common framework and the first eleven
+This is the handoff after completing the common framework and the first twelve
 hierarchy levels (Virgo uses a partial catalog) and the Galactic bulge sibling
 (with a shared continuous Solar System world). The focused design documents
 describe the current decisions; `archive/initial-project-spec.md` is historical
@@ -22,12 +22,13 @@ and must not override them.
 | `local-group`                            | 75 catalog entries/candidates (McConnachie 2012), 72 sourced-size model envelopes; selection, close view and per-object caveats | 3 Mpc comparison and 30 kpc direct transfer to/from Milky Way                                                 |
 | `virgo`                                  | 5,647 catalog galaxies; all 278 SBF targets and 1,589 EVCC rows; measured and optional statistical depths                       | 16.5 Mpc reference and exact 3 Mpc direct transfer to/from Local Group                                        |
 | `bao`                                    | 500k AbacusSummit halos, movable 128³ matter slab, r²ξ(r) reveal and statistical separation guide                               | Vertical 147 Mpc and 16.5 Mpc rulers; direct 16.5 Mpc transfer to/from Virgo                                  |
+| `cosmic-web`                             | Fixed central AbacusSummit slab; 512³ default / 256³ lighter source, retaining only 3 MiB / 384 KiB byte windows                | Button-triggered same-coordinate camera/crossfade transition to/from the central BAO cube                     |
 | `observable-universe`                    | Registry, metadata, navigation and shared HUD exist; scientific rendering is still `PlaceholderScene`                           | Physical transfers are not automatically implemented by the registry                                          |
 
-The BAO scene is implemented from the supplied AbacusSummit export. The next
+The BAO and Cosmic Web scenes are implemented from the supplied AbacusSummit export. The next
 unimplemented scene is **Observable Universe**. Virgo uses the user-supplied EVCC
-catalog instead of the NGVS II excerpt. The main hierarchy contains **12** levels;
-the Galactic-center neighborhood remains the same-scale sibling of level **7 / 12**.
+catalog instead of the NGVS II excerpt. The main hierarchy contains **13** levels;
+the Galactic-center neighborhood remains the same-scale sibling of level **7 / 13**.
 Keep the stable ID `earth-moon` despite the display-name change.
 
 ## Decisions to preserve
@@ -215,3 +216,20 @@ labels avoid overlay panels. No scene/shader errors (existing favicon 404 exclud
 The lazy catalog chunk is approximately 287 kB gzip / 2.60 MB minified and retains
 the expected large-chunk build warning. The supplied CSV matches its bundled copy
 byte-for-byte and its recorded hash.
+
+## Cosmic Web fixed slab
+
+The twelfth scene uses the supplied full-box AbacusSummit density field without
+mounting a full volume. Default High reads a 3 MiB central range from the 512³
+source; lighter Standard reads a 384 KiB range from the 256³ source. Both produce the same
+46.875 Mpc/h centered physical thickness. The full box, fixed slab, and persistent
+500 Mpc/h BAO-cube outline derive their geometry and encoding from the runtime
+manifest. Source hashes match that manifest.
+
+Ordinary BAO use requests no full-box data. Its explicit Next action mounts and
+waits for the standard slab, then runs a 1.6 s same-coordinate camera pullback and
+crossfade. Previous performs the inverse and releases the slab GPU texture after
+return. Manual camera controls never trigger navigation. Local HTTP verification
+returned 206 Partial Content with exactly 393,216 and 3,145,728 bytes for the two
+LODs. Formatting, lint, type checking, all 132 tests in 24 files, and the
+production build pass; only the existing large-chunk warning remains.

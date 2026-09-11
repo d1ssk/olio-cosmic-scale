@@ -4,11 +4,16 @@ import type { GalaxyVariant, VolumeStatus } from "../scenes/milky-way/volumeData
 import { MILKY_WAY_COMPARISON_METERS } from "../scenes/milky-way/milkyWayData";
 import { STELLAR_COMPARISON_METERS } from "../scenes/stellar-neighborhood/stellarData";
 import { isSolarWorld, isContinuousSolarEdge } from "../scenes/solar-system/solarScale";
+import {
+  COSMIC_TRANSITION_DURATION_MS,
+  isCosmicDensityWorld,
+  isCosmicTransition,
+} from "../scenes/cosmic-web/cosmicWebModel";
 import { cameraStateStore, cameraStateKey } from "./cameraState";
 import type { SceneHostControls } from "../scenes/shared/SceneHost";
 import { hasDirectBarTransfer, mainNavigationMode } from "./navigation";
 import { BarVisibilityContext, type BarKind } from "../scenes/shared/barVisibility";
-import { BAR_TIMING, transitionDelay } from "../bridges/transitionTiming";
+import { BAR_TIMING, reducedMotion, transitionDelay } from "../bridges/transitionTiming";
 import {
   lazy,
   Suspense,
@@ -25,7 +30,12 @@ import { LanguageSwitch } from "../components/LanguageSwitch";
 import { NavigationControls } from "../components/NavigationControls";
 import { ScaleAxis } from "../components/ScaleAxis";
 import { captureBridgeBar, captureReferenceBar, type BarSnapshot } from "../bridges/barTransition";
-import type { BaoLayerMode, SceneId } from "../scenes/types";
+import {
+  DEFAULT_COSMIC_WEB_QUALITY,
+  type BaoLayerMode,
+  type CosmicWebQuality,
+  type SceneId,
+} from "../scenes/types";
 import { ReferenceBarOverlay } from "../components/ReferenceBarOverlay";
 import { SceneHUD } from "../components/SceneHUD";
 import { translate } from "../i18n";
@@ -153,6 +163,12 @@ export function App(): React.JSX.Element {
         release();
         return;
       }
+      if (isCosmicTransition(from, target)) {
+        setSceneEntry(null);
+        if (await sceneRef.current?.zoomToScene(target)) state.navigateMain(direction);
+        release();
+        return;
+      }
       if (from === "sun" && target === "earth-sun") cameraStateStore.delete(cameraStateKey(target));
       const keep: BarKind | "none" = !(
         connected || mainNavigationMode(from, direction).kind === "bridge"
@@ -229,6 +245,10 @@ export function App(): React.JSX.Element {
         locale={state.locale}
         onNavigate={(id) => {
           if (busy) return;
+          if (state.mode.kind === "scene" && isCosmicTransition(state.mode.sceneId, id)) {
+            void navigate(id === "cosmic-web" ? "next" : "previous");
+            return;
+          }
           setSceneEntry(null);
           if (isSolarWorld(id)) cameraStateStore.delete(cameraStateKey(id));
           state.navigateToScene(id);
@@ -246,7 +266,13 @@ export function App(): React.JSX.Element {
             onObservationDateChange={setObservationDate}
             ref={sceneRef}
             onArrivalComplete={completeSceneArrival}
-            key={isSolarWorld(state.mode.sceneId) ? "solar-world" : state.mode.sceneId}
+            key={
+              isSolarWorld(state.mode.sceneId)
+                ? "solar-world"
+                : isCosmicDensityWorld(state.mode.sceneId)
+                  ? "cosmic-density-transition"
+                  : state.mode.sceneId
+            }
             sceneId={state.mode.sceneId}
             entryKind={sceneEntry?.kind}
             entryDelay={sceneEntry?.delay}
@@ -325,16 +351,52 @@ function SceneView({
   const [baoLayerMode, setBaoLayerMode] = useState<BaoLayerMode>("both");
   const [baoReveal, setBaoReveal] = useState(false);
   const [baoSliceFraction, setBaoSliceFraction] = useState(0.5);
+  const [cosmicWebMix, setCosmicWebMix] = useState(sceneId === "cosmic-web" ? 1 : 0);
+  const [cosmicWebQuality, setCosmicWebQuality] = useState<CosmicWebQuality>(
+    DEFAULT_COSMIC_WEB_QUALITY,
+  );
+  const [densityTransitionActive, setDensityTransitionActive] = useState(false);
+  const [densityTransitionAnimating, setDensityTransitionAnimating] = useState(false);
   const [barsHidden, setBarsHidden] = useState(false);
   const [onlyBar, setOnlyBar] = useState<BarKind | "none" | null>(null);
   const [departing, setDeparting] = useState(false);
   const mounted = useRef(true);
+  const densityReady = useRef({ bao: false, cosmic: false });
+  const densityWaiters = useRef<{ bao: Array<() => void>; cosmic: Array<() => void> }>({
+    bao: [],
+    cosmic: [],
+  });
+  const animatedDensityTransition = useRef(false);
   useEffect(() => {
     mounted.current = true;
     return () => {
       mounted.current = false;
     };
   }, []);
+  const markDensityReady = useCallback((layer: "bao" | "cosmic") => {
+    densityReady.current[layer] = true;
+    densityWaiters.current[layer].splice(0).forEach((resolve) => resolve());
+  }, []);
+  const waitForDensity = useCallback((layer: "bao" | "cosmic") => {
+    if (densityReady.current[layer]) return Promise.resolve();
+    return new Promise<void>((resolve) => densityWaiters.current[layer].push(resolve));
+  }, []);
+  const markBaoLayerReady = useCallback(() => markDensityReady("bao"), [markDensityReady]);
+  const markCosmicLayerReady = useCallback(() => markDensityReady("cosmic"), [markDensityReady]);
+  const markSceneReady = useCallback(() => setReady(true), []);
+  useEffect(() => {
+    if (!isCosmicDensityWorld(sceneId)) return;
+    queueMicrotask(() => {
+      if (!mounted.current) return;
+      setCosmicWebMix(sceneId === "cosmic-web" ? 1 : 0);
+      setDensityTransitionActive(false);
+      setDensityTransitionAnimating(false);
+      if (sceneId === "bao") densityReady.current.cosmic = false;
+      else densityReady.current.bao = false;
+      if (!animatedDensityTransition.current) setReady(false);
+      animatedDensityTransition.current = false;
+    });
+  }, [sceneId]);
   const onArrivalComplete = useCallback(() => {
     setArrived(true);
     void transitionDelay(BAR_TIMING.reveal).then(release);
@@ -348,7 +410,40 @@ function SceneView({
         setZooming(true);
         setBarsHidden(false);
         setOnlyBar(null);
-        const completed = await hostRef.current?.animateTo(sceneRegistry[id], duration);
+        const cosmicTransition = isCosmicTransition(sceneId, id);
+        const transitionDuration = duration ?? COSMIC_TRANSITION_DURATION_MS;
+        if (cosmicTransition) {
+          setDensityTransitionActive(true);
+          await waitForDensity(id === "cosmic-web" ? "cosmic" : "bao");
+          if (!mounted.current) return false;
+          setDensityTransitionAnimating(true);
+        }
+        const animateMix = cosmicTransition
+          ? new Promise<void>((resolve) => {
+              const from = cosmicWebMix;
+              const to = id === "cosmic-web" ? 1 : 0;
+              const start = performance.now();
+              const tick = (now: number) => {
+                const progress = reducedMotion()
+                  ? 1
+                  : Math.min(1, (now - start) / transitionDuration);
+                const eased = progress * progress * (3 - 2 * progress);
+                setCosmicWebMix(from + (to - from) * eased);
+                if (progress < 1) requestAnimationFrame(tick);
+                else resolve();
+              };
+              requestAnimationFrame(tick);
+            })
+          : Promise.resolve();
+        const [completed] = await Promise.all([
+          hostRef.current?.animateTo(sceneRegistry[id], transitionDuration),
+          animateMix,
+        ]);
+        if (completed && cosmicTransition) animatedDensityTransition.current = true;
+        if (!completed && cosmicTransition && mounted.current) {
+          setDensityTransitionActive(false);
+          setDensityTransitionAnimating(false);
+        }
         if (mounted.current) setZooming(false);
         return Boolean(completed);
       },
@@ -379,7 +474,7 @@ function SceneView({
         return mounted.current;
       },
     }),
-    [barsHidden, sceneId],
+    [barsHidden, cosmicWebMix, sceneId, waitForDensity],
   );
 
   const scene = sceneRegistry[sceneId];
@@ -407,6 +502,12 @@ function SceneView({
               baoLayerMode={baoLayerMode}
               baoReveal={baoReveal}
               baoSliceFraction={baoSliceFraction}
+              cosmicWebMix={cosmicWebMix}
+              cosmicWebQuality={cosmicWebQuality}
+              densityTransitionActive={densityTransitionActive}
+              densityTransitionAnimating={densityTransitionAnimating}
+              onBaoLayerReady={markBaoLayerReady}
+              onCosmicWebLayerReady={markCosmicLayerReady}
               representativeDepths={representativeDepths}
               colorByCatalog={colorByCatalog}
               selectedGalaxyId={selectedGalaxyId}
@@ -421,7 +522,7 @@ function SceneView({
               observationDate={observationDate}
               locale={state.locale}
               metadata={scene}
-              onReady={() => setReady(true)}
+              onReady={markSceneReady}
               entryBarKind={entryKind}
               referenceBarVisible={!entryBar || arrived}
             />
@@ -459,6 +560,8 @@ function SceneView({
         onBaoRevealChange={setBaoReveal}
         baoSliceFraction={baoSliceFraction}
         onBaoSliceFractionChange={setBaoSliceFraction}
+        cosmicWebQuality={cosmicWebQuality}
+        onCosmicWebQualityChange={setCosmicWebQuality}
         representativeDepths={representativeDepths}
         onRepresentativeDepthsChange={setRepresentativeDepths}
         colorByCatalog={colorByCatalog}

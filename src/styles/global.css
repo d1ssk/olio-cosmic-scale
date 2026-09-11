@@ -1238,22 +1238,33 @@ a {
   align-items: center;
 }
 
-.bao-controls {
+.bao-controls,
+.cosmic-web-controls {
   display: grid;
   gap: 0.65rem;
 }
 .bao-controls p,
+.cosmic-web-controls p,
 .bao-chart {
   margin: 0;
 }
-.bao-controls fieldset {
+.bao-controls fieldset,
+.cosmic-web-controls fieldset {
   min-width: 0;
   margin: 0;
   padding: 0;
   border: 0;
 }
-.bao-controls legend {
+.bao-controls legend,
+.cosmic-web-controls legend {
   margin-bottom: 0.35rem;
+}
+.cosmic-web-controls label {
+  display: grid;
+  gap: 0.35rem;
+}
+.cosmic-web-controls select {
+  width: 100%;
 }
 .bao-layer-switch {
   display: grid;
@@ -1359,10 +1370,12 @@ a {
 }
 
 @media (min-width: 721px) {
-  .bao-view .scene-hud {
+  .bao-view .scene-hud,
+  .cosmic-web-view .scene-hud {
     grid-template-rows: auto minmax(0, 1fr) auto;
   }
-  .bao-view .scene-status {
+  .bao-view .scene-status,
+  .cosmic-web-view .scene-status {
     min-height: 0;
     max-height: 100%;
     overflow-y: auto;
@@ -1373,29 +1386,34 @@ a {
 
 /* Use the shared title typography; let the card accommodate the full name. */
 .virgo-view .scene-heading,
-.bao-view .scene-heading {
+.bao-view .scene-heading,
+.cosmic-web-view .scene-heading {
   grid-column: 1 / 3;
   justify-self: start;
   width: max-content;
   max-width: 100%;
 }
 .virgo-view .scene-heading h1,
-.bao-view .scene-heading h1 {
+.bao-view .scene-heading h1,
+.cosmic-web-view .scene-heading h1 {
   white-space: nowrap;
 }
 .virgo-view .scene-heading p,
-.bao-view .scene-heading p {
+.bao-view .scene-heading p,
+.cosmic-web-view .scene-heading p {
   max-width: 30rem;
 }
 @media (max-width: 720px) {
   .virgo-view .scene-heading,
-  .bao-view .scene-heading {
+  .bao-view .scene-heading,
+  .cosmic-web-view .scene-heading {
     grid-column: 1;
     justify-self: stretch;
     width: auto;
     max-width: none;
   }
-  .bao-view .scene-status {
+  .bao-view .scene-status,
+  .cosmic-web-view .scene-status {
     display: grid;
     grid-row: 3;
     align-self: end;

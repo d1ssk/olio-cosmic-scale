@@ -9,6 +9,7 @@ import {
 } from "../solar-system/solarScale";
 import { solarExitIntent, solarViewLabel, visibleBarPair } from "../solar-system/solarNavigation";
 import { solarDiameterOpacity } from "../solar-system/solarScale";
+import { isCosmicTransition } from "../cosmic-web/cosmicWebModel";
 import { reducedMotion } from "../../bridges/transitionTiming";
 import { Vector3, Quaternion, Matrix4 } from "three";
 /* React Three Fiber exposes mutable Three.js camera/control objects by design. */
@@ -226,6 +227,7 @@ function CameraController({
           !controls ||
           !(
             (isSolarWorld(metadata.id) && isSolarWorld(destination.id)) ||
+            isCosmicTransition(metadata.id, destination.id) ||
             (["milky-way", "local-group", "virgo", "bao"].includes(metadata.id) &&
               destination.id === metadata.id)
           ) ||
@@ -236,12 +238,43 @@ function CameraController({
         controls.enableDamping = false;
         controls.update();
         controls.enabled = false;
+        if (isCosmicTransition(metadata.id, destination.id)) {
+          controls.minDistance = Math.min(
+            metadata.camera.minDistance ?? 0,
+            destination.camera.minDistance ?? 0,
+          );
+          controls.maxDistance = Math.max(
+            metadata.camera.maxDistance ?? Infinity,
+            destination.camera.maxDistance ?? Infinity,
+          );
+        }
         const fromZoom = camera.zoom;
         const toZoom =
-          Math.min(size.width, size.height) /
-          (destination.defaultViewportExtentMeters / destination.metersPerSceneUnit);
+          destination.camera.projection === "orthographic"
+            ? Math.min(size.width, size.height) /
+              (destination.defaultViewportExtentMeters / destination.metersPerSceneUnit)
+            : 1;
         const fromTarget = controls.target.clone();
         const distance = camera.position.distanceTo(fromTarget);
+        const destinationBaseDistance = Math.hypot(
+          ...destination.camera.position.map(
+            (value, index) => value - destination.camera.target[index],
+          ),
+        );
+        const destinationFitFactor =
+          destination.camera.fitToViewport && destination.camera.projection === "perspective"
+            ? Math.max(
+                1,
+                destination.defaultViewportExtentMeters /
+                  destination.metersPerSceneUnit /
+                  (2 * Math.tan(Math.PI / 8) * (size.width / size.height)) /
+                  destinationBaseDistance,
+              )
+            : 1;
+        const destinationDistance =
+          destination.camera.projection === "perspective"
+            ? destinationBaseDistance * destinationFitFactor
+            : distance;
         const fromRotation = camera.quaternion.clone();
         const toRotation = new Quaternion().setFromRotationMatrix(
           new Matrix4().lookAt(
@@ -253,6 +286,7 @@ function CameraController({
         if (
           metadata.id === destination.id &&
           Math.abs(Math.log(fromZoom / toZoom)) < 1e-7 &&
+          Math.abs(distance - destinationDistance) < 1e-7 &&
           fromTarget.distanceTo(new Vector3(...destination.camera.target)) < 1e-7 &&
           fromRotation.angleTo(toRotation) < 1e-7
         ) {
@@ -270,7 +304,9 @@ function CameraController({
             const eased = progress * progress * (3 - 2 * progress);
             controls.target.lerpVectors(fromTarget, destinationTarget, eased);
             rotation.slerpQuaternions(fromRotation, toRotation, eased);
-            offset.set(0, 0, distance).applyQuaternion(rotation);
+            offset
+              .set(0, 0, distance + (destinationDistance - distance) * eased)
+              .applyQuaternion(rotation);
             camera.position.copy(controls.target).add(offset);
             camera.up.set(0, 1, 0);
             camera.zoom = interpolateSolarZoom(fromZoom, toZoom, progress);
@@ -285,6 +321,8 @@ function CameraController({
               });
               controls.enabled = true;
               controls.enableDamping = damping;
+              controls.minDistance = destination.camera.minDistance ?? 0;
+              controls.maxDistance = destination.camera.maxDistance ?? Infinity;
               animation.current = null;
               resolve(true);
             }

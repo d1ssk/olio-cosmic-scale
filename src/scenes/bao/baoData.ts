@@ -35,6 +35,7 @@ export type BaoManifest = {
     decode: string;
     dtype: string;
     grid_index_coordinate: string;
+    master_ngrid: number;
     order: string;
     stored_quantity: string;
   };

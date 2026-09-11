@@ -24,6 +24,7 @@ export function SceneReferenceBar({
   direction,
   screenBottom,
   opacityForExtent,
+  opacity = 1,
   labelSuffix,
   labelSuffixNewLine = false,
   significantDigits,
@@ -42,6 +43,7 @@ export function SceneReferenceBar({
   kind?: "reference" | "comparison" | "auxiliary";
   screenBottom?: number;
   opacityForExtent?: (extentMeters: number) => number;
+  opacity?: number;
   labelOffsetY?: number;
   labelAlign?: "left" | "center";
   direction?: readonly [number, number, number];
@@ -118,10 +120,11 @@ export function SceneReferenceBar({
   useFrame(() => {
     const { start, end, midpoint, right, up, cameraPoint } = scratch;
     const extent = (Math.min(size.width, size.height) / camera.zoom) * metadata.metersPerSceneUnit;
-    const opacity = visibility.only === kind ? 1 : (opacityForExtent?.(extent) ?? 1);
-    if (group.current) group.current.visible = shown && opacity > 0.001;
-    if (line.current) line.current.material.opacity = opacity;
-    if (sprite.current) sprite.current.material.opacity = opacity;
+    const extentOpacity = visibility.only === kind ? 1 : (opacityForExtent?.(extent) ?? 1);
+    const effectiveOpacity = opacity * extentOpacity;
+    if (group.current) group.current.visible = shown && effectiveOpacity > 0.001;
+    if (line.current) line.current.material.opacity = effectiveOpacity;
+    if (sprite.current) sprite.current.material.opacity = effectiveOpacity;
     if (screenBottom !== undefined && camera.type === "OrthographicCamera") {
       const target = (controls as OrbitControlsImpl | null)?.target;
       midpoint.copy(target ?? new Vector3());
@@ -148,7 +151,7 @@ export function SceneReferenceBar({
     if (group.current) {
       const fraction = visibleSegmentFraction(start.toArray(), end.toArray());
       group.current.userData.visibleBarMeters =
-        shown && opacity > 0.15 && fraction > 0 ? metadata.referenceLengthMeters : null;
+        shown && effectiveOpacity > 0.15 && fraction > 0 ? metadata.referenceLengthMeters : null;
     }
     if (projectedLine.current) {
       const canvasRect = gl.domElement.getBoundingClientRect();
@@ -160,7 +163,7 @@ export function SceneReferenceBar({
       projectedLine.current.setAttribute("x2", String(offsetX + ((end.x + 1) * size.width) / 2));
       projectedLine.current.setAttribute("y2", String(offsetY + ((1 - end.y) * size.height) / 2));
       projectedLine.current.dataset.projected = "true";
-      projectedLine.current.dataset.visible = String(shown && opacity > 0.001);
+      projectedLine.current.dataset.visible = String(shown && effectiveOpacity > 0.001);
     }
     if (sprite.current) {
       const projectedLength = Math.hypot(

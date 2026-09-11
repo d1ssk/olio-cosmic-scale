@@ -17,6 +17,7 @@ export type SceneId =
   | "local-group"
   | "virgo"
   | "bao"
+  | "cosmic-web"
   | "observable-universe";
 
 export type CameraConfig = {
@@ -49,6 +50,14 @@ export type ScaleSceneProps = {
   baoLayerMode?: BaoLayerMode;
   baoReveal?: boolean;
   baoSliceFraction?: number;
+  baoLayerOpacity?: number;
+  suppressBaoRulers?: boolean;
+  cosmicWebMix?: number;
+  cosmicWebQuality?: CosmicWebQuality;
+  densityTransitionActive?: boolean;
+  densityTransitionAnimating?: boolean;
+  onBaoLayerReady?: () => void;
+  onCosmicWebLayerReady?: () => void;
   colorByCatalog?: boolean;
   representativeDepths?: boolean;
   previewStarId?: number | null;
@@ -69,6 +78,8 @@ export type ScaleSceneProps = {
 };
 
 export type BaoLayerMode = "halos" | "matter" | "both";
+export type CosmicWebQuality = "standard" | "high";
+export const DEFAULT_COSMIC_WEB_QUALITY: CosmicWebQuality = "high";
 
 export type SceneDefinition = SceneMetadata & {
   kind: "scene";

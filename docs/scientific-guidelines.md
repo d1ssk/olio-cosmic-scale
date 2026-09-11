@@ -35,4 +35,9 @@ Spiral arms are model-dependent and should not look exact; encode confidence wit
 
 ## Determinism and performance honesty
 
+The Cosmic Web slab is a spatial cross-section of one periodic z = 0.2 snapshot.
+Its camera depth is not redshift, lookback time, or observer distance. The later
+Observable Universe scene must make the change to a past-light-cone
+representation explicit.
+
 Use seeded randomness for procedural or sampled distributions so tests and screenshots reproduce. Instancing, point rendering, level of detail, and device-aware decorative particle density are encouraged. If scientifically meaningful density is reduced, disclose the representation rule rather than quietly thinning it.

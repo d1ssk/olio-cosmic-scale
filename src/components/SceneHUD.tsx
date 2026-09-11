@@ -14,16 +14,24 @@ import { lazy, Suspense } from "react";
 import { SUN_TEXTURE } from "../scenes/sun/sunData";
 const VirgoControls = lazy(() => import("../scenes/virgo/VirgoControls"));
 const BaoControls = lazy(() => import("../scenes/bao/BaoControls"));
+const CosmicWebControls = lazy(() => import("../scenes/cosmic-web/CosmicWebControls"));
 const EphemerisControls = lazy(() => import("../scenes/earth-sun/EphemerisControls"));
 import { EARTH_MOON_SOURCES } from "../scenes/earth-moon/earthMoonData";
 import { hierarchyPosition, MAIN_SCENE_ORDER } from "../app/sceneRegistry";
 import { translate, type Locale } from "../i18n";
-import type { BaoLayerMode, SceneDefinition } from "../scenes/types";
+import {
+  DEFAULT_COSMIC_WEB_QUALITY,
+  type BaoLayerMode,
+  type CosmicWebQuality,
+  type SceneDefinition,
+} from "../scenes/types";
 import { EARTH_TEXTURE } from "../scenes/earth/earthData";
 import { HACHIKO_MODEL } from "../scenes/human/humanData";
 import { ScaleReadout } from "./ScaleReadout";
 
 type SceneHUDProps = {
+  cosmicWebQuality?: CosmicWebQuality;
+  onCosmicWebQualityChange?: (quality: CosmicWebQuality) => void;
   baoLayerMode?: BaoLayerMode;
   onBaoLayerModeChange?: (mode: BaoLayerMode) => void;
   baoReveal?: boolean;
@@ -60,6 +68,8 @@ type SceneHUDProps = {
 };
 
 export function SceneHUD({
+  cosmicWebQuality = DEFAULT_COSMIC_WEB_QUALITY,
+  onCosmicWebQualityChange,
   baoLayerMode = "both",
   onBaoLayerModeChange,
   baoReveal = false,
@@ -127,8 +137,18 @@ export function SceneHUD({
       />
 
       <div
-        className={`scene-status ${["human", "earth", "earth-moon", "sun", "earth-sun", "solar-system", "solar-neighborhood", "galactic-center-neighborhood", "milky-way", "local-group", "virgo", "bao"].includes(scene.id) ? "human-status" : ""}`}
+        className={`scene-status ${["human", "earth", "earth-moon", "sun", "earth-sun", "solar-system", "solar-neighborhood", "galactic-center-neighborhood", "milky-way", "local-group", "virgo", "bao", "cosmic-web"].includes(scene.id) ? "human-status" : ""}`}
       >
+        {scene.id === "cosmic-web" && (
+          <Suspense fallback={null}>
+            <CosmicWebControls
+              locale={locale}
+              quality={cosmicWebQuality}
+              onQualityChange={onCosmicWebQualityChange}
+              disabled={transitioning}
+            />
+          </Suspense>
+        )}
         {scene.id === "bao" && (
           <Suspense fallback={null}>
             <BaoControls
@@ -359,6 +379,28 @@ export function SceneHUD({
                     </a>
                   </span>
                 )}
+              </>
+            ) : scene.id === "cosmic-web" ? (
+              <>
+                <span>{translate(locale, "cosmicWeb.details")}</span>
+                <span>{translate(locale, "cosmicWeb.caveats")}</span>
+                <span>
+                  <a
+                    href={`${import.meta.env.BASE_URL}data/bao/manifest.json`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    manifest.json
+                  </a>
+                  {" · "}
+                  <a
+                    href={`${import.meta.env.BASE_URL}data/bao/provenance.json`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    provenance.json
+                  </a>
+                </span>
               </>
             ) : scene.id === "bao" ? (
               <>

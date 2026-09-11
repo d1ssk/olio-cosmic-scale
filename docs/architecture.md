@@ -12,6 +12,12 @@ sceneUnits = physicalMeters / metersPerSceneUnit;
 
 Each scene records an origin/reference-frame description. Astronomical frames must be explicit (for example heliocentric, galactocentric, Local Group barycentric, or comoving) and never mixed silently.
 
+BAO and Cosmic Web are distinct scene states but use the same manifest coordinate
+transform during their explicit transition. Their stable SceneView key preserves
+one Canvas only for that button-triggered animation. The full-box slab is not
+mounted or requested during ordinary BAO use; it mounts when the transition is
+requested and is disposed from the GPU after returning to BAO.
+
 ## Registry and contracts
 
 The scene registry is the source of truth for IDs, hierarchy links, lateral siblings, provisional reference metadata, primary unit, lazy component, and camera configuration. The main order excludes `galactic-center-neighborhood`.

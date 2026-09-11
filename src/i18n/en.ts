@@ -1,4 +1,16 @@
 export const en = {
+  "cosmicWeb.loading": "Loading the cosmic-web slab…",
+  "cosmicWeb.summary": "Cosmic Web · Box size: {size} Gpc/h · Snapshot: z = {redshift}",
+  "cosmicWeb.quality": "Slab detail",
+  "cosmicWeb.standard": "Standard · 256³ source (lighter)",
+  "cosmicWeb.high": "High · 512³ source (default)",
+  "cosmicWeb.slab":
+    "Fixed central {axis}-normal slab · {thickness} Mpc/h thick · {resolution}³ source",
+  "cosmicWeb.fixed": "The highlighted 500 Mpc/h cube is the preceding BAO region.",
+  "cosmicWeb.details":
+    "This is a fixed central slab through the full matter-density box. It preserves the manifest's stored log₁₀(ρ/ρ̄) values in a small GPU 3D texture; color and opacity are display mappings for the overdensity network. The slab normal follows the slowest manifest storage axis so one contiguous byte range can be read. High uses the centered slab from the 512³ source by default; Standard is a lighter 256³ option. Neither mode retains a full volume.",
+  "cosmicWeb.caveats":
+    "The full box and central BAO cube use the same Abacus-centered Cartesian realization. The slab's voxel-aligned physical thickness is derived near 50 Mpc/h and remains identical between both LODs. This is a periodic, single-time z = 0.2 real-space snapshot reconstructed from the recorded 3% particle subsample with TSC and no window deconvolution—not an observer-centered light cone or calibrated emission map.",
   "bao.layers": "Visible data",
   "bao.halos": "Halos",
   "bao.matter": "Matter",
@@ -213,6 +225,7 @@ export const en = {
   "scene.localGroup.title": "Local Group",
   "scene.virgo.title": "Virgo environment",
   "scene.bao.title": "BAO scale",
+  "scene.cosmicWeb.title": "Cosmic Web",
   "scene.observableUniverse.title": "Observable Universe",
   "origin.human": "Local object-centered coordinates",
   "origin.earth": "Earth-centered coordinates",
@@ -223,5 +236,7 @@ export const en = {
   "origin.galacticCenterNeighborhood": "Stellar density model, 1 kpc from the Galactic center",
   "origin.milkyWay": "Galactocentric reference frame",
   "origin.bao": "Abacus-centered Cartesian comoving coordinates · Mpc/h · z = 0.2",
+  "origin.cosmicWeb":
+    "Abacus-centered Cartesian comoving coordinates · fixed central slab · z = 0.2",
   "origin.observableUniverse": "Observer-centered comoving coordinates (convention pending)",
 } as const;

@@ -9,6 +9,10 @@ import {
   BAO_VIEW_METERS,
 } from "../scenes/bao/baoModel";
 import {
+  COSMIC_WEB_REFERENCE_METERS,
+  COSMIC_WEB_VIEW_METERS,
+} from "../scenes/cosmic-web/cosmicWebModel";
+import {
   LOCAL_GROUP_REFERENCE_METERS,
   LOCAL_GROUP_VIEW_METERS,
   LOCAL_GROUP_UNIT_METERS,
@@ -35,7 +39,7 @@ import { AU_METERS, GIGAPARSEC_METERS, PARSEC_METERS } from "../physics/constant
 import type { SceneDefinition, SceneId } from "../scenes/types";
 
 const VirgoScene = lazy(() => import("../scenes/virgo/VirgoScene"));
-const BaoScene = lazy(() => import("../scenes/bao/BaoScene"));
+const CosmicDensityScene = lazy(() => import("../scenes/cosmic-web/CosmicDensityScene"));
 
 const LocalGroupScene = lazy(() => import("../scenes/local-group/LocalGroupScene"));
 
@@ -83,6 +87,7 @@ export const MAIN_SCENE_ORDER = [
   "local-group",
   "virgo",
   "bao",
+  "cosmic-web",
   "observable-universe",
 ] as const satisfies readonly SceneId[];
 
@@ -332,8 +337,29 @@ export const sceneRegistry: Record<SceneId, SceneDefinition> = {
       minDistance: 7,
       maxDistance: 45,
     },
-    component: BaoScene,
+    component: CosmicDensityScene,
     previous: "virgo",
+    next: "cosmic-web",
+  },
+  "cosmic-web": {
+    id: "cosmic-web",
+    kind: "scene",
+    titleKey: "scene.cosmicWeb.title",
+    originDescriptionKey: "origin.cosmicWeb",
+    referenceLengthMeters: COSMIC_WEB_REFERENCE_METERS,
+    defaultViewportExtentMeters: COSMIC_WEB_VIEW_METERS,
+    metersPerSceneUnit: BAO_METERS_PER_SCENE_UNIT,
+    preferredPrimaryUnit: "Gpc",
+    secondaryUnits: ["Gly", "Mpc"],
+    camera: {
+      ...perspective,
+      position: [44, 32, 52],
+      fitToViewport: true,
+      minDistance: 25,
+      maxDistance: 160,
+    },
+    component: CosmicDensityScene,
+    previous: "bao",
     next: "observable-universe",
   },
   "observable-universe": {
@@ -348,7 +374,7 @@ export const sceneRegistry: Record<SceneId, SceneDefinition> = {
     secondaryUnits: ["Gly", "Mpc"],
     camera: perspective,
     component: PlaceholderScene,
-    previous: "bao",
+    previous: "cosmic-web",
   },
 };
 

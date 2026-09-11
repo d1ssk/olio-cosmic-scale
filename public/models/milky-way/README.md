@@ -65,7 +65,7 @@ The browser may separately cache the download.
 The volume support is 1.2e21 × 1.2e21 × 0.15e21 m, approximately
 38.89 × 38.89 × 4.86 kpc. These are box dimensions, not a stellar disk boundary
 or thickness. The existing 30 kpc reference, ruler positions, scene host,
-camera, controls, 12-level hierarchy and single incoming bridge stay shared.
+camera, controls, 13-level hierarchy and single incoming bridge stay shared.
 
 Texture axes first receive OpenSpace's `Rx(pi) * Ry(3.1248) * Rz(4.45741)`.
 Galactic coordinates then map to this scene as `(-gX, gZ, gY)`: X toward the Sun,

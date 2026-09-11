@@ -18,6 +18,7 @@ These centralized defaults scaffold the ladder; several are adopted conventions 
 | `local-group`                  |                    3 Mpc | Mpc       | adopted comparison span (not group boundary) |
 | `virgo`                        |                 16.5 Mpc | Mpc       | adopted observer–Virgo distance              |
 | `bao`                          |            147 Mpc class | Mpc       | convention to document                       |
+| `cosmic-web`                   |            3 Gpc adopted | Gpc       | ladder reference; box geometry from manifest |
 | `observable-universe`          |  28.5 Gpc class diameter | Gpc       | distance convention to document              |
 
 Solar-neighborhood span, Milky Way boundary, Local Group extent, Virgo reference,
@@ -81,7 +82,8 @@ Cover modest and large ratios, responsive widths, manual milestones, and exact f
 - Local Group → Virgo needs no artificial decade.
 - Virgo → BAO transfers the exact 16.5 Mpc Virgo reference into the BAO comparison
   ruler directly; the ratio to 147 Mpc is moderate.
-- BAO → Observable Universe switches directly because its ratio is below 200.
+- BAO → Cosmic Web is an explicit scene change with a same-coordinate zoom/crossfade.
+- Cosmic Web → Observable Universe switches directly because its ratio is below 200.
 
 Do not freeze exact frame counts without testing the responsive rendering.
 

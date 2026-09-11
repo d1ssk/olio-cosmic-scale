@@ -4,7 +4,13 @@ import type { BaoDataset } from "./baoData";
 import { haloRenderData } from "./baoModel";
 import { useMemo } from "react";
 
-export function BaoHaloCloud({ dataset }: { dataset: BaoDataset }): React.JSX.Element {
+export function BaoHaloCloud({
+  dataset,
+  opacity = 1,
+}: {
+  dataset: BaoDataset;
+  opacity?: number;
+}): React.JSX.Element {
   const pixelRatio = useThree((state) => state.gl.getPixelRatio());
   const cloud = useMemo(() => haloRenderData(dataset), [dataset]);
   return (
@@ -17,10 +23,11 @@ export function BaoHaloCloud({ dataset }: { dataset: BaoDataset }): React.JSX.El
         transparent
         depthWrite={false}
         blending={AdditiveBlending}
-        uniforms={{ pixelRatio: { value: pixelRatio } }}
+        uniforms={{ pixelRatio: { value: pixelRatio }, layerOpacity: { value: opacity } }}
         vertexShader={`
           attribute float haloMass;
           uniform float pixelRatio;
+          uniform float layerOpacity;
           varying float strength;
           void main() {
             strength = 0.35 + 0.65 * pow(clamp(haloMass, 0.0, 1.0), 0.35);
@@ -29,6 +36,7 @@ export function BaoHaloCloud({ dataset }: { dataset: BaoDataset }): React.JSX.El
           }
         `}
         fragmentShader={`
+          uniform float layerOpacity;
           varying float strength;
           void main() {
             vec2 p = gl_PointCoord - 0.5;
@@ -36,7 +44,7 @@ export function BaoHaloCloud({ dataset }: { dataset: BaoDataset }): React.JSX.El
             if (radius > 1.0) discard;
             float alpha = smoothstep(1.0, 0.15, radius) * mix(0.28, 0.9, strength);
             vec3 tint = mix(vec3(0.34, 0.67, 0.92), vec3(1.0, 0.82, 0.52), strength);
-            gl_FragColor = vec4(tint, alpha);
+            gl_FragColor = vec4(tint, alpha * layerOpacity);
             #include <tonemapping_fragment>
             #include <colorspace_fragment>
           }

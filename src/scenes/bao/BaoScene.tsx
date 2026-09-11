@@ -17,6 +17,8 @@ export default function BaoScene({
   baoLayerMode = "both",
   baoReveal = false,
   baoSliceFraction = 0.5,
+  baoLayerOpacity = 1,
+  suppressBaoRulers = false,
   referenceBarVisible = true,
   entryBarKind,
 }: ScaleSceneProps): React.JSX.Element {
@@ -58,12 +60,14 @@ export default function BaoScene({
     <group>
       <group visible={ordinaryLayersVisible}>
         {(baoLayerMode === "matter" || baoLayerMode === "both") && (
-          <BaoMatterSlab dataset={dataset} fraction={baoSliceFraction} />
+          <BaoMatterSlab dataset={dataset} fraction={baoSliceFraction} opacity={baoLayerOpacity} />
         )}
         {(baoLayerMode === "halos" || baoLayerMode === "both") && (
-          <BaoHaloCloud dataset={dataset} />
+          <BaoHaloCloud dataset={dataset} opacity={baoLayerOpacity} />
         )}
-        {baoReveal && <BaoGuideLayer manifest={dataset.manifest} radiusMpcH={peak.rMpcH} />}
+        {baoReveal && baoLayerOpacity > 0.01 && (
+          <BaoGuideLayer manifest={dataset.manifest} radiusMpcH={peak.rMpcH} />
+        )}
         <mesh>
           <boxGeometry args={[BAO_BOX_RENDER_SIZE, BAO_BOX_RENDER_SIZE, BAO_BOX_RENDER_SIZE]} />
           <meshBasicMaterial transparent opacity={0} depthWrite={false} />
@@ -76,7 +80,7 @@ export default function BaoScene({
         base={referenceRuler.base}
         direction={referenceRuler.direction}
         kind="reference"
-        visible={entryBarKind !== "reference" || referenceBarVisible}
+        visible={!suppressBaoRulers && (entryBarKind !== "reference" || referenceBarVisible)}
         labelOffsetY={-18}
       />
       <SceneReferenceBar
@@ -85,7 +89,7 @@ export default function BaoScene({
         base={comparisonRuler.base}
         direction={comparisonRuler.direction}
         kind="comparison"
-        visible={entryBarKind !== "comparison" || referenceBarVisible}
+        visible={!suppressBaoRulers && (entryBarKind !== "comparison" || referenceBarVisible)}
         labelOffsetY={18}
       />
     </group>

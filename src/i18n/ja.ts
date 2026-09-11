@@ -1,6 +1,18 @@
 import type { TranslationKey } from "./index";
 
 export const ja: Record<TranslationKey, string> = {
+  "cosmicWeb.loading": "cosmic-web slabを読み込んでいます…",
+  "cosmicWeb.summary": "Cosmic Web · Box size：{size} Gpc/h · Snapshot：z = {redshift}",
+  "cosmicWeb.quality": "slabの精細度",
+  "cosmicWeb.standard": "標準 · 256³ source（軽量）",
+  "cosmicWeb.high": "高精細 · 512³ source（default）",
+  "cosmicWeb.slab":
+    "中央固定・{axis}軸に垂直なslab · 厚さ {thickness} Mpc/h · {resolution}³ source",
+  "cosmicWeb.fixed": "強調した500 Mpc/h cubeが、直前に見ていたBAO領域です。",
+  "cosmicWeb.details":
+    "full matter-density boxの中心を通る固定slabです。manifestに記録されたlog₁₀(ρ/ρ̄)を小さなGPU 3D textureへそのまま保持し、色と透明度でoverdensity networkを読みやすくしています。slabの法線はmanifest上で最も遅いstorage axisに合わせ、連続した一つのbyte rangeだけを読みます。defaultは512³ sourceの中央slabを使い、標準は軽量な256³ optionです。どちらもfull volumeは保持・描画しません。",
+  "cosmicWeb.caveats":
+    "full boxと中央BAO cubeは同じAbacus中心Cartesian realizationです。voxel境界に揃えた約50 Mpc/hの物理厚は両LODで同一です。記録された3% particle subsampleからTSCで再構成しwindow deconvolutionをしていない、周期境界・単一時刻z = 0.2のreal-space snapshotです。観測者中心のlight coneでも、較正された放射mapでもありません。",
   "bao.layers": "表示データ",
   "bao.halos": "Halos",
   "bao.matter": "Matter",
@@ -212,6 +224,7 @@ export const ja: Record<TranslationKey, string> = {
   "scene.localGroup.title": "局所銀河群",
   "scene.virgo.title": "おとめ座銀河団周辺",
   "scene.bao.title": "BAOスケール",
+  "scene.cosmicWeb.title": "コズミック・ウェブ",
   "scene.observableUniverse.title": "観測可能な宇宙",
   "origin.human": "対象中心の局所座標",
   "origin.earth": "地球中心座標",
@@ -222,5 +235,6 @@ export const ja: Record<TranslationKey, string> = {
   "origin.galacticCenterNeighborhood": "銀河中心から1 kpc離れた場所の恒星密度モデル",
   "origin.milkyWay": "銀河中心基準系",
   "origin.bao": "Abacus中心Cartesian共動座標 · Mpc/h · z = 0.2",
+  "origin.cosmicWeb": "Abacus中心Cartesian共動座標 · 中央固定slab · z = 0.2",
   "origin.observableUniverse": "観測者中心の共動座標（規約は要確定）",
 };

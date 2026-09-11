@@ -194,7 +194,35 @@ guide, never a visible matter shell around an object. The guide is an independen
 layer so future N-center stacking can be added without coupling it to the halo or
 matter renderer.
 
-## 12. Observable Universe
+## 12. Cosmic Web
+
+The scene reads only a fixed central slab from the manifest-declared full density
+field. High uses `full_512.u8` by default; Standard is a lighter `full_256.u8`
+option. Because C-order makes
+the first declared axis contiguous by planes, the slab normal follows that
+manifest axis. HTTP Range requests retain 256 × 256 × 6 bytes (384 KiB) or
+512 × 512 × 12 bytes (3 MiB), not a full-box volume. Both resolve to the same
+voxel-aligned 46.875 Mpc/h physical thickness near the adopted 50 Mpc/h target.
+
+The slab and preceding BAO cube share the manifest's center and Abacus Cartesian
+coordinates. A subtle full-box outline and persistent central 500 Mpc/h BAO-cube
+outline make their containment legible. No full 3D volume is held or rendered.
+Stored `log10(rho/rho_mean)` is sampled directly by a small GPU 3D texture and a
+slab-only ray marcher; colors and opacity are illustrative transfer functions.
+
+Next/Previous is still an explicit scene action. On that button press only, the
+destination layer loads, the perspective camera moves between presets, the large
+slab fades against the BAO halos/matter, and the central cube remains visible.
+Normal BAO rendering and loading are unchanged before the action. This is the
+same periodic z = 0.2 spatial snapshot, not a light cone or redshift-depth view.
+
+The scene's adopted reference is 3 Gpc. Its vertical ruler sits just beyond the
+slab's right edge in the default view, within the slab's central plane. During the BAO transition, the 147 Mpc
+ruler keeps its two-render-unit physical length and moves from its BAO position to
+a vertically centered, coplanar comparison position beside the 3 Gpc ruler; the reverse
+transition follows the same path backward.
+
+## 13. Observable Universe
 
 Show an observer-centered final cosmic scale under an explicit cosmological distance convention. Potential elements include radial structure, CMB last-scattering surface, observable boundary, or conceptual light-cone information. Separate comoving distance from light-travel time and do not imply a complete matter catalog.
 

@@ -2,7 +2,7 @@
 
 An interactive, bilingual visualization for learning physical and astronomical length scales as discrete scenes connected by explicit length-comparison bridges.
 
-The common application framework and three scenes are implemented: Human (Hachikō), Earth, and Earth and Moon. The 12-level hierarchy continues from Sun through the Observable Universe with clearly labeled development placeholders. Continue with the Sun scene using the [implementation handoff](docs/implementation-status.md).
+The common application framework and the first twelve levels—from Human (Hachikō) through the AbacusSummit Cosmic Web—are implemented. The 13-level hierarchy ends with an Observable Universe development placeholder. See the [implementation handoff](docs/implementation-status.md) for current conventions.
 
 ## Run locally
 

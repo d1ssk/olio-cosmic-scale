@@ -10,6 +10,10 @@ The experience is deliberately discrete:
 
 The user-authorized Earth–Sun / Solar System pair is the sole continuous-zoom exception. Its shared physical world has two explicit camera presets; manual zoom remains inside that world. Other scales retain discrete scenes and scale bridges.
 
+BAO and Cosmic Web remain separate scenes. Only an explicit scale button starts
+a temporary same-coordinate zoom/crossfade; ordinary BAO display does not load
+the full-box density files, and manual zoom never switches scenes.
+
 ## Hierarchy
 
 The main vertical sequence is:
@@ -25,9 +29,10 @@ The main vertical sequence is:
 9. Local Group
 10. Nearby galaxy cluster (Virgo)
 11. BAO scale
-12. Observable Universe
+12. Cosmic Web
+13. Observable Universe
 
-The Galactic-center neighborhood is a lateral, same-scale sibling of level 7. It is excluded from the main sequence and remains `7 / 12`. Switching between the two neighborhoods has no scale bridge and preserves physical viewport, camera projection/zoom/orientation, point-size and sampling rules, label style, and scale bar as far as possible.
+The Galactic-center neighborhood is a lateral, same-scale sibling of level 7. It is excluded from the main sequence and remains `7 / 13`. Switching between the two neighborhoods has no scale bridge and preserves physical viewport, camera projection/zoom/orientation, point-size and sampling rules, label style, and scale bar as far as possible.
 
 ## Scene, bridge, and shared interface
 
