@@ -30,6 +30,8 @@ The interface is quiet, scientific, spacious, and responsive. Centralize CSS des
 
 Keep the bottom previous/next scale dock in the same position across scenes and bridges. The top logarithmic axis uses decade ticks and scene dots; scene names appear only on hover or keyboard focus.
 
+At viewport widths up to 1440 px or heights up to 850 px, use compact header and navigation spacing. Above the mobile breakpoint, also reduce HUD card widths, title/readout sizes, and panel padding; long explanation/control panels scroll within the available HUD row. Compact button heights apply only to fine pointers so touch targets retain their normal size. Larger desktop windows keep the spacious layout.
+
 Main and secondary reference values use the same serif font family. Render scientific notation with a multiplication sign and superscript exponent; do not display raw E notation visually. Always show m, pc, AU and ly conversions except duplication of the primary unit; do not add extra prefixed-meter conversions.
 
 On mobile, keep conversions readable and use flowing rows for heading, readout, canvas, explanatory credits, and controls. The six implemented scenes use this layout so panels do not cover the models. Keep the full-viewport shell usable with browser safe areas and modern desktop/mobile input.
