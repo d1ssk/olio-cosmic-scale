@@ -18,6 +18,7 @@ export function SceneReferenceBar({
   base,
   locale,
   visible = true,
+  labelVisible = true,
   kind = "reference",
   labelOffsetY = 0,
   labelAlign = "left",
@@ -40,6 +41,7 @@ export function SceneReferenceBar({
   significantDigits?: number;
   labelOffsetX?: number | ((projectedLengthPixels: number) => number);
   visible?: boolean;
+  labelVisible?: boolean;
   kind?: "reference" | "comparison" | "auxiliary";
   screenBottom?: number;
   opacityForExtent?: (extentMeters: number) => number;
@@ -200,7 +202,7 @@ export function SceneReferenceBar({
         depthWrite
         toneMapped={false}
       />
-      <sprite ref={sprite} center={[labelAlign === "center" ? 0.5 : 0, 0.5]}>
+      <sprite visible={labelVisible} ref={sprite} center={[labelAlign === "center" ? 0.5 : 0, 0.5]}>
         <spriteMaterial
           map={label.texture}
           sizeAttenuation={false}

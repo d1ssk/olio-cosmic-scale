@@ -6,6 +6,8 @@ import { translate } from "../../i18n";
 import { BarVisibilityContext } from "../shared/barVisibility";
 import { SceneReferenceBar } from "../shared/SceneReferenceBar";
 import type { ScaleSceneProps } from "../types";
+import { ObservableUniverseWedge } from "./ObservableUniverseWedge";
+import { RadialTickAnnotation } from "./RadialTickAnnotation";
 import { CmbSurface } from "./CmbSurface";
 import {
   AXIS,
@@ -104,42 +106,6 @@ function shellSidesGeometry(): BufferGeometry {
   return geometry;
 }
 
-function lightConeSliceGeometry(): BufferGeometry {
-  const segments = 40;
-  const halfAngle = (13 * Math.PI) / 180;
-  const halfThickness = 0.07;
-  const positions: number[] = [];
-  const indices: number[] = [];
-  for (const height of [-halfThickness, halfThickness]) {
-    positions.push(UP.x * height, UP.y * height, UP.z * height);
-    for (let index = 0; index <= segments; index += 1) {
-      const angle = -halfAngle + (2 * halfAngle * index) / segments;
-      const direction = AXIS.clone()
-        .multiplyScalar(Math.cos(angle))
-        .addScaledVector(SIDE, Math.sin(angle));
-      const point = direction.multiplyScalar(LAST_SCATTERING_RADIUS).addScaledVector(UP, height);
-      positions.push(point.x, point.y, point.z);
-    }
-  }
-  const row = segments + 2;
-  for (let index = 0; index < segments; index += 1) {
-    indices.push(0, index + 1, index + 2);
-    indices.push(row, row + index + 2, row + index + 1);
-    const lower = index + 1;
-    const upper = row + index + 1;
-    indices.push(lower, upper, lower + 1, lower + 1, upper, upper + 1);
-  }
-  const lowerLast = segments + 1;
-  const upperLast = row + segments + 1;
-  indices.push(0, row, 1, 1, row, row + 1);
-  indices.push(0, lowerLast, row, lowerLast, upperLast, row);
-  const geometry = new BufferGeometry();
-  geometry.setAttribute("position", new Float32BufferAttribute(positions, 3));
-  geometry.setIndex(indices);
-  geometry.computeVertexNormals();
-  return geometry;
-}
-
 function formatRedshift(value: number): string {
   if (value < 0.01) return "0";
   if (value < 10) return value.toFixed(value < 1 ? 2 : 1);
@@ -151,6 +117,9 @@ export default function ObservableUniverseScene({
   metadata,
   onReady,
   cmbDisplayMode = "uniform",
+  observableAnnotationsHidden = false,
+  wedgeMatter = true,
+  wedgeGalaxies = true,
   entryBarKind,
   referenceBarVisible = true,
 }: ScaleSceneProps): React.JSX.Element {
@@ -158,7 +127,6 @@ export default function ObservableUniverseScene({
   const innerShell = useMemo(() => sphericalPatchGeometry(LAST_SCATTERING_RADIUS), []);
   const outerShell = useMemo(() => sphericalPatchGeometry(PARTICLE_HORIZON_RADIUS), []);
   const shellSides = useMemo(() => shellSidesGeometry(), []);
-  const lightCone = useMemo(() => lightConeSliceGeometry(), []);
   const [hoverDistance, setHoverDistance] = useState<number | null>(null);
   const hoverLeaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const cancelHoverLeave = () => {
@@ -201,9 +169,8 @@ export default function ObservableUniverseScene({
       innerShell.dispose();
       outerShell.dispose();
       shellSides.dispose();
-      lightCone.dispose();
     };
-  }, [innerShell, lightCone, onReady, outerShell, shellSides]);
+  }, [innerShell, onReady, outerShell, shellSides]);
   const updateHover = (event: ThreeEvent<PointerEvent>) => {
     cancelHoverLeave();
     event.stopPropagation();
@@ -220,6 +187,7 @@ export default function ObservableUniverseScene({
         kind="comparison"
         visible={entryBarKind !== "comparison" || referenceBarVisible}
         labelOffsetY={20}
+        labelVisible={!observableAnnotationsHidden}
       />
       {visibility.only === null && (
         <>
@@ -237,16 +205,7 @@ export default function ObservableUniverseScene({
             <meshBasicMaterial color="#ff7b27" side={DoubleSide} toneMapped={false} />
           </mesh>
           <CmbSurface geometry={innerShell} mode={cmbDisplayMode} />
-          <mesh geometry={lightCone} renderOrder={-1}>
-            <meshBasicMaterial
-              color="#7595b8"
-              side={DoubleSide}
-              transparent
-              opacity={0.105}
-              depthWrite={false}
-              toneMapped={false}
-            />
-          </mesh>
+          <ObservableUniverseWedge matter={wedgeMatter} galaxies={wedgeGalaxies} />
           {!visibility.hidden && (
             <>
               <Line points={[[0, 0, 0], axisEnd]} color="#d8e4ee" lineWidth={1.35} />
@@ -279,8 +238,6 @@ export default function ObservableUniverseScene({
                 (tick.comovingDistanceGpc / 14) * LAST_SCATTERING_RADIUS,
               );
               const tickHalf = 0.13;
-              const labelOffset =
-                index === 1 ? 0.52 : index === 3 ? 0.82 : index === 4 ? -0.82 : -0.45;
               const distanceLabel = tick.comovingDistanceGpc.toLocaleString(locale, {
                 maximumFractionDigits: 1,
               });
@@ -297,13 +254,8 @@ export default function ObservableUniverseScene({
                     color="#d8e4ee"
                     lineWidth={1.2}
                   />
-                  <Html
-                    style={{ pointerEvents: "none" }}
-                    position={point.clone().addScaledVector(UP, labelOffset)}
-                    center
-                    zIndexRange={[5, 0]}
-                  >
-                    <div className="cosmic-ruler-tick">
+                  {!observableAnnotationsHidden && (
+                    <RadialTickAnnotation point={point} index={index}>
                       <span>{distanceLabel} Gpc</span>
                       <span>
                         {tick.redshift === 0 ? "z=0" : `z≈${formatRedshift(tick.redshift)}`}
@@ -313,45 +265,58 @@ export default function ObservableUniverseScene({
                           ? translate(locale, "observable.now")
                           : translate(locale, "observable.lookbackShort", { value: lookbackLabel })}
                       </span>
-                    </div>
-                  </Html>
+                    </RadialTickAnnotation>
+                  )}
                 </group>
               );
             })}
-          <Html
-            style={{ pointerEvents: "none" }}
-            position={axisEnd.clone().addScaledVector(UP, 1.28)}
-            center
-            zIndexRange={[5, 0]}
-          >
-            <div className="cosmic-shell-label">
-              <strong>{translate(locale, "observable.shell")}</strong>
-              <span>
-                {translate(locale, "observable.shellTemperature", {
-                  emitted: LAST_SCATTERING_TEMPERATURE_KELVIN.toLocaleString(locale, {
-                    maximumSignificantDigits: 3,
-                  }),
-                  observed: CMB_TEMPERATURE_KELVIN,
-                })}
-              </span>
-              <span>
-                {translate(locale, "observable.particleHorizon", {
-                  distance: PARTICLE_HORIZON_DISTANCE_GPC.toLocaleString(locale, {
-                    maximumFractionDigits: 2,
-                  }),
-                })}
-              </span>
-            </div>
-          </Html>
-          <Html
-            style={{ pointerEvents: "none" }}
-            position={AXIS.clone()
-              .multiplyScalar(LAST_SCATTERING_RADIUS * 0.5)
-              .addScaledVector(SIDE, -1.55)}
-            center
-          >
-            <span className="cosmic-cone-label">{translate(locale, "observable.lightCone")}</span>
-          </Html>
+          {!observableAnnotationsHidden && (
+            <Html
+              style={{ pointerEvents: "none" }}
+              position={axisEnd.clone().addScaledVector(UP, 1.28)}
+              center
+              zIndexRange={[5, 0]}
+            >
+              <div className="cosmic-shell-label">
+                <strong>{translate(locale, "observable.shell")}</strong>
+                <span>
+                  {translate(locale, "observable.shellTemperature", {
+                    emitted: LAST_SCATTERING_TEMPERATURE_KELVIN.toLocaleString(locale, {
+                      maximumSignificantDigits: 3,
+                    }),
+                    observed: CMB_TEMPERATURE_KELVIN,
+                  })}
+                </span>
+                <span>
+                  {translate(locale, "observable.particleHorizon", {
+                    distance: PARTICLE_HORIZON_DISTANCE_GPC.toLocaleString(locale, {
+                      maximumFractionDigits: 2,
+                    }),
+                  })}
+                </span>
+              </div>
+            </Html>
+          )}
+          {!observableAnnotationsHidden && (
+            <Html
+              style={{ pointerEvents: "none" }}
+              // Fixed display placement in the scene basis; only orientation faces the camera.
+              position={AXIS.clone()
+                .multiplyScalar(LAST_SCATTERING_RADIUS * 0.77)
+                .addScaledVector(SIDE, -2.95)
+                .addScaledVector(UP, -0.55)}
+              transform
+              sprite
+              distanceFactor={5.2}
+              zIndexRange={[5, 0]}
+            >
+              <div className="cosmic-cone-annotation">
+                <span className="cosmic-cone-label">
+                  {translate(locale, "observable.lightCone")}
+                </span>
+              </div>
+            </Html>
+          )}
           {!visibility.hidden && hovered && (
             <Html
               style={{ pointerEvents: "none" }}

@@ -10,3 +10,6 @@ public/data/bao/
 tmp/
 # Preserve supplied authoritative CMB manifest verbatim.
 public/models/cmb/metadata.json
+
+# Preserve supplied authoritative wedge metadata verbatim.
+public/models/observable-universe-wedge/metadata.json

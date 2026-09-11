@@ -1,6 +1,13 @@
 export const en = {
   "observable.summary":
     "Observer at the origin · present-day comoving radius · warm-white ≈3000 K emission / 2.7255 K observed today",
+  "observable.matter": "Matter density",
+  "observable.galaxies": "Galaxies",
+  "observable.wedgeThickness":
+    "Display thickness ×{factor} · sector and point layers compressed together.",
+  "observable.wedgeNote":
+    "Precomputed model, not an observed catalog · fog = matter density proxy; points = luminous tracers, not physical galaxy sizes. Tracers are enlarged and brightened toward the observer for visibility; this is not a physical flux law.",
+  "observable.hideAnnotations": "Hide annotations",
   "observable.shell": "Last-scattering surface",
   "observable.lightCone": "Past-light-cone slice · schematic region",
   "observable.comovingDistance": "Comoving distance",
@@ -17,7 +24,7 @@ export const en = {
   "observable.realizationNote":
     "Precomputed joint T/E realization · amplified colors · Q/U stick length shows amplitude; E scalar colors when temperature is off",
   "observable.details":
-    "The 14 Gpc reference is an adopted rounded present-day comoving radius from the observer to the last-scattering surface, not light-travel time or the observable-universe diameter. The finite shell extends outward to the particle horizon calculated in the same flat Planck-2018-like ΛCDM background (H₀ 67.4 km/s/Mpc, Ωm 0.315, radiation included). The warm-white inner face represents the roughly 3000 K plasma at emission after display white balance; today that radiation is observed as 2.7255 K. Temperature, E scalar colors and Q/U polarization sticks use supplied HEALPix maps from one joint T/E realization (B=0), not observed sky maps. Colors use ±3 map standard deviations; stick lengths are proportional to polarization amplitude, with an adopted display scale. When both layers are enabled, temperature supplies the colors. The thin sector only reserves a schematic past-light-cone region; matter content is not yet modeled.",
+    "The 14 Gpc reference is an adopted rounded present-day comoving radius from the observer to the last-scattering surface, not light-travel time or the observable-universe diameter. The finite shell extends outward to the particle horizon calculated in the same flat Planck-2018-like ΛCDM background (H₀ 67.4 km/s/Mpc, Ωm 0.315, radiation included). The warm-white inner face represents the roughly 3000 K plasma at emission after display white balance; today that radiation is observed as 2.7255 K. Temperature, E scalar colors and Q/U polarization sticks use supplied HEALPix maps from one joint T/E realization (B=0), not observed sky maps. Colors use ±3 map standard deviations; stick lengths are proportional to polarization amplitude, with an adopted display scale. When both layers are enabled, temperature supplies the colors. The thin past-light-cone sector uses a supplied precomputed matter-density and biased luminous-tracer model, not an observed galaxy catalog. Its colors and compact point sizes are display conventions.",
   "cosmicWeb.loading": "Loading the cosmic-web slab…",
   "cosmicWeb.summary": "Cosmic Web · Box size: {size} Gpc/h · Snapshot: z = {redshift}",
   "cosmicWeb.referenceRedshift": "corresponds to z≈1",

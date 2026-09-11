@@ -353,6 +353,9 @@ function SceneView({
   const [baoLayerMode, setBaoLayerMode] = useState<BaoLayerMode>("both");
   const [baoReveal, setBaoReveal] = useState(false);
   const [baoSliceFraction, setBaoSliceFraction] = useState(0.5);
+  const [observableAnnotationsHidden, setObservableAnnotationsHidden] = useState(false);
+  const [wedgeMatter, setWedgeMatter] = useState(true);
+  const [wedgeGalaxies, setWedgeGalaxies] = useState(true);
   const [cmbDisplayMode, setCmbDisplayMode] = useState<CmbDisplayMode>("uniform");
   const [cosmicWebMix, setCosmicWebMix] = useState(sceneId === "cosmic-web" ? 1 : 0);
   const [cosmicWebQuality, setCosmicWebQuality] = useState<CosmicWebQuality>(
@@ -512,6 +515,9 @@ function SceneView({
               baoLayerMode={baoLayerMode}
               baoReveal={baoReveal}
               baoSliceFraction={baoSliceFraction}
+              observableAnnotationsHidden={observableAnnotationsHidden}
+              wedgeMatter={wedgeMatter}
+              wedgeGalaxies={wedgeGalaxies}
               cmbDisplayMode={cmbDisplayMode}
               cosmicWebMix={cosmicWebMix}
               cosmicWebQuality={cosmicWebQuality}
@@ -567,8 +573,14 @@ function SceneView({
       )}
       {!ready && <div className="loading-state">{translate(state.locale, "loading.scene")}</div>}
       <SceneHUD
+        observableAnnotationsHidden={observableAnnotationsHidden}
+        wedgeMatter={wedgeMatter}
+        wedgeGalaxies={wedgeGalaxies}
         cmbDisplayMode={cmbDisplayMode}
         onCmbDisplayModeChange={setCmbDisplayMode}
+        onObservableAnnotationsHiddenChange={setObservableAnnotationsHidden}
+        onWedgeMatterChange={setWedgeMatter}
+        onWedgeGalaxiesChange={setWedgeGalaxies}
         baoLayerMode={baoLayerMode}
         onBaoLayerModeChange={setBaoLayerMode}
         baoReveal={baoReveal}

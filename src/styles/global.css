@@ -166,7 +166,24 @@ button:disabled {
   white-space: nowrap;
 }
 
+.cosmic-tick-annotation {
+  position: relative;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.cosmic-tick-leader {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+}
+
 .cosmic-ruler-tick {
+  position: absolute;
+  background: rgb(10 16 26 / 94%);
+  border: 1px solid rgb(194 214 230 / 55%);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 45%);
   display: grid;
   gap: 0.05rem;
   text-align: center;
@@ -181,6 +198,13 @@ button:disabled {
   font-size: 0.57rem;
 }
 
+.cosmic-cone-annotation {
+  pointer-events: none;
+}
+.cosmic-cone-annotation .cosmic-cone-label {
+  background: rgb(10 16 26 / 94%);
+  border: 1px solid rgb(182 205 221 / 55%);
+}
 .cosmic-cone-label {
   color: #9eb7ce;
 }
@@ -689,10 +713,9 @@ button:disabled {
     max-width: 22rem;
     font-size: 0.85rem;
   }
-  .cosmic-cone-label {
+  .cosmic-cone-annotation {
     display: none;
   }
-  .cosmic-ruler-tick span:first-child,
   .cosmic-ruler-tick span:last-child {
     display: none;
   }

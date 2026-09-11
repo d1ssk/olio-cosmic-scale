@@ -1,0 +1,199 @@
+{
+  "geometry": {
+    "chi_max_gpc": 14.0,
+    "opening_angle_deg": 26.0,
+    "half_angle_deg": 13.0,
+    "thickness_gpc": 0.196,
+    "half_thickness_gpc": 0.098,
+    "observer": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "axis_convention": "right-handed; +Z wedge axis, opening in XZ, thickness along Y"
+  },
+  "counts": {
+    "matter_count": 50000,
+    "tracer_count": 12000
+  },
+  "formats": {
+    "matter_stride": 5,
+    "tracer_stride": 5,
+    "matter_fields": [
+      "x_gpc",
+      "y_gpc",
+      "z_gpc",
+      "size_gpc",
+      "alpha"
+    ],
+    "tracer_fields": [
+      "x_gpc",
+      "y_gpc",
+      "z_gpc",
+      "size_gpc",
+      "brightness"
+    ],
+    "matter_splats.f32": {
+      "dtype": "little-endian float32",
+      "shape": [
+        50000,
+        5
+      ],
+      "matter_stride": 5,
+      "stride_bytes": 20,
+      "fields": [
+        "x_gpc",
+        "y_gpc",
+        "z_gpc",
+        "size_gpc",
+        "alpha"
+      ]
+    },
+    "tracer_points.f32": {
+      "dtype": "little-endian float32",
+      "shape": [
+        12000,
+        5
+      ],
+      "tracer_stride": 5,
+      "stride_bytes": 20,
+      "fields": [
+        "x_gpc",
+        "y_gpc",
+        "z_gpc",
+        "size_gpc",
+        "brightness"
+      ]
+    }
+  },
+  "cosmology": {
+    "name": "Planck18",
+    "lookup_z_max": 100000.0,
+    "lookup_chi_max_gpc": 14.16057078914027
+  },
+  "rendering_hints": {
+    "matter": {
+      "blending_mode": "additive or premultiplied alpha",
+      "suggested_opacity_range": [
+        0.03,
+        0.25
+      ]
+    },
+    "tracers": {
+      "blending_mode": "additive",
+      "suggested_brightness_range": [
+        0.2,
+        1.0
+      ]
+    },
+    "depth_test": true
+  },
+  "radial_ticks": [
+    {
+      "z": 0.0,
+      "chi_gpc": 0.0,
+      "lookback_time_gyr": 0.0,
+      "scale_factor": 1.0
+    },
+    {
+      "z": 0.5,
+      "chi_gpc": 1.9464166347871186,
+      "lookback_time_gyr": 5.196239527320522,
+      "scale_factor": 0.6666666666666666
+    },
+    {
+      "z": 1.0,
+      "chi_gpc": 3.395634471151566,
+      "lookback_time_gyr": 7.935542002084361,
+      "scale_factor": 0.5
+    },
+    {
+      "z": 2.0,
+      "chi_gpc": 5.308188883886385,
+      "lookback_time_gyr": 10.51005491751732,
+      "scale_factor": 0.3333333333333333
+    },
+    {
+      "z": 3.0,
+      "chi_gpc": 6.504003988949642,
+      "lookback_time_gyr": 11.64313146468227,
+      "scale_factor": 0.25
+    },
+    {
+      "z": 6.0,
+      "chi_gpc": 8.4251000149334,
+      "lookback_time_gyr": 12.857620352244135,
+      "scale_factor": 0.14285714285714285
+    },
+    {
+      "z": 10.0,
+      "chi_gpc": 9.636285079457526,
+      "lookback_time_gyr": 13.31547051921035,
+      "scale_factor": 0.09090909090909091
+    },
+    {
+      "z": 1100.0,
+      "chi_gpc": 13.886327776455873,
+      "lookback_time_gyr": 13.786518776418584,
+      "scale_factor": 0.0009082652134423251
+    }
+  ],
+  "generation_parameters": {
+    "random_seed": 20250911,
+    "density_coordinate_system": "Cartesian XZ physical coordinates",
+    "grid_size": {
+      "nz": 1024,
+      "nx": 473
+    },
+    "grid_extent_gpc": {
+      "x": [
+        -3.2333984375,
+        3.2333984375
+      ],
+      "z": [
+        0.0,
+        14.0
+      ]
+    },
+    "grid_spacing_mpc": 13.671875,
+    "resolution_hints": {
+      "nr": 1024,
+      "nphi": 256
+    },
+    "target_counts": {
+      "matter": 50000,
+      "tracer": 12000
+    },
+    "sigma_ln": 1.0,
+    "delta_threshold": 0.18,
+    "matter_power": 1.45,
+    "correlation_scales_mpc": {
+      "fine": 15.0,
+      "mid": 40.0,
+      "coarse": 100.0
+    },
+    "component_amplitudes_at_z0": {
+      "fine": 1.0,
+      "mid": 0.55,
+      "coarse": 0.18
+    },
+    "coarse_high_pass_scale_mpc": 200.0,
+    "radial_evolution": "amplitude-only modulation of fixed-scale Cartesian components",
+    "tracer_redshift_cutoff": 10.0,
+    "tracer_onset_model": "logistic taper through z=2..6, cosine taper to zero at z=10",
+    "tracer_bias_model": "clip(1 + b(z) * delta, 0, None)^1.30; b(z)=1.10+0.50*z/(1+z)",
+    "wedge_mask": "abs(atan2(x,z)) <= 13 deg and hypot(x,z) <= chi_max_gpc",
+    "cell_volume_weight": "dx * dz * thickness (Cartesian cells)"
+  },
+  "assets": {
+    "matter_splats.f32": 1000000,
+    "tracer_points.f32": 240000,
+    "preview_density_map.png": 336041,
+    "preview_matter_intensity.png": 356393,
+    "preview_tracer_map.png": 388073,
+    "preview_wedge_xz.png": 641935,
+    "preview_wedge_xy.png": 906823,
+    "preview_radial_profiles.png": 185269,
+    "debug_redshift_table.csv": 461
+  }
+}

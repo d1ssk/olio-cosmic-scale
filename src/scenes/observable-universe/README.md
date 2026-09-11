@@ -74,7 +74,7 @@ B=0, but does not include the input spectrum, generating pipeline or license.
 The user identifies these as a healpy joint T/E realization; this is not claimed
 to be a particular Planck observed map or independently verified cosmology.
 T/E and Q/U have different declared effective bandlimits. No LOD UI is added.
-The shell crop and empty light-cone sector remain display conventions.
+The shell crop remains a display convention.
 
 The 3 Gpc comparison ruler is the exact incoming Cosmic Web reference. It is
 parallel to the radial ruler and lies in the light-cone slice plane, offset far
@@ -108,3 +108,104 @@ cancels that delay. All scene Html wrappers pass pointer events through, includi
 the tooltip wrapper, so labels cannot interrupt the underlying ruler hover.
 Chrome QA traversed 41 projected axis positions with ±6 CSS-pixel jitter and
 verified continuous readout updates, brief leave/re-entry, and final dismissal.
+
+## Asset-based light-cone wedge
+
+Source: user-supplied `tmp/observable_universe_wedge`, integrated
+2026-09-11. The metadata and both binaries are copied unchanged to
+`public/models/observable-universe-wedge/`. Metadata retains Planck18 radial
+ticks and generation seed/parameters. This replaces the nearby-boost variant;
+the current metadata does not declare the previous nearby display compensation.
+This is a synthetic density / biased luminous-tracer model, not an observed
+catalog; no generating script or license was supplied. A user-requested observer-side tracer display boost is applied as described below.
+No random resampling or new cosmology lookup is introduced.
+
+The metadata loader validates coordinate conventions, count/stride/field
+agreement, little-endian encoding, byte length and finite values. Coordinates
+and sizes remain in source Gpc buffers; the common group applies the centralized
+SI Gpc-to-scene conversion and right-handed basis (SIDE, UP, AXIS). Thus 14 Gpc
+maps to the unchanged adopted CMB radius 10; the metadata's 13.886 Gpc Planck18
+last-scattering tick is retained without rewriting the existing ruler convention.
+Point centers outside the spherical CMB radius are visually clipped. A double-sided dark midplane sits at local Y=0. A closed translucent sector
+restores the volume boundary. Both point layers, the sector and debug bounds
+share a local-Y display scale of 0.25: the source 0.196 Gpc thickness appears as
+0.049 Gpc. This is an explicitly labeled visualization compression, not a
+change to the source data. The central plane depth-occludes the far half on
+either side, providing the same contrast when viewed from above or below.
+
+Matter and tracers each use one Points draw and stable GPU buffers. Only screen
+size uniforms update per frame. Matter uses premultiplied normal alpha; tracers
+use additive blending and render afterward. Circular, edge-tapered Gaussians
+have CSS-pixel diameter clamps, not physical galaxy diameters. All exposure and
+size tuning is centralized in `wedgeRendering.ts → WEDGE_RENDER`; the midplane is a display aid.
+Use `thicknessScale` for all volume thickness, `matterOpacityScale`
+for matter strength, `tracerBrightnessScale` for galaxy strength, and
+`sectorOpacity` (0.105) for the translucent sector. Increasing these makes the
+respective representation thicker/brighter; sprite sizes have separate scales.
+Independent default-on checkboxes preserve the CMB mode. Async cached loading
+does not block scene readiness; errors log explicitly while the CMB continues.
+Reload to retry a failed asset. Development-only `?wedgeDebug&scene=observable-universe`
+shows both volume boundaries, observer cross and the source +Z radial extent.
+
+Wedge validation: all 160 tests in 29 files pass, along with formatting, lint,
+type checking and production build (existing large-chunk warning). Tests inspect
+all 62,000 records against the binaries and metadata geometry, reject truncation,
+nonfinite values and incompatible conventions, and check the right-handed SI
+transform. The central plane, closed sector, symmetric compressed bounds and sphere containment also have targeted coverage. Above/below Chrome previews confirm contrast on both sides. Source files match their copies byte-for-byte; hashes are recorded in
+the asset README. Chrome/SwiftShader previews cover separate layers, independent
+toggles with exactly three asset requests, camera rotation, both CMB modes,
+390 px reduced-motion layout and debug boundaries. Injected wedge HTTP 503
+logs the failure and leaves the temperature-enabled CMB usable. Software
+rendering does not establish real-device GPU performance.
+
+### Observer-side tracer gradient
+
+User-requested display emphasis now increases tracer size and brightness toward
+the observer (redshift z=0). Source XZ radial distance, independent of viewing
+camera, wedge angle and compressed thickness, supplies a smoothstep weight:
+`w = 1 - smoothstep(0, radius × tracerBoostRadiusFraction, hypot(x,z))`.
+Cartesian Z is not interpreted as redshift. The smooth comoving-distance ramp
+follows the near-to-far direction without introducing another cosmology table.
+
+`WEDGE_RENDER.tracerNearSizeBoost = 1.4` and
+`tracerNearBrightnessBoost = 1.5` are maximum multipliers at the observer.
+Both taper to 1 at `tracerBoostRadiusFraction = 0.6` of the metadata radius
+(8.4 Gpc for this asset). Set both boost multipliers to 1 to disable the effect.
+Weights are computed once into one GPU attribute; positions, source sizes,
+brightness, counts, matter and CMB remain unchanged.
+Size emphasis applies after the baseline pixel clamp so the user's existing
+large tracerSizeScale cannot erase the gradient: the current 3.5 CSS-pixel cap
+becomes at most 4.9 near the observer. Brightness emphasis multiplies additive RGB
+after the base alpha clamp, preserving the gradient even for bright source points.
+It is an explicitly disclosed visualization choice, not a physical flux law.
+
+### Radial annotations
+
+Each default radial label is anchored at its exact 3D ruler tick via Html,
+with a screen-space bent leader and a high-contrast dot at the actual tick.
+Label boxes alternate sides and have a dark opaque background and pale border;
+leader under-strokes remain visible across both dark structure and the CMB.
+Pixel offsets keep leaders readable during zoom and rotation. Mobile retains
+distance and redshift, omits only lookback time, and places the observer label
+above its anchor to avoid clipping at the canvas bottom. Pointer events pass
+through all annotation elements; ruler hover, orbit and hidden-bar behavior are
+preserved. Scientific tick distances are unchanged.
+
+The independent “Hide annotations” checkbox is initially off. It hides radial
+labels and leaders, the CMB description, the light-cone callout and the 3 Gpc
+bar's numeric label while retaining the physical ruler
+lines, ticks, observer and all scientific layers. It does not change CMB or
+matter/tracer toggles. The light-cone label has no leader. It uses a fixed scene-basis position
+(0.77 CMB radius along AXIS, -2.95 units SIDE, -0.55 units UP), near the
+previous default-view label location. Html transform + sprite billboards only
+its orientation toward the camera; no pixel offset moves its anchor as the
+view rotates. Perspective controls its apparent size. It remains omitted
+on mobile as before.
+
+Axis hover readouts remain available while fixed annotations are hidden.
+Hiding the scale bars still hides the axis and its hover interaction.
+
+On this workstation, the exhaustive CMB fixture test can exceed the default
+5-second timeout under concurrent browser load; rerunning that test with one
+worker and a 30-second timeout passes. Browser QA also verifies that hiding
+fixed annotations preserves axis hover updates, dismissal and re-entry.

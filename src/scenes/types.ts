@@ -47,6 +47,9 @@ export type SceneMetadata = {
 };
 
 export type ScaleSceneProps = {
+  observableAnnotationsHidden?: boolean;
+  wedgeMatter?: boolean;
+  wedgeGalaxies?: boolean;
   cmbDisplayMode?: CmbDisplayMode;
   baoLayerMode?: BaoLayerMode;
   baoReveal?: boolean;

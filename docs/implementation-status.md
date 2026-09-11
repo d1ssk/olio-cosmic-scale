@@ -232,3 +232,13 @@ return. Manual camera controls never trigger navigation. Local HTTP verification
 returned 206 Partial Content with exactly 393,216 and 3,145,728 bytes for the two
 LODs. Formatting, lint, type checking, all 132 tests in 24 files, and the
 production build pass; only the existing large-chunk warning remains.
+
+## Observable Universe matter / tracer wedge
+
+The supplied `tmp/observable_universe_wedge/` asset replaces the earlier
+nearby-boost variant. Rendering parameters are preserved.
+Metadata-driven loading retains raw source coordinates and radial ticks, with
+one common SI scale / CMB basis transform. Matter and galaxies use separate
+Gaussian GPU point layers and default-on bilingual toggles. A dark central plane and a translucent sector
+improve contrast from both sides; their shared display thickness is compressed to 25%; CMB geometry, mode controls, camera and navigation are unchanged.
+See the scene README for model provenance, display conventions and debug option.

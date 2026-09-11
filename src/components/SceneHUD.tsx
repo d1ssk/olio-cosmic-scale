@@ -34,6 +34,12 @@ import { HACHIKO_MODEL } from "../scenes/human/humanData";
 import { ScaleReadout } from "./ScaleReadout";
 
 type SceneHUDProps = {
+  observableAnnotationsHidden?: boolean;
+  onObservableAnnotationsHiddenChange?: (value: boolean) => void;
+  wedgeMatter?: boolean;
+  wedgeGalaxies?: boolean;
+  onWedgeMatterChange?: (value: boolean) => void;
+  onWedgeGalaxiesChange?: (value: boolean) => void;
   cmbDisplayMode?: CmbDisplayMode;
   onCmbDisplayModeChange?: (mode: CmbDisplayMode) => void;
   cosmicWebQuality?: CosmicWebQuality;
@@ -74,6 +80,12 @@ type SceneHUDProps = {
 };
 
 export function SceneHUD({
+  observableAnnotationsHidden = false,
+  onObservableAnnotationsHiddenChange,
+  wedgeMatter = true,
+  wedgeGalaxies = true,
+  onWedgeMatterChange,
+  onWedgeGalaxiesChange,
   cmbDisplayMode = "uniform",
   onCmbDisplayModeChange,
   cosmicWebQuality = DEFAULT_COSMIC_WEB_QUALITY,
@@ -152,6 +164,12 @@ export function SceneHUD({
             <p className="stellar-summary">{translate(locale, "observable.summary")}</p>
             <ObservableUniverseControls
               locale={locale}
+              annotationsHidden={observableAnnotationsHidden}
+              onAnnotationsHiddenChange={onObservableAnnotationsHiddenChange}
+              matter={wedgeMatter}
+              galaxies={wedgeGalaxies}
+              onMatterChange={onWedgeMatterChange}
+              onGalaxiesChange={onWedgeGalaxiesChange}
               mode={cmbDisplayMode}
               onModeChange={onCmbDisplayModeChange}
               disabled={transitioning}
