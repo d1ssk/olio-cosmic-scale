@@ -219,7 +219,7 @@ byte-for-byte and its recorded hash.
 ## Cosmic Web fixed slab
 
 The twelfth scene uses the supplied full-box AbacusSummit density field without
-mounting a full volume. Default High reads a 3 MiB central range from the 512³
+mounting a full volume. Default High reads a byte-identical 3 MiB pre-extracted central slab from the 512³
 source; lighter Standard reads a 384 KiB range from the 256³ source. Both produce the same
 46.875 Mpc/h centered physical thickness. The full box, fixed slab, and persistent
 500 Mpc/h BAO-cube outline derive their geometry and encoding from the runtime
@@ -228,9 +228,9 @@ manifest. Source hashes match that manifest.
 Ordinary BAO use requests no full-box data. Its explicit Next action mounts and
 waits for the standard slab, then runs a 1.6 s same-coordinate camera pullback and
 crossfade. Previous performs the inverse and releases the slab GPU texture after
-return. Manual camera controls never trigger navigation. Local HTTP verification
-returned 206 Partial Content with exactly 393,216 and 3,145,728 bytes for the two
-LODs. Formatting, lint, type checking, all 132 tests in 24 files, and the
+return. Manual camera controls never trigger navigation. Standard uses a 393,216-byte HTTP range; High now fetches the complete
+3,145,728-byte prepared asset, allowing ordinary GitHub/Pages distribution.
+The original 128 MiB source is preserved locally, outside deployment. Formatting, lint, type checking, all 132 tests in 24 files, and the
 production build pass; only the existing large-chunk warning remains.
 
 ## Observable Universe matter / tracer wedge

@@ -1,0 +1,26 @@
+{
+  "path": "matter/slab_512.u8",
+  "byte_size": 3145728,
+  "sha256": "39e350315b14f14fc5176672fb2ef679d2247fa7cdb8c3de810e41d287cf1839",
+  "dtype": "uint8",
+  "order": "C",
+  "shape": [
+    12,
+    512,
+    512
+  ],
+  "axis_order": [
+    "x",
+    "y",
+    "z"
+  ],
+  "source_key": "matter_full_512",
+  "source_path": "matter/full_512.u8",
+  "source_sha256": "e3b1874bc645ccda386d9b61c34fb97d8cf2ca3d32c13f805964267f72ab5f47",
+  "source_byte_size": 134217728,
+  "source_byte_start": 65536000,
+  "source_byte_end_exclusive": 68681728,
+  "first_layer": 250,
+  "layer_count": 12,
+  "thickness_mpc_h": 46.875
+}

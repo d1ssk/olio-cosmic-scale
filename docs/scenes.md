@@ -197,11 +197,12 @@ matter renderer.
 ## 12. Cosmic Web
 
 The scene reads only a fixed central slab from the manifest-declared full density
-field. High uses `full_512.u8` by default; Standard is a lighter `full_256.u8`
+field. High uses a byte-identical pre-extracted `slab_512.u8` from the 512³ source; Standard is a lighter `full_256.u8`
 option. Because C-order makes
 the first declared axis contiguous by planes, the slab normal follows that
-manifest axis. HTTP Range requests retain 256 × 256 × 6 bytes (384 KiB) or
-512 × 512 × 12 bytes (3 MiB), not a full-box volume. Both resolve to the same
+manifest axis. Standard requests 256 × 256 × 6 bytes (384 KiB) via HTTP Range;
+High fetches the complete extracted 512 × 512 × 12 slab (3 MiB). The original
+128 MiB volume is kept outside the repository and deployment. Both resolve to the same
 voxel-aligned 46.875 Mpc/h physical thickness near the adopted 50 Mpc/h target.
 
 The slab and preceding BAO cube share the manifest's center and Abacus Cartesian

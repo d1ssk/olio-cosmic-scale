@@ -35,7 +35,7 @@ export const en = {
     "Fixed central {axis}-normal slab · {thickness} Mpc/h thick · {resolution}³ source",
   "cosmicWeb.fixed": "The highlighted 500 Mpc/h cube is the preceding BAO region.",
   "cosmicWeb.details":
-    "This is a fixed central slab through the full matter-density box. It preserves the manifest's stored log₁₀(ρ/ρ̄) values in a small GPU 3D texture; color and opacity are display mappings for the overdensity network. The slab normal follows the slowest manifest storage axis so one contiguous byte range can be read. High uses the centered slab from the 512³ source by default; Standard is a lighter 256³ option. Neither mode retains a full volume.",
+    "This is a fixed central slab through the full matter-density box. It preserves the manifest's stored log₁₀(ρ/ρ̄) values in a small GPU 3D texture; color and opacity are display mappings for the overdensity network. The slab normal follows the slowest manifest storage axis so its data is contiguous. High loads a byte-identical pre-extracted central slab from the 512³ source; Standard reads a central byte range from the lighter 256³ source. Neither mode retains a full volume.",
   "cosmicWeb.caveats":
     "The full box and central BAO cube use the same Abacus-centered Cartesian realization. The slab's voxel-aligned physical thickness is derived near 50 Mpc/h and remains identical between both LODs. This is a periodic, single-time z = 0.2 real-space snapshot reconstructed from the recorded 3% particle subsample with TSC and no window deconvolution—not an observer-centered light cone or calibrated emission map.",
   "bao.layers": "Visible data",

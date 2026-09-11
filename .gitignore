@@ -226,3 +226,6 @@ __marimo__/
 
 # Temporary source model downloads; served assets live under public/models.
 /tmp/
+
+# Original 128 MiB source is local-only; deploy its byte-identical central slab.
+/public/data/bao/matter/full_512.u8

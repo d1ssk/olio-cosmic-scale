@@ -36,7 +36,7 @@ export const ja: Record<TranslationKey, string> = {
     "中央固定・{axis}軸に垂直なslab · 厚さ {thickness} Mpc/h · {resolution}³ source",
   "cosmicWeb.fixed": "強調した500 Mpc/h cubeが、直前に見ていたBAO領域です。",
   "cosmicWeb.details":
-    "full matter-density boxの中心を通る固定slabです。manifestに記録されたlog₁₀(ρ/ρ̄)を小さなGPU 3D textureへそのまま保持し、色と透明度でoverdensity networkを読みやすくしています。slabの法線はmanifest上で最も遅いstorage axisに合わせ、連続した一つのbyte rangeだけを読みます。defaultは512³ sourceの中央slabを使い、標準は軽量な256³ optionです。どちらもfull volumeは保持・描画しません。",
+    "full matter-density boxの中心を通る固定slabです。manifestに記録されたlog₁₀(ρ/ρ̄)を小さなGPU 3D textureへそのまま保持し、色と透明度でoverdensity networkを読みやすくしています。slabの法線はmanifest上で最も遅いstorage axisに合わせ、連続した領域を使います。defaultは512³ sourceから同じbyte列を事前抽出した中央slabを読み、標準は軽量な256³ sourceの中央byte rangeを読みます。どちらもfull volumeは保持・描画しません。",
   "cosmicWeb.caveats":
     "full boxと中央BAO cubeは同じAbacus中心Cartesian realizationです。voxel境界に揃えた約50 Mpc/hの物理厚は両LODで同一です。記録された3% particle subsampleからTSCで再構成しwindow deconvolutionをしていない、周期境界・単一時刻z = 0.2のreal-space snapshotです。観測者中心のlight coneでも、較正された放射mapでもありません。",
   "bao.layers": "表示データ",

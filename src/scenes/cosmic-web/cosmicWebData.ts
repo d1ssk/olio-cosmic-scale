@@ -1,3 +1,4 @@
+import preparedSlab from "../../../public/data/bao/cosmic-slab.json";
 import { loadBaoManifest, type BaoManifest } from "../bao/baoData";
 import type { CosmicWebQuality } from "../types";
 import { COSMIC_SLAB_TARGET_MPC_H } from "./cosmicWebModel";
@@ -15,6 +16,7 @@ export type CosmicSlabWindow = {
   path: string;
   sourceByteSize: number;
   thicknessMpcH: number;
+  preparedPath?: string;
 };
 
 export type CosmicSlabDataset = CosmicSlabWindow & {
@@ -83,9 +85,34 @@ export function centralSlabWindow(
   const bytesPerLayer = shape[1] * shape[2];
   const byteStart = firstLayer * bytesPerLayer;
   const byteEndExclusive = (firstLayer + layerCount) * bytesPerLayer;
+  let preparedPath: string | undefined;
+  if (lod === 512) {
+    // The original manifest remains provenance; only this exact extracted window is served.
+    if (
+      preparedSlab.source_key !== `matter_full_${lod}` ||
+      preparedSlab.source_path !== file.path ||
+      preparedSlab.source_sha256 !== file.sha256 ||
+      preparedSlab.source_byte_size !== file.byte_size ||
+      preparedSlab.source_byte_start !== byteStart ||
+      preparedSlab.source_byte_end_exclusive !== byteEndExclusive ||
+      preparedSlab.byte_size !== byteEndExclusive - byteStart ||
+      preparedSlab.first_layer !== firstLayer ||
+      preparedSlab.layer_count !== layerCount ||
+      preparedSlab.thickness_mpc_h !== layerCount * cellSizeMpcH ||
+      preparedSlab.dtype !== file.dtype ||
+      preparedSlab.order !== file.order ||
+      JSON.stringify(preparedSlab.shape) !== JSON.stringify([layerCount, shape[1], shape[2]]) ||
+      JSON.stringify(preparedSlab.axis_order) !== JSON.stringify(axes) ||
+      !/^[a-f0-9]{64}$/.test(preparedSlab.sha256)
+    ) {
+      throw new Error("Prepared cosmic-web slab does not match the manifest window");
+    }
+    preparedPath = preparedSlab.path;
+  }
   return {
     byteEndExclusive,
     byteStart,
+    preparedPath,
     dimensions: [shape[2], shape[1], layerCount],
     firstLayer,
     layerCount,
@@ -133,6 +160,17 @@ async function copyWindowFromFullResponse(
 }
 
 export async function fetchSlabBytes(window: CosmicSlabWindow): Promise<Uint8Array> {
+  if (window.preparedPath) {
+    const response = await fetch(assetUrl(window.preparedPath));
+    if (!response.ok)
+      throw new Error(`Cosmic-web data HTTP ${response.status}: ${window.preparedPath}`);
+    if (response.status !== 200) throw new Error("Expected complete prepared cosmic-web slab");
+    const bytes = new Uint8Array(await response.arrayBuffer());
+    if (bytes.byteLength !== window.byteEndExclusive - window.byteStart) {
+      throw new Error("Prepared cosmic-web slab byte length mismatch");
+    }
+    return bytes;
+  }
   const lastByte = window.byteEndExclusive - 1;
   const response = await fetch(assetUrl(window.path), {
     headers: { Range: `bytes=${window.byteStart}-${lastByte}` },
