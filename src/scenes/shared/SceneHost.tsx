@@ -226,7 +226,7 @@ function CameraController({
           !controls ||
           !(
             (isSolarWorld(metadata.id) && isSolarWorld(destination.id)) ||
-            (["milky-way", "local-group", "virgo"].includes(metadata.id) &&
+            (["milky-way", "local-group", "virgo", "bao"].includes(metadata.id) &&
               destination.id === metadata.id)
           ) ||
           animation.current

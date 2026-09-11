@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { mainNavigationMode, sceneFromSearch, urlWithState } from "../src/app/navigation";
+import {
+  hasDirectBarTransfer,
+  mainNavigationMode,
+  sceneFromSearch,
+  urlWithState,
+} from "../src/app/navigation";
 import {
   canonicalBridgeEndpoints,
   hierarchyPosition,
@@ -39,6 +44,11 @@ describe("deep links", () => {
 });
 
 describe("main navigation bridge bypass", () => {
+  it("uses the shared 16.5 Mpc carrier in both Virgo–BAO directions", () => {
+    expect(hasDirectBarTransfer("virgo", "bao")).toBe(true);
+    expect(hasDirectBarTransfer("bao", "virgo")).toBe(true);
+  });
+
   it.each([
     ["earth", "earth-moon"],
     ["earth-moon", "sun"],

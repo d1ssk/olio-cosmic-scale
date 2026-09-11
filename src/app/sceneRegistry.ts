@@ -4,6 +4,11 @@ import {
   VIRGO_UNIT_METERS,
 } from "../scenes/virgo/virgoData";
 import {
+  BAO_METERS_PER_SCENE_UNIT,
+  BAO_REFERENCE_METERS,
+  BAO_VIEW_METERS,
+} from "../scenes/bao/baoModel";
+import {
   LOCAL_GROUP_REFERENCE_METERS,
   LOCAL_GROUP_VIEW_METERS,
   LOCAL_GROUP_UNIT_METERS,
@@ -26,15 +31,11 @@ import { EARTH_MOON_DISTANCE_METERS } from "../scenes/earth-moon/earthMoonData";
 import { EARTH_DIAMETER_METERS } from "../scenes/earth/earthData";
 import { HUMAN_REFERENCE_METERS } from "../scenes/human/humanData";
 import { lazy } from "react";
-import {
-  AU_METERS,
-  GIGAPARSEC_METERS,
-  MEGAPARSEC_METERS,
-  PARSEC_METERS,
-} from "../physics/constants";
+import { AU_METERS, GIGAPARSEC_METERS, PARSEC_METERS } from "../physics/constants";
 import type { SceneDefinition, SceneId } from "../scenes/types";
 
 const VirgoScene = lazy(() => import("../scenes/virgo/VirgoScene"));
+const BaoScene = lazy(() => import("../scenes/bao/BaoScene"));
 
 const LocalGroupScene = lazy(() => import("../scenes/local-group/LocalGroupScene"));
 
@@ -319,13 +320,19 @@ export const sceneRegistry: Record<SceneId, SceneDefinition> = {
     kind: "scene",
     titleKey: "scene.bao.title",
     originDescriptionKey: "origin.bao",
-    referenceLengthMeters: 147 * MEGAPARSEC_METERS,
-    defaultViewportExtentMeters: 190 * MEGAPARSEC_METERS,
-    metersPerSceneUnit: 14.7 * MEGAPARSEC_METERS,
+    referenceLengthMeters: BAO_REFERENCE_METERS,
+    defaultViewportExtentMeters: BAO_VIEW_METERS,
+    metersPerSceneUnit: BAO_METERS_PER_SCENE_UNIT,
     preferredPrimaryUnit: "Mpc",
     secondaryUnits: ["Mly", "Gpc"],
-    camera: perspective,
-    component: PlaceholderScene,
+    camera: {
+      ...perspective,
+      position: [11, 8, 13],
+      fitToViewport: true,
+      minDistance: 7,
+      maxDistance: 45,
+    },
+    component: BaoScene,
     previous: "virgo",
     next: "observable-universe",
   },

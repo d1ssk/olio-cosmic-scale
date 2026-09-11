@@ -1238,11 +1238,131 @@ a {
   align-items: center;
 }
 
+.bao-controls {
+  display: grid;
+  gap: 0.65rem;
+}
+.bao-controls p,
+.bao-chart {
+  margin: 0;
+}
+.bao-controls fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.bao-controls legend {
+  margin-bottom: 0.35rem;
+}
+.bao-layer-switch {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2px;
+}
+.bao-layer-switch label {
+  min-width: 0;
+  padding: 0.48rem 0.3rem;
+  border: 1px solid var(--line);
+  background: #182537;
+  color: var(--muted);
+  text-align: center;
+  cursor: pointer;
+}
+.bao-layer-switch label:first-child {
+  border-radius: var(--radius) 0 0 var(--radius);
+}
+.bao-layer-switch label:last-child {
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.bao-layer-switch label.is-active {
+  border-color: #7394ba;
+  background: var(--paper);
+  color: var(--ink);
+}
+.bao-layer-switch input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.bao-layer-switch label:has(input:focus-visible) {
+  outline: 3px solid color-mix(in srgb, var(--focus) 38%, transparent);
+  outline-offset: 2px;
+}
+.bao-slice-control {
+  display: grid;
+  gap: 0.3rem;
+}
+.bao-slice-control input {
+  width: 100%;
+}
+.bao-reveal-button {
+  width: 100%;
+  min-height: 36px;
+  padding: 0.45rem 0.65rem;
+}
+.bao-reveal-button.is-active {
+  border-color: #d49c56;
+  background: #332718;
+}
+.bao-chart {
+  display: grid;
+  gap: 0.25rem;
+}
+.bao-chart figcaption {
+  color: var(--ink);
+}
+.bao-chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.bao-chart line {
+  stroke: rgb(180 204 236 / 35%);
+  stroke-width: 1;
+}
+.bao-chart path {
+  fill: none;
+  stroke: #7fcbd0;
+  stroke-width: 2;
+}
+.bao-chart .bao-peak-line {
+  stroke: #f2b866;
+  stroke-dasharray: 3 3;
+}
+.bao-chart circle {
+  fill: #ffd184;
+}
+.bao-chart text {
+  fill: var(--muted);
+  font-size: 9px;
+}
+.bao-guide-note {
+  color: #e8c98f;
+  line-height: 1.45;
+}
+
 @media (min-width: 721px) {
   .virgo-view .scene-hud {
     grid-template-rows: auto minmax(0, 1fr) auto;
   }
   .virgo-view .scene-status {
+    min-height: 0;
+    max-height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+}
+
+@media (min-width: 721px) {
+  .bao-view .scene-hud {
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+  .bao-view .scene-status {
     min-height: 0;
     max-height: 100%;
     overflow-y: auto;
@@ -1274,5 +1394,14 @@ a {
     justify-self: stretch;
     width: auto;
     max-width: none;
+  }
+  .bao-view .scene-status {
+    display: grid;
+    grid-row: 3;
+    align-self: end;
+    max-width: min(24rem, calc(100vw - 1.6rem));
+    max-height: min(43vh, 22rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 }

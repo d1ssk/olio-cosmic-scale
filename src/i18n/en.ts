@@ -1,4 +1,23 @@
 export const en = {
+  "bao.layers": "Visible data",
+  "bao.halos": "Halos",
+  "bao.matter": "Matter",
+  "bao.both": "Both",
+  "bao.loading": "Loading the BAO dataset…",
+  "bao.summary":
+    "{count} dark-matter halo tracers in a {size} Mpc/h cube · movable one-cell matter slab",
+  "bao.slice": "Matter slab z: {coordinate} Mpc/h · slice {index}/{total}",
+  "bao.showReveal": "Reveal the statistical BAO scale",
+  "bao.hideReveal": "Hide the BAO scale guide",
+  "bao.chartTitle": "Two-point correlation · r²ξ(r)",
+  "bao.chartAlt":
+    "The halo two-point correlation weighted by separation squared, with a BAO-scale bump near 100 megaparsecs per h.",
+  "bao.guide":
+    "The {scale} Mpc/h sphere and radius are a separation ruler tied to the correlation bump—not a visible matter shell around an object.",
+  "bao.details":
+    "The ordinary view shows the supplied halo and matter distributions unchanged in the same Abacus-centered Cartesian coordinates. Halos are CompaSO dark-matter halos, not galaxies; marker footprints encode a compressed N mass proxy and are not halo sizes. Matter is a one-voxel (3.90625 Mpc/h) z slab from the 128³ TSC density field. Its color and opacity are display mappings of the manifest-decoded ρ/ρ̄. The 147 Mpc hierarchy reference is mapped to the approximately 100 Mpc/h statistical feature; it is not an object diameter.",
+  "bao.caveats":
+    "AbacusSummit_base_c000_ph000 at z=0.2: a real-space periodic snapshot, not an observational light cone. Matter is reconstructed from the random 3% particle subsample; halo internal structure is unresolved, the TSC window is not deconvolved, and no HOD, galaxy-bias model, or redshift-space distortion is applied. The FFT correlation is educational, not precision cosmology.",
   "virgo.depthCollapsed":
     "Representative depths: unmeasured Virgo members sit at 16.5 Mpc; others use their adopted group distance (16.5 Mpc for EVCC-only candidates). Measured distances stay fixed.",
   "virgo.depthStatistical":
@@ -203,6 +222,6 @@ export const en = {
   "origin.solarNeighborhood": "Heliocentric stellar frame",
   "origin.galacticCenterNeighborhood": "Stellar density model, 1 kpc from the Galactic center",
   "origin.milkyWay": "Galactocentric reference frame",
-  "origin.bao": "Comoving coordinates (convention pending)",
+  "origin.bao": "Abacus-centered Cartesian comoving coordinates · Mpc/h · z = 0.2",
   "origin.observableUniverse": "Observer-centered comoving coordinates (convention pending)",
 } as const;

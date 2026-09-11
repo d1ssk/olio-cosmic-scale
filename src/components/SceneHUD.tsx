@@ -13,16 +13,23 @@ import {
 import { lazy, Suspense } from "react";
 import { SUN_TEXTURE } from "../scenes/sun/sunData";
 const VirgoControls = lazy(() => import("../scenes/virgo/VirgoControls"));
+const BaoControls = lazy(() => import("../scenes/bao/BaoControls"));
 const EphemerisControls = lazy(() => import("../scenes/earth-sun/EphemerisControls"));
 import { EARTH_MOON_SOURCES } from "../scenes/earth-moon/earthMoonData";
 import { hierarchyPosition, MAIN_SCENE_ORDER } from "../app/sceneRegistry";
 import { translate, type Locale } from "../i18n";
-import type { SceneDefinition } from "../scenes/types";
+import type { BaoLayerMode, SceneDefinition } from "../scenes/types";
 import { EARTH_TEXTURE } from "../scenes/earth/earthData";
 import { HACHIKO_MODEL } from "../scenes/human/humanData";
 import { ScaleReadout } from "./ScaleReadout";
 
 type SceneHUDProps = {
+  baoLayerMode?: BaoLayerMode;
+  onBaoLayerModeChange?: (mode: BaoLayerMode) => void;
+  baoReveal?: boolean;
+  onBaoRevealChange?: (value: boolean) => void;
+  baoSliceFraction?: number;
+  onBaoSliceFractionChange?: (value: number) => void;
   representativeDepths?: boolean;
   onRepresentativeDepthsChange?: (value: boolean) => void;
   colorByCatalog?: boolean;
@@ -53,6 +60,12 @@ type SceneHUDProps = {
 };
 
 export function SceneHUD({
+  baoLayerMode = "both",
+  onBaoLayerModeChange,
+  baoReveal = false,
+  onBaoRevealChange,
+  baoSliceFraction = 0.5,
+  onBaoSliceFractionChange,
   representativeDepths,
   onRepresentativeDepthsChange,
   colorByCatalog,
@@ -114,8 +127,22 @@ export function SceneHUD({
       />
 
       <div
-        className={`scene-status ${["human", "earth", "earth-moon", "sun", "earth-sun", "solar-system", "solar-neighborhood", "galactic-center-neighborhood", "milky-way", "local-group", "virgo"].includes(scene.id) ? "human-status" : ""}`}
+        className={`scene-status ${["human", "earth", "earth-moon", "sun", "earth-sun", "solar-system", "solar-neighborhood", "galactic-center-neighborhood", "milky-way", "local-group", "virgo", "bao"].includes(scene.id) ? "human-status" : ""}`}
       >
+        {scene.id === "bao" && (
+          <Suspense fallback={null}>
+            <BaoControls
+              locale={locale}
+              layerMode={baoLayerMode}
+              onLayerModeChange={onBaoLayerModeChange}
+              reveal={baoReveal}
+              onRevealChange={onBaoRevealChange}
+              sliceFraction={baoSliceFraction}
+              onSliceFractionChange={onBaoSliceFractionChange}
+              disabled={transitioning}
+            />
+          </Suspense>
+        )}
         {(scene.id === "earth-sun" || scene.id === "solar-system") && (
           <Suspense fallback={null}>
             <EphemerisControls
@@ -332,6 +359,28 @@ export function SceneHUD({
                     </a>
                   </span>
                 )}
+              </>
+            ) : scene.id === "bao" ? (
+              <>
+                <span>{translate(locale, "bao.details")}</span>
+                <span>{translate(locale, "bao.caveats")}</span>
+                <span>
+                  <a
+                    href={`${import.meta.env.BASE_URL}data/bao/manifest.json`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    manifest.json
+                  </a>
+                  {" · "}
+                  <a
+                    href={`${import.meta.env.BASE_URL}data/bao/provenance.json`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    provenance.json
+                  </a>
+                </span>
               </>
             ) : scene.id === "virgo" ? (
               <>

@@ -3,5 +3,8 @@ coverage
 node_modules
 docs/archive/initial-project-spec.md
 
+# Preserve supplied BAO export JSON byte-for-byte with its provenance.
+public/data/bao/
+
 # User-supplied source models; preserve original files.
 tmp/

@@ -163,12 +163,36 @@ survey selection; they are not measured positions or a recovered intrinsic shape
 The reference remains 16.5 Mpc with a separate 44 Mpc initial view. J2000 directions
 stay fixed through both depth modes. Point shape distinguishes distance basis;
 source coloring is a separate checkbox. M31, Milky Way, M87 and M49 are annotated.
-Local Group ↔ Virgo transfers the exact 3 Mpc bar in both directions. BAO remains
-unimplemented.
+Local Group ↔ Virgo transfers the exact 3 Mpc bar in both directions. Navigation
+to the implemented BAO scene remains an explicit independent-world change.
 
 ## 11. BAO scale
 
-Teach a roughly 147 Mpc-class statistical clustering scale, not an object size. A 3D density sample or carefully labeled schematic may show a reference point and BAO-radius sphere, while explaining the two-point-correlation/pair-separation meaning. Never render literal visible shells around every galaxy.
+Implemented from the supplied AbacusSummit export. The ordinary view overlays all
+500,000 selected CompaSO dark-matter halo tracers and a movable one-cell z slab of
+the 128³ TSC matter-density field in the same Abacus-centered Cartesian axes. The
+sample is a 500 Mpc/h cube from the z=0.2 real-space periodic snapshot. Halo point
+footprints and the density color/opacity transfer are display encodings, not
+physical halo sizes or calibrated emission. The matter reconstruction uses the
+random 3% particle subsample, does not resolve halo interiors, and does not
+deconvolve the TSC window. It is not an observational light cone; no HOD,
+galaxy-bias model, redshift-space distortion, or claim that halos are galaxies is
+added. Runtime decoding, coordinates, shape, paths and physical metadata use the
+supplied manifest as their source of truth; see the scene README and preserved
+provenance.
+
+The hierarchy retains the adopted 147 Mpc reference and maps it to the
+approximately 100 Mpc/h statistical feature without adopting a separate numerical
+value of h. The 147 Mpc and preceding 16.5 Mpc rulers are vertically centered and
+parallel beside the default view's screen-right far vertical cube edge. The 16.5
+Mpc ruler transfers directly to/from Virgo; departure recovers default framing
+only when the explored view does not fully contain it. Reveal plots the supplied
+r²ξ(r), identifies its BAO-scale local bump,
+and temporarily adds one very faint origin-centered sphere plus a radius ruler at
+that separation. UI copy explicitly identifies this as a statistical separation
+guide, never a visible matter shell around an object. The guide is an independent
+layer so future N-center stacking can be added without coupling it to the halo or
+matter renderer.
 
 ## 12. Observable Universe
 

@@ -7,6 +7,21 @@ export type SceneMode = { kind: "scene"; sceneId: SceneId };
 export type BridgeMode = { kind: "bridge"; originSceneId: SceneId; targetSceneId: SceneId };
 export type AppMode = SceneMode | BridgeMode;
 
+const DIRECT_BAR_TRANSFER_EDGES = [
+  ["virgo", "bao"],
+  ["local-group", "virgo"],
+  ["milky-way", "local-group"],
+  ["earth", "earth-moon"],
+  ["earth-moon", "sun"],
+  ["sun", "earth-sun"],
+] as const satisfies readonly (readonly [SceneId, SceneId])[];
+
+export function hasDirectBarTransfer(first: SceneId, second: SceneId | undefined): boolean {
+  return DIRECT_BAR_TRANSFER_EDGES.some(
+    ([a, b]) => (first === a && second === b) || (first === b && second === a),
+  );
+}
+
 export function sceneFromSearch(search: string): SceneId {
   const candidate = new URLSearchParams(search).get("scene");
   return isSceneId(candidate) ? candidate : "human";

@@ -20,7 +20,9 @@ These centralized defaults scaffold the ladder; several are adopted conventions 
 | `bao`                          |            147 Mpc class | Mpc       | convention to document                       |
 | `observable-universe`          |  28.5 Gpc class diameter | Gpc       | distance convention to document              |
 
-Solar-neighborhood span, Milky Way boundary, Local Group extent, Virgo reference, BAO convention, and observable-universe convention require an explicit source/definition pass with the relevant scene.
+Solar-neighborhood span, Milky Way boundary, Local Group extent, Virgo reference,
+and the BAO convention are documented with their implemented scenes. The
+observable-universe convention still requires an explicit source/definition pass.
 
 ## Canonical lengths and formatting
 
@@ -77,7 +79,8 @@ Cover modest and large ratios, responsive widths, manual milestones, and exact f
 - Solar System → Solar neighborhood uses one standalone 100 AU → 20,000 AU comparison; the final ~1:82.5 comparison is in the scene, with an exact world-fixed small ruler and reversible transfer.
 - Solar neighborhood → Milky Way uses equal-ratio automatic comparisons.
 - Local Group → Virgo needs no artificial decade.
-- Virgo → BAO is moderate.
+- Virgo → BAO transfers the exact 16.5 Mpc Virgo reference into the BAO comparison
+  ruler directly; the ratio to 147 Mpc is moderate.
 - BAO → Observable Universe switches directly because its ratio is below 200.
 
 Do not freeze exact frame counts without testing the responsive rendering.
@@ -96,4 +99,9 @@ inside the view volume and at least 0.5 px long. Only clipped/edge-on bars recov
 default framing before capture; hidden-bar departures restore only the connecting
 physical bar. A transition without a connecting bar needs no recovery. The world remains independent.
 
-Virgo uses a 16.5 Mpc reference and a separate 44 Mpc initial viewport. Local Group ↔ Virgo transfers the exact 3 Mpc bar directly (ratio 5.5). The worlds remain independent. The 50MGC spatial selection and SBF background retention are documented in `src/scenes/virgo/README.md`; 16.5 Mpc is not a cluster diameter or selection cutoff.
+Virgo uses a 16.5 Mpc reference and a separate 44 Mpc initial viewport. Local
+Group ↔ Virgo transfers the exact 3 Mpc bar directly (ratio 5.5). Virgo ↔ BAO
+transfers that same exact 16.5 Mpc reference into the BAO comparison ruler. Both
+edges remain independent-world changes. The 50MGC spatial selection and SBF
+background retention are documented in `src/scenes/virgo/README.md`; 16.5 Mpc is
+not a cluster diameter or selection cutoff.

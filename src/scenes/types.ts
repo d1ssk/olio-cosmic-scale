@@ -46,6 +46,9 @@ export type SceneMetadata = {
 };
 
 export type ScaleSceneProps = {
+  baoLayerMode?: BaoLayerMode;
+  baoReveal?: boolean;
+  baoSliceFraction?: number;
   colorByCatalog?: boolean;
   representativeDepths?: boolean;
   previewStarId?: number | null;
@@ -64,6 +67,8 @@ export type ScaleSceneProps = {
   referenceBarVisible?: boolean;
   entryBarKind?: "reference" | "comparison";
 };
+
+export type BaoLayerMode = "halos" | "matter" | "both";
 
 export type SceneDefinition = SceneMetadata & {
   kind: "scene";

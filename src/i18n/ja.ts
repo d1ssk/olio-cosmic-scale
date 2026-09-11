@@ -1,6 +1,25 @@
 import type { TranslationKey } from "./index";
 
 export const ja: Record<TranslationKey, string> = {
+  "bao.layers": "表示データ",
+  "bao.halos": "Halos",
+  "bao.matter": "Matter",
+  "bao.both": "Both",
+  "bao.loading": "BAOデータを読み込んでいます…",
+  "bao.summary":
+    "一辺{size} Mpc/hの立方体内に暗黒物質halo tracer {count}点 · 1 cell厚のmatter slabを移動可能",
+  "bao.slice": "Matter slab z：{coordinate} Mpc/h · slice {index}/{total}",
+  "bao.showReveal": "統計的なBAOスケールを表示",
+  "bao.hideReveal": "BAOスケールのguideを非表示",
+  "bao.chartTitle": "二点相関関数 · r²ξ(r)",
+  "bao.chartAlt":
+    "距離の二乗で重み付けしたhaloの二点相関関数。約100メガパーセク毎h付近にBAOスケールの盛り上がりがあります。",
+  "bao.guide":
+    "半径{scale} Mpc/hの球と線は相関関数の盛り上がりに対応する距離定規です。ある天体の周囲に見える物質殻ではありません。",
+  "bao.details":
+    "通常表示では、提供されたhaloとmatterの分布を同じAbacus中心Cartesian座標でそのまま重ねます。haloは銀河ではなくCompaSO暗黒物質haloです。点の画面上の大きさはNによる質量proxyを圧縮した表示で、haloの実寸ではありません。Matterは128³ TSC密度場のz方向1 voxel（3.90625 Mpc/h）厚slabで、色と透明度はmanifestに従ってdecodeしたρ/ρ̄の表示mappingです。階層上の147 Mpc基準長を約100 Mpc/hの統計的特徴に対応づけていますが、天体の直径ではありません。",
+  "bao.caveats":
+    "AbacusSummit_base_c000_ph000、z=0.2の実空間periodic snapshotで、観測light coneではありません。Matterは無作為3% particle subsampleから再構成。halo内部構造は未解像、TSC windowはdeconvolutionせず、HOD・galaxy bias model・赤方偏移空間歪みも加えていません。FFT相関は教育用で、精密宇宙論向けではありません。",
   "virgo.depthCollapsed":
     "代表距離：未測定のVirgo所属銀河は16.5 Mpc、それ以外は採用した銀河群距離（EVCCのみの所属候補は16.5 Mpc）に揃えます。実測距離は変えません。",
   "virgo.depthStatistical":
@@ -202,6 +221,6 @@ export const ja: Record<TranslationKey, string> = {
   "origin.solarNeighborhood": "太陽中心の恒星座標系",
   "origin.galacticCenterNeighborhood": "銀河中心から1 kpc離れた場所の恒星密度モデル",
   "origin.milkyWay": "銀河中心基準系",
-  "origin.bao": "共動座標（規約は要確定）",
+  "origin.bao": "Abacus中心Cartesian共動座標 · Mpc/h · z = 0.2",
   "origin.observableUniverse": "観測者中心の共動座標（規約は要確定）",
 };

@@ -6,7 +6,7 @@ import { STELLAR_COMPARISON_METERS } from "../scenes/stellar-neighborhood/stella
 import { isSolarWorld, isContinuousSolarEdge } from "../scenes/solar-system/solarScale";
 import { cameraStateStore, cameraStateKey } from "./cameraState";
 import type { SceneHostControls } from "../scenes/shared/SceneHost";
-import { mainNavigationMode } from "./navigation";
+import { hasDirectBarTransfer, mainNavigationMode } from "./navigation";
 import { BarVisibilityContext, type BarKind } from "../scenes/shared/barVisibility";
 import { BAR_TIMING, transitionDelay } from "../bridges/transitionTiming";
 import {
@@ -25,7 +25,7 @@ import { LanguageSwitch } from "../components/LanguageSwitch";
 import { NavigationControls } from "../components/NavigationControls";
 import { ScaleAxis } from "../components/ScaleAxis";
 import { captureBridgeBar, captureReferenceBar, type BarSnapshot } from "../bridges/barTransition";
-import type { SceneId } from "../scenes/types";
+import type { BaoLayerMode, SceneId } from "../scenes/types";
 import { ReferenceBarOverlay } from "../components/ReferenceBarOverlay";
 import { SceneHUD } from "../components/SceneHUD";
 import { translate } from "../i18n";
@@ -110,17 +110,7 @@ export function App(): React.JSX.Element {
       const outerDeparture = exit === "outer-exit" || exit === "outer-direct";
       if (outerDeparture) from = "solar-system";
       const target = sceneRegistry[from][direction];
-      const connected =
-        (from === "local-group" && target === "virgo") ||
-        (from === "virgo" && target === "local-group") ||
-        (from === "milky-way" && target === "local-group") ||
-        (from === "local-group" && target === "milky-way") ||
-        (from === "earth" && target === "earth-moon") ||
-        (from === "earth-moon" && target === "earth") ||
-        (from === "earth-moon" && target === "sun") ||
-        (from === "sun" && target === "earth-moon") ||
-        (from === "sun" && target === "earth-sun") ||
-        (from === "earth-sun" && target === "sun");
+      const connected = hasDirectBarTransfer(from, target);
       if (!target) return;
       navigationLock.current = true;
       setBusy(true);
@@ -178,6 +168,7 @@ export function App(): React.JSX.Element {
               "milky-way",
               "local-group",
               "virgo",
+              "bao",
             ].includes(from) &&
               direction === "previous")
           ? "comparison"
@@ -331,6 +322,9 @@ function SceneView({
   const [showAllGalaxyLabels, setShowAllGalaxyLabels] = useState(false);
   const [previewStarId, setPreviewStarId] = useState<number | null>(null);
   const [selectedStarId, setSelectedStarId] = useState<number | null>(null);
+  const [baoLayerMode, setBaoLayerMode] = useState<BaoLayerMode>("both");
+  const [baoReveal, setBaoReveal] = useState(false);
+  const [baoSliceFraction, setBaoSliceFraction] = useState(0.5);
   const [barsHidden, setBarsHidden] = useState(false);
   const [onlyBar, setOnlyBar] = useState<BarKind | "none" | null>(null);
   const [departing, setDeparting] = useState(false);
@@ -363,7 +357,7 @@ function SceneView({
         // Preserve the explored view when the connecting segment is wholly in frame.
         // Hidden bars still have physical endpoints and are restored below.
         if (
-          (sceneId === "milky-way" || sceneId === "local-group" || sceneId === "virgo") &&
+          ["milky-way", "local-group", "virgo", "bao"].includes(sceneId) &&
           kind !== "none" &&
           !hostRef.current?.isBarFullyInView(kind)
         ) {
@@ -410,6 +404,9 @@ function SceneView({
             value={{ hidden: barsHidden || Boolean(entryBar && !arrived), only: onlyBar }}
           >
             <Scene
+              baoLayerMode={baoLayerMode}
+              baoReveal={baoReveal}
+              baoSliceFraction={baoSliceFraction}
               representativeDepths={representativeDepths}
               colorByCatalog={colorByCatalog}
               selectedGalaxyId={selectedGalaxyId}
@@ -443,6 +440,7 @@ function SceneView({
         "milky-way",
         "local-group",
         "virgo",
+        "bao",
       ].includes(scene.id) && (
         <ReferenceBarOverlay
           kind={entryKind ?? (scene.id === "human" ? "reference" : "comparison")}
@@ -455,6 +453,12 @@ function SceneView({
       )}
       {!ready && <div className="loading-state">{translate(state.locale, "loading.scene")}</div>}
       <SceneHUD
+        baoLayerMode={baoLayerMode}
+        onBaoLayerModeChange={setBaoLayerMode}
+        baoReveal={baoReveal}
+        onBaoRevealChange={setBaoReveal}
+        baoSliceFraction={baoSliceFraction}
+        onBaoSliceFractionChange={setBaoSliceFraction}
         representativeDepths={representativeDepths}
         onRepresentativeDepthsChange={setRepresentativeDepths}
         colorByCatalog={colorByCatalog}

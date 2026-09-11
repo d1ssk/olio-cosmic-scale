@@ -1,6 +1,10 @@
 # Implementation status and continuation
 
-This is the handoff after completing the common framework and the first ten hierarchy levels (Virgo uses a partial catalog) and the Galactic bulge sibling (with a shared continuous Solar System world). The focused design documents describe the current decisions; `archive/initial-project-spec.md` is historical and must not override them.
+This is the handoff after completing the common framework and the first eleven
+hierarchy levels (Virgo uses a partial catalog) and the Galactic bulge sibling
+(with a shared continuous Solar System world). The focused design documents
+describe the current decisions; `archive/initial-project-spec.md` is historical
+and must not override them.
 
 ## Implemented and next
 
@@ -17,9 +21,14 @@ This is the handoff after completing the common framework and the first ten hier
 | `milky-way`                              | Sourced representative disk and Sun distance; deterministic schematic arms and bulge/bar; oblique camera                        | 30 kpc and ~490 pc horizontal bars in the foreground disk plane; one standalone bridge from the neighborhoods |
 | `local-group`                            | 75 catalog entries/candidates (McConnachie 2012), 72 sourced-size model envelopes; selection, close view and per-object caveats | 3 Mpc comparison and 30 kpc direct transfer to/from Milky Way                                                 |
 | `virgo`                                  | 5,647 catalog galaxies; all 278 SBF targets and 1,589 EVCC rows; measured and optional statistical depths                       | 16.5 Mpc reference and exact 3 Mpc direct transfer to/from Local Group                                        |
-| Larger scales                            | Registry, metadata, navigation and shared HUD exist; scientific rendering is still `PlaceholderScene`                           | Direct physical transfers are not automatically implemented by the registry                                   |
+| `bao`                                    | 500k AbacusSummit halos, movable 128³ matter slab, r²ξ(r) reveal and statistical separation guide                               | Vertical 147 Mpc and 16.5 Mpc rulers; direct 16.5 Mpc transfer to/from Virgo                                  |
+| `observable-universe`                    | Registry, metadata, navigation and shared HUD exist; scientific rendering is still `PlaceholderScene`                           | Physical transfers are not automatically implemented by the registry                                          |
 
-The next scene to implement is **BAO**. Its predecessor is `virgo`. Virgo now uses the user-supplied EVCC catalog instead of the NGVS II excerpt. The main hierarchy contains **12** levels; the Galactic-center neighborhood remains the same-scale sibling of level **7 / 12**. Keep the stable ID `earth-moon` despite the display-name change.
+The BAO scene is implemented from the supplied AbacusSummit export. The next
+unimplemented scene is **Observable Universe**. Virgo uses the user-supplied EVCC
+catalog instead of the NGVS II excerpt. The main hierarchy contains **12** levels;
+the Galactic-center neighborhood remains the same-scale sibling of level **7 / 12**.
+Keep the stable ID `earth-moon` despite the display-name change.
 
 ## Decisions to preserve
 
@@ -193,8 +202,8 @@ Group entries survive independently.
 
 The source-color checkbox and M31 annotation remain. Missing photometry uses
 1.5 px, the observer origin 7 px. The exact 3 Mpc Local Group bridge is unchanged,
-as are the 16.5 Mpc reference and 44 Mpc initial viewport. BAO is unimplemented.
-Data loads lazily; no runtime API or new application dependency.
+as are the 16.5 Mpc reference and 44 Mpc initial viewport. Data loads lazily; no
+runtime API or new application dependency.
 
 Validation: 121 unit tests, formatting/lint/typecheck and production build pass.
 Browser QA verifies 5,647 GPU points, exactly 1,494 radial changes, fixed positions

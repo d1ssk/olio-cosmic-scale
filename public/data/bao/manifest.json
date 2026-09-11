@@ -1,0 +1,275 @@
+{
+  "bao_region": {
+    "bounds_mpc_h": [
+      -250.0,
+      250.0
+    ],
+    "master_grid_slice": [
+      192,
+      320
+    ],
+    "matter_ngrid": 128,
+    "size_mpc_h": 500.0
+  },
+  "bao_statistic": {
+    "N_cut": 486,
+    "full_box_halo_count": 32069674,
+    "path": "stats/bao_xi.json"
+  },
+  "box": {
+    "bounds_mpc_h": [
+      -1000.0,
+      1000.0
+    ],
+    "coordinate_system": "Abacus-centered Cartesian",
+    "size_mpc_h": 2000.0
+  },
+  "files": {
+    "bao_halos_midplane": {
+      "byte_size": 495605,
+      "dtype": "PNG",
+      "path": "preview/bao_halos_midplane.png",
+      "sha256": "aa75d16db01e5d463b80983500b236c3fbde445f94c9c0a02724c6b917733389",
+      "shape": null
+    },
+    "bao_xi": {
+      "byte_size": 72050,
+      "dtype": "PNG",
+      "path": "preview/bao_xi.png",
+      "sha256": "0086317f1dc3f08aaf1d5286752b41ede07d78e9070b81d528f1b5ffb963bcf7",
+      "shape": null
+    },
+    "halos_bao": {
+      "byte_size": 4000000,
+      "dtype": "little-endian uint16",
+      "order": "C",
+      "path": "tracers/halos_bao.bin",
+      "sha256": "cf7bd4a4f36651994440ae41f3fe0b6426c8502687f838bd1377f77bb17ec8f0",
+      "shape": [
+        500000,
+        4
+      ]
+    },
+    "matter_bao_128": {
+      "byte_size": 2097152,
+      "dtype": "uint8",
+      "lower_clipping_fraction": 0.0,
+      "order": "C",
+      "path": "matter/bao_128.u8",
+      "sha256": "79e8f55245ac5ecfde2ab7eca18fa4762e8f53b2c8e512489be510220e596929",
+      "shape": [
+        128,
+        128,
+        128
+      ],
+      "upper_clipping_fraction": 0.0
+    },
+    "matter_bao_midplane": {
+      "byte_size": 92826,
+      "dtype": "PNG",
+      "path": "preview/matter_bao_midplane.png",
+      "sha256": "ab3b2d6caf62a9d61304ce054b0eb45c0775d9146352836549fa3b92e30d5dde",
+      "shape": null
+    },
+    "matter_full_128": {
+      "byte_size": 2097152,
+      "dtype": "uint8",
+      "lower_clipping_fraction": 0.0,
+      "order": "C",
+      "path": "matter/full_128.u8",
+      "sha256": "d8283864d87381bec0e395a651aeb1305729015c410225205584c02ef408add4",
+      "shape": [
+        128,
+        128,
+        128
+      ],
+      "upper_clipping_fraction": 0.0
+    },
+    "matter_full_256": {
+      "byte_size": 16777216,
+      "dtype": "uint8",
+      "lower_clipping_fraction": 0.0,
+      "order": "C",
+      "path": "matter/full_256.u8",
+      "sha256": "b3ffd3b67cd7017fd57c3bb86530fc196d95d7ce2b767f19f9839c1336959b09",
+      "shape": [
+        256,
+        256,
+        256
+      ],
+      "upper_clipping_fraction": 0.0
+    },
+    "matter_full_512": {
+      "byte_size": 134217728,
+      "dtype": "uint8",
+      "lower_clipping_fraction": 0.0,
+      "order": "C",
+      "path": "matter/full_512.u8",
+      "sha256": "e3b1874bc645ccda386d9b61c34fb97d8cf2ca3d32c13f805964267f72ab5f47",
+      "shape": [
+        512,
+        512,
+        512
+      ],
+      "upper_clipping_fraction": 0.0
+    },
+    "matter_full_midplane": {
+      "byte_size": 610823,
+      "dtype": "PNG",
+      "path": "preview/matter_full_midplane.png",
+      "sha256": "63fd218fdc0666e158c53b29f38a90d94fb05ba12c7963029636bf82bc78f3e3",
+      "shape": null
+    },
+    "matter_logrho_histogram": {
+      "byte_size": 52284,
+      "dtype": "PNG",
+      "path": "preview/matter_logrho_histogram.png",
+      "sha256": "5ea725d7fe1ca0af175025721d4866f588061c0b7840bb48c84b1d0f0db6936c",
+      "shape": null
+    },
+    "provenance": {
+      "byte_size": 20021,
+      "dtype": "JSON",
+      "path": "provenance.json",
+      "sha256": "b7f1595324a58b5026f1b683e8f2267f12ffd0fb99ca4b3ec1578d0e223de8cc",
+      "shape": null
+    }
+  },
+  "matter": {
+    "assignment": "TSC",
+    "axis_order": [
+      "x",
+      "y",
+      "z"
+    ],
+    "cell_size_mpc_h": 3.90625,
+    "clip_max": 2.5,
+    "clip_min": -2.0,
+    "decode": "s = clip_min + q/255*(clip_max-clip_min); rho_rel = 10**s",
+    "dtype": "uint8",
+    "grid_index_coordinate": "x_i = -L/2 + (i+1/2)*cell_size",
+    "lod_statistics_linear_rho_rel": {
+      "bao_128": {
+        "max": 162.26133728027344,
+        "mean": 0.9992732385859053,
+        "min": 0.031502336263656616,
+        "percentiles": {
+          "0.1": 0.09047637347131968,
+          "1": 0.13240284964442253,
+          "5": 0.19397568926215172,
+          "50": 0.6105403006076813,
+          "95": 2.9800170660018916,
+          "99": 6.496645112037657,
+          "99.9": 16.110667425155746
+        },
+        "shape": [
+          128,
+          128,
+          128
+        ]
+      },
+      "full_128": {
+        "max": 17.014680862426758,
+        "mean": 0.999999970763735,
+        "min": 0.11107699573040009,
+        "percentiles": {
+          "0.1": 0.1998081302344799,
+          "1": 0.27182515531778334,
+          "5": 0.3657024309039116,
+          "50": 0.8349806368350983,
+          "95": 2.1877911806106565,
+          "99": 3.3284264159202577,
+          "99.9": 5.316696124076966
+        },
+        "shape": [
+          128,
+          128,
+          128
+        ]
+      },
+      "full_256": {
+        "max": 67.10819244384766,
+        "mean": 0.999999970786176,
+        "min": 0.048835158348083496,
+        "percentiles": {
+          "0.1": 0.12446601171046495,
+          "1": 0.17644521743059158,
+          "5": 0.25040190666913986,
+          "50": 0.7041418254375458,
+          "95": 2.699992060661316,
+          "99": 5.0800771713256765,
+          "99.9": 10.420804557800707
+        },
+        "shape": [
+          256,
+          256,
+          256
+        ]
+      },
+      "full_512": {
+        "max": 208.57684326171875,
+        "mean": 0.9999999707709547,
+        "min": 0.02501809597015381,
+        "percentiles": {
+          "0.1": 0.0897720395103097,
+          "1": 0.13246359333395957,
+          "5": 0.194252148270607,
+          "50": 0.6124229431152344,
+          "95": 2.97805515527725,
+          "99": 6.485882372856146,
+          "99.9": 15.996553429604106
+        },
+        "shape": [
+          512,
+          512,
+          512
+        ]
+      }
+    },
+    "master_ngrid": 512,
+    "order": "C",
+    "stored_quantity": "log10(rho/rho_mean)",
+    "tsc_mass_relative_difference": 5.600719448985112e-07
+  },
+  "redshift": 0.2,
+  "scientific_notes": [
+    "The matter field is reconstructed from the random 3% AbacusSummit particle subsample A (halo plus field particles), not the full dark-matter snapshot.",
+    "It visualizes large-scale matter at 3.90625 Mpc/h voxel scale and does not resolve halo internal structure.",
+    "The TSC mass-assignment window is not deconvolved.",
+    "The BAO tracers are dark-matter CompaSO halos, not galaxies.",
+    "V1 applies no HOD or galaxy-bias model.",
+    "This is a z=0.2 real-space periodic snapshot, not an observational light cone.",
+    "No redshift-space distortions are added.",
+    "bao_xi.json is a grid/FFT estimator for educational visualization, not precision cosmology."
+  ],
+  "simulation": "AbacusSummit_base_c000_ph000",
+  "source": {
+    "dataset": "AbacusSummit",
+    "particle_subsample": "A",
+    "particle_subsample_fraction": 0.03,
+    "source_root": "/global/cfs/cdirs/desi/public/cosmosim/AbacusSummit"
+  },
+  "tracers": {
+    "binary_dtype": "little-endian uint16",
+    "cleaned": true,
+    "count": 500000,
+    "mass_decode": "logM = minimum_logM + qlogM/65535*(maximum_logM-minimum_logM)",
+    "mass_proxy": "N",
+    "maximum_logM": 15.366924285888672,
+    "maximum_selected_N": 1103648,
+    "minimum_logM": 12.010729789733887,
+    "minimum_selected_N": 486,
+    "particle_mass_hmsun": 2109081520.453063,
+    "position": "x_L2com",
+    "position_decode": "x = -250 + 500*q/65535",
+    "record_fields": [
+      "qx",
+      "qy",
+      "qz",
+      "qlogM"
+    ],
+    "record_stride_bytes": 8,
+    "sort": "descending halo N; file prefixes provide progressively denser tracer samples",
+    "type": "CompaSO halos; not galaxies"
+  }
+}
