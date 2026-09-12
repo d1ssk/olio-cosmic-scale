@@ -9,9 +9,8 @@ export const SUN_GALACTIC_RADIUS_METERS = 8178 * PARSEC_METERS;
 // Rounded thin-disc extent, not a universal boundary or exponential scale height.
 export const DISK_THICKNESS_METERS = 0.3 * KILOPARSEC_METERS;
 export const BAR_HALF_LENGTH_METERS = 3 * KILOPARSEC_METERS;
-export const MILKY_WAY_COMPARISON_METERS = Math.sqrt(
-  STELLAR_REFERENCE_METERS * MILKY_WAY_DIAMETER_METERS,
-);
+// User-adopted intermediate comparison length, fixed across viewports.
+export const MILKY_WAY_COMPARISON_METERS = 0.5 * KILOPARSEC_METERS;
 export const MILKY_WAY_BRIDGE_VALUES = [STELLAR_REFERENCE_METERS, MILKY_WAY_COMPARISON_METERS];
 export const MILKY_WAY_SOURCES = SOURCES.filter((s) =>
   ["esa-galaxy-guide", "gravity-2019-distance", "openspace-milky-way-volume"].includes(s.id),

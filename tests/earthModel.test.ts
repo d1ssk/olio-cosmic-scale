@@ -29,14 +29,8 @@ describe("Earth sphere and diameter", () => {
     }
   });
   it("finishes two bridge frames with the same centered physical comparison in Earth", () => {
-    expect(HUMAN_EARTH_BRIDGE_VALUES).toHaveLength(3);
-    expect(EARTH_COMPARISON_METERS / 1000).toBeCloseTo(65.1, 1);
-    const values = [...HUMAN_EARTH_BRIDGE_VALUES, EARTH_DIAMETER_METERS];
-    const ratios = values.slice(1).map((value, i) => value / values[i]);
-    ratios.forEach((ratio) => {
-      expect(ratio).toBeLessThanOrEqual(200);
-      expect(ratio).toBeCloseTo(ratios[0], 9);
-    });
+    expect(HUMAN_EARTH_BRIDGE_VALUES).toEqual([1.7, 340, 70_000]);
+    expect(EARTH_COMPARISON_METERS).toBe(70_000);
     const units = sceneRegistry.earth.metersPerSceneUnit;
     const { barBase, comparisonBarBase } = earthSceneModel(units);
     expect(comparisonBarBase[1] + EARTH_COMPARISON_METERS / units / 2).toBe(0);

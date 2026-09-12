@@ -40,6 +40,7 @@ describe("Milky Way physical and display contracts", () => {
     }
   });
   it("has one standalone bridge with its final comparison inside the galaxy", () => {
+    expect(MILKY_WAY_COMPARISON_METERS).toBe(0.5 * KILOPARSEC_METERS);
     expect(MILKY_WAY_BRIDGE_VALUES).toHaveLength(2);
     expect(MILKY_WAY_BRIDGE_VALUES[0]).toBe(
       sceneRegistry["solar-neighborhood"].referenceLengthMeters,
