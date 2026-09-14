@@ -860,6 +860,68 @@ a {
     gap: 0.5rem;
     padding: 0.75rem;
     overflow-y: auto;
+    scrollbar-color: rgb(196 207 220 / 48%) rgb(180 204 236 / 8%);
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+  }
+  :is(
+    .human-view,
+    .earth-view,
+    .earth-moon-view,
+    .sun-view,
+    .earth-sun-view,
+    .solar-system-view,
+    .solar-neighborhood-view,
+    .galactic-center-neighborhood-view,
+    .milky-way-view,
+    .local-group-view,
+    .virgo-view,
+    .bao-view,
+    .cosmic-web-view,
+    .observable-universe-view
+  )::-webkit-scrollbar {
+    width: 7px;
+  }
+  :is(
+    .human-view,
+    .earth-view,
+    .earth-moon-view,
+    .sun-view,
+    .earth-sun-view,
+    .solar-system-view,
+    .solar-neighborhood-view,
+    .galactic-center-neighborhood-view,
+    .milky-way-view,
+    .local-group-view,
+    .virgo-view,
+    .bao-view,
+    .cosmic-web-view,
+    .observable-universe-view
+  )::-webkit-scrollbar-track {
+    background: rgb(180 204 236 / 8%);
+    border-radius: 999px;
+  }
+  :is(
+    .human-view,
+    .earth-view,
+    .earth-moon-view,
+    .sun-view,
+    .earth-sun-view,
+    .solar-system-view,
+    .solar-neighborhood-view,
+    .galactic-center-neighborhood-view,
+    .milky-way-view,
+    .local-group-view,
+    .virgo-view,
+    .bao-view,
+    .cosmic-web-view,
+    .observable-universe-view
+  )::-webkit-scrollbar-thumb {
+    min-height: 44px;
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background: rgb(196 207 220 / 48%);
+    background-clip: padding-box;
   }
   :is(
       .human-view,

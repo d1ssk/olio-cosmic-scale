@@ -34,7 +34,7 @@ At viewport widths up to 1440 px or heights up to 850 px, use compact header and
 
 Main and secondary reference values use the same serif font family. Render scientific notation with a multiplication sign and superscript exponent; do not display raw E notation visually. Always show m, pc, AU and ly conversions except duplication of the primary unit; do not add extra prefixed-meter conversions.
 
-On mobile, keep conversions readable and use flowing rows for heading, readout, canvas, explanatory credits, and controls. All implemented scenes use this layout so panels do not cover the models. BAO and Cosmic Web keep at least 280 px of canvas height; their explanation and settings flow below it and are reached by scrolling the scene, without a nested scrolling panel. Keep the full-viewport shell usable with browser safe areas and modern desktop/mobile input.
+On mobile, keep conversions readable and use flowing rows for heading, readout, canvas, explanatory credits, and controls. All implemented scenes use this layout so panels do not cover the models. Give the scene's vertical scroll area a slim, neutral, translucent scrollbar and stable gutter where the browser supports them so off-screen explanations and controls are discoverable without competing with scientific reference marks. BAO and Cosmic Web keep at least 280 px of canvas height; their explanation and settings flow below it and are reached by scrolling the scene, without a nested scrolling panel. Keep the full-viewport shell usable with browser safe areas and modern desktop/mobile input.
 
 ## Runtime performance
 
