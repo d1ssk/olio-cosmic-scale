@@ -90,3 +90,16 @@ Open <http://localhost:4173/olio-cosmic-scale/> (or the port printed by Vite). Q
 ## Documentation
 
 The [documentation index](README.md) links the focused architecture, science, interaction, and scene guides. Use [implementation status](implementation-status.md) for current conventions and remaining work. The original specification remains in [the archive](archive/initial-project-spec.md).
+
+## Sitemap
+
+`public/sitemap.xml` is copied to `dist/sitemap.xml` during production builds and
+published at `https://d1ssk.github.io/olio-cosmic-scale/sitemap.xml`.
+It lists the single app entry URL `https://d1ssk.github.io/olio-cosmic-scale/`.
+Scene, camera, and language query parameters are app state, not separate static
+pages in this sitemap. Update the file if independent public pages are added.
+There is no `lastmod`: a build timestamp is not a content modification date.
+
+The host's `sitemap-index.xml` references this sitemap. Search Console uses the
+`https://d1ssk.github.io/` URL-prefix property, so no per-project verification or
+separate sitemap submission is needed.
