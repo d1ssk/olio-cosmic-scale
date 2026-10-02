@@ -12,6 +12,8 @@ User-requested GA4 tracking uses measurement ID `G-P4BVZ9ZZ0E`. The Google tag i
 
 ## Commands
 
+Requires Node.js 22 or later. Run commands from the repository root.
+
 ```sh
 npm install
 npm run dev
@@ -67,3 +69,24 @@ The guiding review question is: does this improve accurate intuition for the phy
 Runtime assets belong under `public/models/` with source/license documentation. The served Hachikō GLB is self-contained; normal development, tests and builds do not require its original downloads. Raw import files are temporary, excluded by `/tmp/`, and were removed after preparing the committed asset. To repeat preprocessing, obtain the documented lighter source GLB from its author and pass its local path to `scripts/prepare-hachiko.py`. Preserve the published GLB and attribution even when cleaning temporary inputs.
 
 Browser QA during foundation development used an external temporary Playwright harness, not a committed browser-test dependency. Recreate the focused smoke checks described in the handoff when modifying scene transitions. `npm run check` remains the reproducible automated suite; `npm run build` currently emits a non-fatal large-chunk warning for the shared Three.js bundle.
+
+## Deploy to GitHub Pages
+
+1. Open the repository's [Settings → Pages](https://github.com/d1ssk/olio-cosmic-scale/settings/pages) and select **GitHub Actions** under **Build and deployment → Source**.
+2. Commit these changes and push them to `main`. The **Deploy to GitHub Pages** workflow runs the quality checks, builds the site, and publishes `dist`. Subsequent pushes to `main` update the site automatically. You can also run the workflow manually from the Actions tab on `main`.
+3. After the deployment succeeds, open <https://d1ssk.github.io/olio-cosmic-scale/>.
+
+The workflow uses the base path returned by GitHub Pages, including for custom domains. Runtime model and texture URLs use Vite's `import.meta.env.BASE_URL`. Local development keeps the default `/` base. See the [Vite deployment guide](https://vite.dev/guide/static-deploy.html#github-pages).
+
+To preview the repository subpath locally:
+
+```sh
+npm run build -- --base=/olio-cosmic-scale/
+npm run preview -- --base=/olio-cosmic-scale/
+```
+
+Open <http://localhost:4173/olio-cosmic-scale/> (or the port printed by Vite). Query-based deep links such as `?scene=solar-system&lang=ja` work without server-side routing or a custom 404 page.
+
+## Documentation
+
+The [documentation index](README.md) links the focused architecture, science, interaction, and scene guides. Use [implementation status](implementation-status.md) for current conventions and remaining work. The original specification remains in [the archive](archive/initial-project-spec.md).

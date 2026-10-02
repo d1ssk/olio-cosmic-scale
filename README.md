@@ -1,52 +1,14 @@
 # Cosmic Scale Explorer
 
-An interactive, bilingual visualization for learning physical and astronomical length scales as discrete scenes connected by explicit length-comparison bridges.
+An interactive, bilingual visualization for exploring physical and astronomical length scales.
 
-The common application framework and all 13 levels—from Human (Hachikō) through the Observable Universe—have an implemented first pass. See the [implementation handoff](docs/implementation-status.md) for current conventions and the remaining scientific layers.
+[Open Cosmic Scale Explorer](https://d1ssk.github.io/olio-cosmic-scale/).
 
-## Run locally
+## Explore
 
-Requires Node.js 22 or later.
+Move through 13 scale levels, from Human (Hachikō) to the Observable Universe, and compare lengths between scenes. Japanese and English are available.
 
-```sh
-npm install
-npm run dev
-```
+Scenes use physically grounded models with different representations at different scales. Detailed light-cone matter layers in the Observable Universe scene remain incomplete.
 
-Open the URL printed by Vite. Deep links use query parameters, for example:
-
-```text
-?scene=solar-neighborhood&lang=en
-```
-
-## Quality checks
-
-```sh
-npm run check
-npm run build
-```
-
-`check` verifies formatting, lint, TypeScript, and unit tests. CI runs both commands for pushes and pull requests.
-
-## Deploy to GitHub Pages
-
-1. Open the repository's [Settings → Pages](https://github.com/d1ssk/olio-cosmic-scale/settings/pages) and select **GitHub Actions** under **Build and deployment → Source**.
-2. Commit these changes and push them to `main`. The **Deploy to GitHub Pages** workflow runs the quality checks, builds the site, and publishes `dist`. Subsequent pushes to `main` update the site automatically. You can also run the workflow manually from the Actions tab on `main`.
-3. After the deployment succeeds, open <https://d1ssk.github.io/olio-cosmic-scale/>.
-
-The workflow uses the base path returned by GitHub Pages, including for custom domains. Runtime model and texture URLs use Vite's `import.meta.env.BASE_URL`. Local development keeps the default `/` base. See the [Vite deployment guide](https://vite.dev/guide/static-deploy.html#github-pages).
-
-To preview the repository subpath locally:
-
-```sh
-npm run build -- --base=/olio-cosmic-scale/
-npm run preview -- --base=/olio-cosmic-scale/
-```
-
-Open <http://localhost:4173/olio-cosmic-scale/> (or the port printed by Vite). Query-based deep links such as `?scene=solar-system&lang=ja` work without server-side routing or a custom 404 page.
-
-## Project documentation
-
-Start with [docs/README.md](docs/README.md). The concise [AGENTS.md](AGENTS.md) keeps project-wide invariants in context; detailed scene, scientific, bridge, experience, architecture, and development guidance lives under `docs/`.
-
-The original specification is preserved verbatim at [docs/archive/initial-project-spec.md](docs/archive/initial-project-spec.md).
+You can share a scene and language using a link such as
+[the Solar neighborhood in English](https://d1ssk.github.io/olio-cosmic-scale/?scene=solar-neighborhood&lang=en).

@@ -32,3 +32,10 @@ Read only the focused documents relevant to a change. Read `docs/scenes.md` plus
 - Add targeted tests for logic that can silently distort scientific meaning. Before handoff, run `npm run check` and `npm run build`.
 - Do not add live APIs, a backend, authentication, analytics, large datasets, or speculative systems unless requested.
 - If a convention is ambiguous, document the adopted definition and update metadata, UI copy, tests, and sources together.
+
+## Documentation audience
+
+Keep public-facing READMEs focused on the project, published URL, user instructions, limitations, and licensing. Put maintainer-only setup, deployment, analytics administration, implementation details, and validation procedures in the dedicated documents below. Keep personal machine paths and temporary work notes out of committed documentation. READMEs inside developer-only directories may serve as technical indexes.
+
+- [docs/development.md](docs/development.md)
+- [docs/implementation-status.md](docs/implementation-status.md)
