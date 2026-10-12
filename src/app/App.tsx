@@ -240,10 +240,10 @@ export function App(): React.JSX.Element {
           <strong>{translate(state.locale, "app.name")}</strong>
         </div>
         <div className="header-meta">
-          <LanguageSwitch locale={state.locale} onChange={state.setLocale} />
           <a className="creator-credit" href="https://d1ssk.github.io/">
             {translate(state.locale, "app.credit")}
           </a>
+          <LanguageSwitch locale={state.locale} onChange={state.setLocale} />
         </div>
       </header>
 
