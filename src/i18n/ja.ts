@@ -1,6 +1,7 @@
 import type { TranslationKey } from "./index";
 
 export const ja: Record<TranslationKey, string> = {
+  "app.credit": "© Daichi Sasaki",
   "observable.summary":
     "原点に観測者 · 現在の共動半径 · 黄白色は放射時約3000 K／現在の観測2.7255 K",
   "observable.matter": "物質密度",

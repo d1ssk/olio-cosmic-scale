@@ -1,4 +1,5 @@
 export const en = {
+  "app.credit": "© Daichi Sasaki",
   "observable.summary":
     "Observer at the origin · present-day comoving radius · warm-white ≈3000 K emission / 2.7255 K observed today",
   "observable.matter": "Matter density",

@@ -86,6 +86,7 @@ button:disabled {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.75rem;
   min-height: 82px;
   padding: max(0.8rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) 0.8rem
     max(1rem, env(safe-area-inset-left));
@@ -113,6 +114,33 @@ button:disabled {
   color: var(--muted);
   font-size: 0.72rem;
   letter-spacing: 0.04em;
+}
+
+.header-meta {
+  display: grid;
+  justify-items: end;
+  flex-shrink: 0;
+  gap: 0.15rem;
+}
+
+.creator-credit {
+  color: var(--muted);
+  font-size: 0.5625rem;
+  line-height: 1.4;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.creator-credit:hover,
+.creator-credit:focus-visible {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.creator-credit:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
 }
 
 .language-switch {

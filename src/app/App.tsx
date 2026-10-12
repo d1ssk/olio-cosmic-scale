@@ -239,7 +239,12 @@ export function App(): React.JSX.Element {
           </a>
           <strong>{translate(state.locale, "app.name")}</strong>
         </div>
-        <LanguageSwitch locale={state.locale} onChange={state.setLocale} />
+        <div className="header-meta">
+          <LanguageSwitch locale={state.locale} onChange={state.setLocale} />
+          <a className="creator-credit" href="https://d1ssk.github.io/">
+            {translate(state.locale, "app.credit")}
+          </a>
+        </div>
       </header>
 
       <ScaleAxis
